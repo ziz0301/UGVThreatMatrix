@@ -209,6 +209,14 @@ td a:hover {
     padding: 20px 0;
 }
 
+#assets-matrix-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 20px 0;
+}
+
 #effects-matrix-container {
     display: flex;
     flex-wrap: nowrap;
