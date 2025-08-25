@@ -53,22 +53,28 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.getElementById("stats-nist").style.display = (type === "resilience") ? "block" : "none";
 		const matrixContainer = document.getElementById("matrix-container");
 		const resilienceContainer = document.getElementById("resilience-matrix-container");
-		const effectsContainer = document.getElementById("effects-matrix-container");
+		const effectsContainer = document.getElementById("effects-matrix-container");			
 		const effectsHeading = document.getElementById("effects-heading");
 		const controlsHeading = document.getElementById("controls-heading");
-		const controlsContainer = document.getElementById("controls-matrix-container");
+		const controlsContainer = document.getElementById("controls-matrix-container");		
+		const assetsHeading = document.getElementById("assets-heading");	
+		const assetsContainer = document.getElementById("assets-matrix-container");
 
 		if (type === "threat") {
 			if (matrixContainer) matrixContainer.removeAttribute("style");
 			if (resilienceContainer) resilienceContainer.style.display = "none";
+			if (assetsHeading) assetsHeading.style.display = "none";
+			if (assetsContainer) assetsContainer.style.display = "none";
 			if (effectsContainer) effectsContainer.style.display = "none";
 			if (effectsHeading) effectsHeading.style.display = "none";
 			if (controlsHeading) controlsHeading.style.display = "none";
-			if (controlsContainer) controlsContainer.style.display = "none";
+			if (controlsContainer) controlsContainer.style.display = "none";			
 			loadTacticsAndTechniques(globalData);
 		} 
 		else if (type === "resilience") {
 			if (resilienceContainer) resilienceContainer.removeAttribute("style");
+			if (assetsHeading) assetsHeading.style.display = "block";
+			if (assetsContainer) assetsContainer.removeAttribute("style");
 			if (effectsContainer) effectsContainer.removeAttribute("style");
 			if (effectsHeading) effectsHeading.style.display = "block";
 			if (matrixContainer) matrixContainer.style.display = "none";
@@ -123,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function loadNISTMatrix(data) {
 		const resilienceContainer = document.getElementById("resilience-matrix-container");
+		const assetsContainer = document.getElementById("assets-matrix-container");
 		const effectsContainer = document.getElementById("effects-matrix-container");
 		const controlsContainer = document.getElementById("controls-matrix-container");
 		if (!resilienceContainer || !effectsContainer || !controlsContainer || !data.NIST_CRS ) return;
@@ -149,6 +156,27 @@ document.addEventListener("DOMContentLoaded", function () {
 			});
 			resilienceContainer.appendChild(tacticDiv);
 		});
+		
+		
+		const amCats = data.assets?.AM || [];
+		const amItems = data.assets?.AM_items || [];
+		if (assetsContainer && amCats.length) {
+			amCats.forEach(cat => {
+				const catDiv = document.createElement("div");
+				catDiv.classList.add("tactic");		
+				catDiv.innerHTML = `<b><a href="#" onclick="showPopup('${cat.id}', 'asset-cat', globalData)">${cat.name}</a></b>`;
+
+			amItems
+				.filter(it => it.AM_ID === cat.id)
+				.forEach(it => {
+					const itemDiv = document.createElement("div");
+					itemDiv.classList.add("techniques");
+					 itemDiv.innerHTML = `<a href="#" onclick="showPopup('${it.id}', 'asset-item', globalData)">${it.name}</a>`;
+					catDiv.appendChild(itemDiv);
+				});
+			assetsContainer.appendChild(catDiv);
+			});
+		}
 		
 		const highLevelEffects = data.NIST_CRS.high_level_effects || [];
 		const lowLevelEffects = data.NIST_CRS.low_level_effects || [];
@@ -449,6 +477,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		else if (type === "low-effect") {item = data.NIST_CRS?.low_level_effects?.find(e => e.id === id);}
 		else if (type === "high-control") { item = data.NIST_CRS?.high_level_controls?.find(c => c.id === id);}
 		else if (type === "low-control") {item = data.NIST_CRS?.low_level_controls?.find(c => c.id === id);}
+		else if (type === "asset-cat") { item = data.assets?.AM?.find(a => a.id === id); }
+		else if (type === "asset-item") { item = data.assets?.AM_items?.find(a => a.id === id); }
 
 		if (!item) return;
 		
@@ -502,6 +532,32 @@ document.addEventListener("DOMContentLoaded", function () {
 					}
 				});
 				content += `</table>`;
+			}			
+		
+			if (item.assets_id?.length > 0) {
+				content += `<h3>Assets</h3><table border="1" width="100%">
+					<tr><th>Asset ID</th><th>Name</th><th>Category</th><th>Explanation</th></tr>`;
+				item.assets_id.forEach(a => {
+					let aid  = (typeof a === "string") ? a : a.id;
+					let expl = (typeof a === "string") ? "" : (a.explanation || "");
+					let ai   = data.assets?.AM_items?.find(x => x.id === aid);
+					if (ai) {
+						let cat = data.assets?.AM?.find(c => c.id === ai.AM_ID);
+						let catCell = cat
+						? `<a href="#" onclick="showPopup('${cat.id}', 'asset-cat', globalData)">${cat.name}</a>`
+						: (ai.AM_ID || "");
+						content += `<tr>
+							<td>${ai.id}</td>
+							<td><a href="#" onclick="showPopup('${ai.id}', 'asset-item', globalData)">${ai.name}</a></td>
+							<td>${catCell}</td>
+							<td>${expl}</td>
+							</tr>`;
+					}
+				});
+				content += `</table>`;
+				} 
+			else {
+				content += `<p><h3>Assets:</h3> No mapped assets.</p>`;
 			}
 			
 			if (item["example"].length > 0) {
@@ -1006,6 +1062,47 @@ document.addEventListener("DOMContentLoaded", function () {
 				}
 			}
 
+		}
+		
+		//Handle Asset Category
+		if (type === "asset-cat") {
+			let content = `<h2>${item.name}</h2>`;
+			content += `<p><i>ID:</i> ${item.id}</p>`;
+			content += `<h3>Description</h3><p>${item.description || "No description available."}</p>`;
+
+			const children = (data.assets?.AM_items || []).filter(x => x.AM_ID === item.id);
+			if (children.length) {
+				content += `<h3>Items</h3><table border="1" width="100%">
+				<tr><th>ID</th><th>Name</th><th>Description</th></tr>`;
+				children.forEach(ch => {
+					content += `<tr>
+					<td>${ch.id}</td>
+					<td><a href="#" onclick="showPopup('${ch.id}', 'asset-item', globalData)">${ch.name}</a></td>
+					<td>${ch.description || ""}</td>
+					</tr>`;
+				});
+				content += `</table>`;
+			} else {
+				content += `<p><i>No items under this category yet.</i></p>`;
+			}
+
+			popupBody.innerHTML = content;
+			document.getElementById("popup").style.display = "block";
+			return; 
+		}
+
+		// ----- Assets: Item -----
+		if (type === "asset-item") {
+			let content = `<h2>${item.name}</h2>`;
+			content += `<p><i>ID:</i> ${item.id}</p>`;
+			content += `<h3>Description</h3><p>${item.description || "No description available."}</p>`;
+			const parent = (data.assets?.AM || []).find(a => a.id === item.AM_ID);
+			if (parent) {
+				content += `<p><strong>Category:</strong> <a href="#" onclick="showPopup('${parent.id}', 'asset-cat', globalData)">${parent.name}</a> (${parent.id})</p>`;
+			}
+			popupBody.innerHTML = content;
+			document.getElementById("popup").style.display = "block";
+			return; 
 		}
 
 
