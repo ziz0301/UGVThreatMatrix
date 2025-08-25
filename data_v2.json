@@ -137,6 +137,13 @@
             "modified": "03/04/2025",
             "sub_technique_ids": [],
             "mitigation_ids": ["M5047"],
+			"assets_id": [
+				{"id": "AM-03-009", "explanation": "OBD-II port is the primary plug-in point for tools."},
+				{"id": "AM-03-001", "explanation": "CAN bus wires can be tapped to inject frames."},
+				{"id": "AM-03-004", "explanation": "Ethernet service port allows a simple physical tap."},
+				{"id": "AM-03-003", "explanation": "LIN bus is simple and often reachable once panels open."},
+				{"id": "AM-03-013", "explanation": "USB service port accepts removable devices."}
+			],
             "example": [
                 {
 					"reference ID": "RE0009",
@@ -162,6 +169,16 @@
             "modified": "03/04/2025",
             "sub_technique_ids": [],
             "mitigation_ids": ["M5004", "M5022", "M5043", "M5045", "M5046"],
+			"assets_id": [
+				{ "id": "AM-02-013", "explanation": "OTA update service may be backdoored before distribution." },
+				{ "id": "AM-02-004", "explanation": "Navigation firmware can be injected with malicious code." },
+				{ "id": "AM-02-006", "explanation": "Perception software may be altered to reduce detection accuracy." },
+				{ "id": "AM-01-012", "explanation": "Vehicle Control Unit may be delivered with pre-installed malware." },
+				{ "id": "AM-01-014", "explanation": "Telematics unit can be compromised at supplier factory." },
+				{ "id": "AM-04-004", "explanation": "Firmware vendor distribution channel can be compromised." },
+				{ "id": "AM-04-005", "explanation": "HD maps from provider can be poisoned in supply chain." },
+				{ "id": "AM-04-001", "explanation": "OTA patch server may push modified updates." }
+			],
             "example": [],
             "reference ID": ["RE0042"]
         },
@@ -4634,6 +4651,7 @@
 			{
 				"id": "NISTC-PL-8(1)",
 				"name": "SECURITY AND PRIVACY ARCHITECTURE | DEFENSE IN DEPTH",
+				"ugv_discussion": "UGVs should use a layered security design to slow down and expose attackers. Controls must be placed at different levels, such as ECU firmware, communication layers, and mission planning modules. These controls should work together without conflict. This approach increases resilience and ensures a single point of failure does not compromise the whole system.",
 				"definition": "Design the security and privacy architectures for the system using a defense-in-depth approach that: \n (a) Allocates [Assignment: organization-defined controls] to [Assignment: organization-defined locations and architectural layers]; and \n (b) Ensures that the allocated controls operate in a coordinated and mutually reinforcing manner.",
 				"discussion": "Organizations strategically allocate security and privacy controls in the security and privacy architectures so that adversaries must overcome multiple controls to achieve their objective. Requiring adversaries to defeat multiple controls makes it more difficult to attack information resources by increasing the work factor of the adversary; it also increases the likelihood of detection. The coordination of allocated controls is essential to ensure that an attack that involves one control does not create adverse, unintended consequences by interfering with other controls. Unintended consequences can include system lockout and cascading alarms. The placement of controls in systems and organizations is an important activity that requires thoughtful analysis. The value of organizational assets is an important consideration in providing additional layering. Defense-in-depth architectural approaches include modularity and layering (see SA-8(3)), separation of system and user functionality (see SC-2), and security function isolation (see SC-3).",
 				"techniques_id": ["NISTT004"],
@@ -4642,6 +4660,7 @@
 			{
 				"id": "NISTC-PL-8(2)",
 				"name": "SECURITY AND PRIVACY ARCHITECTURE | SUPPLIER DIVERSITY",
+				"ugv_discussion": "Using different suppliers for critical UGV security functions reduces risk from single-vendor failures or vulnerabilities. Supplier diversity also mitigates supply chain attacks that may target one product family. This improves trust and redundancy in the system architecture.", 
 				"definition": "Require that [Assignment: organization-defined controls] allocated to [Assignment: organization-defined locations and architectural layers] are obtained from different suppliers.",
 				"discussion": "nformation technology products have different strengths and weaknesses. Providing a broad spectrum of products complements the individual offerings. For example, vendors offering malicious code protection typically update their products at different times, often developing solutions for known viruses, Trojans, or worms based on their priorities and development schedules. By deploying different products at different locations, there is an increased likelihood that at least one of the products will detect the malicious code. With respect to privacy, vendors may offer products that track personally identifiable information in systems. Products may use different tracking methods. Using multiple products may result in more assurance that personally identifiable information is inventoried.",
 				"techniques_id": ["NISTT006"],
@@ -4650,6 +4669,7 @@
 			{
 				"id": "NISTC-PM-7(1)",
 				"name": "ENTERPRISE ARCHITECTURE | OFFLOADING",
+				"ugv_discussion": "Non-essential services in UGVs, such as UI components, should be offloaded to non-critical systems or remote units. This helps reduce the attack surface of mission-critical components such as control or navigation systems. Isolating these services enhances system resilience and simplifies security hardening.",
 				"definition": "Offload [Assignment: organization-defined non-essential functions or services] to other systems, system components, or an external provider.",
 				"discussion": "Not every function or service that a system provides is essential to organizational mission or business functions. Printing or copying is an example of a non-essential but supporting service for an organization. Whenever feasible, such supportive but non-essential functions or services are not co-located with the functions or services that support essential mission or business functions. Maintaining such functions on the same system or system component increases the attack surface of the organization’s mission-essential functions or services. Moving supportive but non-essential functions to a non-critical system, system component, or external provider can also increase efficiency by putting those functions or services under the control of individuals or providers who are subject matter experts in the functions or services",
 				"techniques_id": ["NISTT010"],
@@ -4658,6 +4678,7 @@
 			{
 				"id": "NISTC-PM-16",
 				"name": "THREAT AWARENESS PROGRAM",
+				"ugv_discussion": "UGV programs should include a threat awareness initiative that shares intelligence across military units and allies. Sharing TTPs, indicators, and mitigation strategies helps prepare for emerging threats. Cross-organisational sharing improves detection and defence response time.", 
 				"definition": "Implement a threat awareness program that includes a cross-organization information-sharing capability for threat intelligence",
 				"discussion": "Because of the constantly changing and increasing sophistication of adversaries, especially the advanced persistent threat (APT), it may be more likely that adversaries can successfully breach or compromise organizational systems. One of the best techniques to address this concern is for organizations to share threat information, including threat events (i.e., tactics, techniques, and procedures) that organizations have experienced, mitigations that organizations have found are effective against certain types of threats, and threat intelligence (i.e., indications and warnings about threats). Threat information sharing may be bilateral or multilateral. Bilateral threat sharing includes government-to-commercial and government-to-government cooperatives. Multilateral threat sharing includes organizations taking part in threat-sharing consortia. Threat information may require special agreements and protection, or it may be freely shared",
 				"techniques_id": ["NISTT003"],
@@ -4666,6 +4687,7 @@
 			{
 				"id": "NISTC-PM-16(1)",
 				"name": "THREAT AWARENESS PROGRAM | AUTOMATED MEANS FOR SHARING THREAT INTELLIGENCE",
+				"ugv_discussion": "Automated tools should be used to distribute threat indicators to all relevant UGV platforms and monitoring tools. Using structured data formats ensures that detection rules are quickly updated. This allows UGVs to adapt rapidly to new threat signatures and act accordingly.",
 				"definition": "Employ automated mechanisms to maximize the effectiveness of sharing threat intelligence information",
 				"discussion": "To maximize the effectiveness of monitoring, it is important to know what threat observables and indicators the sensors need to be searching for. By using well- established frameworks, services, and automated tools, organizations improve their ability to rapidly share and feed the relevant threat detection signatures into monitoring tools.",
 				"techniques_id": ["NISTT003"],
@@ -4674,6 +4696,7 @@
 			{
 				"id": "NISTC-PM-30(1)",
 				"name": "SUPPLY CHAIN RISK MANAGEMENT | SUPPLIERS OF CRITICAL OR MISSION-ESSENTIAL ITEMS",
+				"ugv_discussion": "Suppliers of mission-critical UGV components, such as control ECUs or encrypted communication protocols, must be identified and assessed for risk. Prioritising high-impact suppliers helps target security reviews and supply chain checks. This is vital to avoid compromise through tampered hardware or software dependencies.",
 				"definition": "Identify, prioritize, and assess suppliers of critical or mission-essential technologies, products, and services.",
 				"discussion": "The identification and prioritization of suppliers of critical or mission-essential technologies, products, and services is paramount to the mission/business success of organizations. The assessment of suppliers is conducted using supplier reviews (see SR-6) and supply chain risk assessment processes (see RA-3(1)). An analysis of supply chain risk can help an organization identify systems or components for which additional supply chain risk mitigations are required.",
 				"techniques_id": ["NISTT013"],
@@ -4682,6 +4705,7 @@
 			{
 				"id": "NISTC-PM-31",
 				"name": "CONTINUOUS MONITORING STRATEGY",
+				"ugv_discussion": "UGV systems should be continuously monitored for performance, security, and privacy metrics. These metrics must be analysed to identify anomalies and trigger response actions. Real-time dashboards support commanders in making informed decisions under changing threat conditions.",
 				"definition": "Develop an organization-wide continuous monitoring strategy and implement continuous monitoring programs that include: \n a. Establishing the following organization-wide metrics to be monitored: [Assignment: organization-defined metrics]; \n b. Establishing [Assignment: organization-defined frequencies] for monitoring and [Assignment: organization-defined frequencies] for assessment of control effectiveness; \n c. Ongoing monitoring of organizationally-defined metrics in accordance with the continuous monitoring strategy; \n d. Correlation and analysis of information generated by control assessments and monitoring; \n e. Response actions to address results of the analysis of control assessment and monitoring information; and \n f. Reporting the security and privacy status of organizational systems to [Assignment:organization-defined personnel or roles] [Assignment: organization-defined frequency]",
 				"discussion": "Continuous monitoring at the organization level facilitates ongoing awareness of the security and privacy posture across the organization to support organizational risk management decisions. The terms “continuous” and “ongoing” imply that organizations assess and monitor their controls and risks at a frequency sufficient to support risk-based decisions. Different types of controls may require different monitoring frequencies. The results of continuous monitoring guide and inform risk response actions by organizations. Continuous monitoring programs allow organizations to maintain the authorizations of systems and common controls in highly dynamic environments of operation with changing mission and business needs, threats, vulnerabilities, and technologies. Having access to security- and privacy-related information on a continuing basis through reports and dashboards gives organizational officials the capability to make effective, timely, and informed risk management decisions, including ongoing authorization decisions. To further facilitate security and privacy risk management, organizations consider aligning organization-defined monitoring metrics with organizational risk tolerance as defined in the risk management strategy. Monitoring requirements, including the need for monitoring, may be referenced in other controls and control enhancements such as, AC-2g, AC-2(7), AC-2(12)(a), AC-2(7)(b), AC-2(7)(c), AC-17(1), AT-4a, AU-13, AU-13(1), AU-13(2), CA-7, CM-3f, CM-6d, CM-11c, IR-5, MA-2b, MA-3a, MA-4a, PE-3d, PE-6, PE-14b, PE-16, PE-20, PM-6, PM-23, PS-7e, SA-9c, SC- 5(3)(b), SC-7a, SC-7(24)(b), SC-18b, SC-43b, SI-4",
 				"techniques_id": ["NISTT002"],
@@ -4690,6 +4714,7 @@
 			{
 				"id": "NISTC-PM-32",
 				"name": "PURPOSING",
+				"ugv_discussion": "UGV components must be reviewed to ensure they serve only their intended mission role. This avoids repurposing or misuse of hardware for unintended operations, which may introduce vulnerabilities. Purpose analysis also helps validate configuration and reduce attack surfaces.",
 				"definition": "Analyze [Assignment: organization-defined systems or systems components] supporting mission essential services or functions to ensure that the information resources are being used consistent with their intended purpose.",
 				"discussion": "Analyze [Assignment: organization-defined systems or systems components] supporting mission essential services or functions to ensure that the information resources are being used consistent with their intended purpose.",
 				"techniques_id": ["NISTT010"],
@@ -6602,6 +6627,419 @@
 			}
 		]
 	},
+	"assets": {
+		"AM": [
+			{
+				"id":"AM-01",
+				"name": "Hardware",
+				"description": "Inventories of hardware managed by the organization are maintained"
+			},
+			{
+				"id":"AM-02",
+				"name": "Software",
+				"description": "Inventories of software, services, and systems are maintained"
+			},
+			{
+				"id": "AM-03",
+				"name": "Network Communications and Data Flows",
+				"description": "Representations of authorized network communications and data flows are maintained"
+			},
+			{
+				"id": "AM-04",
+				"name": "Supplier Services",
+				"description": "Inventories of services provided by suppliers are maintained"
+			},
+			{
+				"id": "AM-05",
+				"name": "Asset Prioritization",
+				"description": "Assets are prioritized based on classification, criticality, and mission impact"
+			},
+			{
+				"id": "AM-07",
+				"name": "Data and Metadata",
+				"description": "Inventories of data and metadata for designated types are maintained"
+			},
+			{
+				"id": "AM-08",
+				"name": "Asset Lifecycle",
+				"description": "Assets are managed through their lifecycle"
+			}			
+		],
+		"AM_items": [
+			{ 
+				"id": "AM-01-001", 
+				"name": "LiDAR Sensor", 
+				"description": "Light detection and ranging sensor used for 3D perception", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-002", 
+				"name": "Radar Sensor", 
+				"description": "Radio detection and ranging sensor used for object detection", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-003", 
+				"name": "Camera Sensor", 
+				"description": "Monocular, stereo, infrared, or thermal camera for perception", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-004", 
+				"name": "IMU", 
+				"description": "Inertial measurement unit for navigation and stability", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-005", 	
+				"name": "GPS Receiver", 
+				"description": "Satellite-based positioning receiver", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-006", 
+				"name": "Steering Actuator", 
+				"description": "Actuator for steering control", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-007", 
+				"name": "Brake Actuator", 
+				"description": "Actuator for braking control", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-008", 
+				"name": "Throttle Actuator", 
+				"description": "Actuator for acceleration control", 
+				"AM_ID": "AM-01"
+			},
+			{ 
+				"id": "AM-01-009", 
+				"name": "Battery Pack", 
+				"description": "Main energy storage for the vehicle", 
+				"AM_ID": "AM-01"
+			},
+			{ 
+				"id": "AM-01-010",
+				"name": "Power Distribution Unit", 
+				"description": "Module distributing electrical power across subsystems", 
+				"AM_ID": "AM-01"
+			},
+			{ 
+				"id": "AM-01-011", 
+				"name": "Charging Interface", 
+				"description": "Connector and control for charging operations", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-012", 
+				"name": "Vehicle Control Unit", 
+				"description": "Central unit coordinating vehicle operations", 
+				"AM_ID": "AM-01"
+			},
+			{ 
+				"id": "AM-01-014", 
+				"name": "Telematics Control Unit", 
+				"description": "Unit for remote connectivity and telematics", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-01-015", 
+				"name": "Emergency Stop Device", 	
+				"description": "Safety hardware for emergency intervention", 
+				"AM_ID": "AM-01" 
+			},
+			{ 
+				"id": "AM-02-001", 
+				"name": "RTOS", 
+				"description": "Real-time operating system for safety-critical ECUs", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-002", 
+				"name": "Linux OS", 
+				"description": "General-purpose operating system for higher-level modules", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-003", 
+				"name": "AUTOSAR Platform", 
+				"description": "Automotive standard software architecture", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-004", 
+				"name": "Navigation Firmware", 
+				"description": "Software controlling path guidance and navigation", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-005", 
+				"name": "Path Planning AI", 
+				"description": "Algorithm for trajectory generation", 
+				"AM_ID": "AM-02"
+			},
+			{ 
+				"id": "AM-02-006", 
+				"name": "Perception Algorithms", 
+				"description": "Software modules for object detection, tracking, classification", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-007", 
+				"name": "ROS/ROS2 Middleware", 
+				"description": "Robotics middleware for distributed software components", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-008", 
+				"name": "DDS Middleware", 
+				"description": "Data distribution service for real-time communication", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-009", 
+				"name": "CAN Stack", 
+				"description": "Software stack implementing CAN protocols", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-010", 
+				"name": "Ethernet/IP Stack", 
+				"description": "Software stack for automotive Ethernet", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-011", 
+				"name": "OBD-II Diagnostic Software", 
+				"description": "Software tools for vehicle diagnostics", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-012", 
+				"name": "UDS Protocol Stack", 
+				"description": "ISO 14229 Unified Diagnostic Services implementation", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-013", 
+				"name": "OTA Update Service", 
+				"description": "Over-the-air update system for firmware/software", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-014", 
+				"name": "Intrusion Detection System (IDS)", 
+				"description": "Security software for anomaly detection", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-015", 
+				"name": "Key Management Software", 
+				"description": "Software handling cryptographic keys", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-02-016", 
+				"name": "Fleet Management System", 
+				"description": "Backend service for UGV fleet monitoring", 
+				"AM_ID": "AM-02" 
+			},
+			{ 
+				"id": "AM-03-001", 
+				"name": "CAN Bus", 
+				"description": "Controller Area Network segments (PTCAN, KCAN, etc.)", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-002", 
+				"name": "FlexRay Bus", 
+				"description": "High-speed automotive bus for safety-critical communication", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-003", 
+				"name": "LIN Bus", 
+				"description": "Local Interconnect Network for auxiliary subsystems", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-004", 
+				"name": "Automotive Ethernet", 
+				"description": "High-bandwidth communication backbone", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-005", 
+				"name": "Cellular Communication", 
+				"description": "4G/5G vehicle-to-cloud data channel", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-007", 
+				"name": "Wi-Fi Module", 
+				"description": "Wireless LAN interface for connectivity", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-008", 
+				"name": "Bluetooth Module", 
+				"description": "Short-range wireless communication", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-009", 
+				"name": "OBD-II Interface", 
+				"description": "On-board diagnostic communication port", 
+				"AM_ID": "AM-03"
+			},
+			{ 
+				"id": "AM-03-012", 
+				"name": "OTA Update Channel", 
+				"description": "Dedicated secure update communication path", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-03-013", 
+				"name": "USB Service Port", 
+				"description": "In-vehicle USB used for diagnostics/media", 
+				"AM_ID": "AM-03" 
+			},
+			{ 
+				"id": "AM-04-001", 
+				"name": "OTA Patch Delivery Server", 
+				"description": "External service for distributing patches", 
+				"AM_ID": "AM-04" 
+			},
+			{ 
+				"id": "AM-04-002", 
+				"name": "Mission Planning Backend", 
+				"description": "External service for mission preparation", 
+				"AM_ID": "AM-04" 
+			},
+			{ 
+				"id": "AM-04-003", 
+				"name": "Satellite Navigation Service", 
+				"description": "GNSS or SBAS service provider", 
+				"AM_ID": "AM-04" 
+			},
+			{ 
+				"id": "AM-04-004", 
+				"name": "Firmware Update Vendor", 
+				"description": "External supplier providing firmware updates", 
+				"AM_ID": "AM-04" 
+			},
+			{ 
+				"id": "AM-04-006", 
+				"name": "Cybersecurity Monitoring Provider", 
+				"description": "External SOC or monitoring service", 
+				"AM_ID": "AM-04" 
+			},
+			{ 
+				"id": "AM-05-001", 
+				"name": "Brake ECU", 
+				"description": "Safety-critical ECU for braking", 
+				"AM_ID": "AM-05" 
+			},
+			{ 
+				"id": "AM-05-002", 
+				"name": "Steering ECU", 
+				"description": "Safety-critical ECU for steering", 
+				"AM_ID": "AM-05" 
+			},
+			{ 
+				"id": "AM-05-004", 
+				"name": "Payload Module", 
+				"description": "Critical payload module", 
+				"AM_ID": "AM-05" 
+			},
+			{
+				"id": "AM-05-005", 
+				"name": "Sensor Logs",
+				"description": "Mission logs from critical sensors", 
+				"AM_ID": "AM-05" 
+			},
+			{ 
+				"id": "AM-05-006", 
+				"name": "Key Store", 
+				"description": "Cryptographic key storage", 
+				"AM_ID": "AM-05" 
+			},
+			{ 
+				"id": "AM-05-007", 
+				"name": "Authentication Server", 
+				"description": "Security system for identity verification", 
+				"AM_ID": "AM-05" 
+			},
+			{ 
+				"id": "AM-07-001", 
+				"name": "Mission Route Data", 
+				"description": "Data for planned UGV mission routes", 
+				"AM_ID": "AM-07" 
+			},			
+			{ 
+				"id": "AM-07-003", 
+				"name": "LiDAR Point Cloud Logs", 
+				"description": "Stored raw and processed LiDAR data", 
+				"AM_ID": "AM-07" 
+			},
+			{
+				"id": "AM-07-004",
+				"name": "Camera Video Logs", 
+				"description": "Recorded video frames from cameras", 
+				"AM_ID": "AM-07" 
+			},
+			{ 
+				"id": "AM-07-005", 
+				"name": "Radar Detection Logs", 
+				"description": "Stored radar detection results", 
+				"AM_ID": "AM-07" 
+			},
+			{ 
+				"id": "AM-07-006", 
+				"name": "Key Stores", 
+				"description": "Cryptographic key database", 
+				"AM_ID": "AM-07" 
+			},
+			{ 
+				"id": "AM-07-007", 
+				"name": "Authentication Metadata", 
+				"description": "User and device identity verification data", 
+				"AM_ID": "AM-07" 
+			},			
+			{ 
+				"id": "AM-07-010", 
+				"name": "Telemetry Data", 
+				"description": "Vehicle-to-cloud sensor and status data", 
+				"AM_ID": "AM-07" 
+			},
+			{ 
+				"id": "AM-08-001", 
+				"name": "Firmware Versioning Records", 
+				"description": "Historical records of firmware versions", 
+				"AM_ID": "AM-08" 
+			},
+			{ 
+				"id": "AM-08-003", 
+				"name": "Software Update Schedule", 
+				"description": "Planned and executed software update timelines", 
+				"AM_ID": "AM-08" 
+			},
+			{ 
+				"id": "AM-08-004", 
+				"name": "Patch Management Records", 
+				"description": "Documentation of applied security patches", 
+				"AM_ID": "AM-08" 
+			},
+			{ 
+				"id": "AM-08-005", 
+				"name": "Hardware End-of-Life Docs", 
+				"description": "Records of retired hardware components", 
+				"AM_ID": "AM-08" 
+			}
+		]
+	},	
     "references": [
         {
             "ID": "RE0001",
