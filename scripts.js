@@ -573,7 +573,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			
 			if (item.mitigation_ids?.length > 0) {
 				content += `<h3>Mitigations</h3><table border="1" width="100%">
-					<tr><th>ID</th><th>Name</th><th>Description</th><th>NIST Approaches</th><th>NIST Controls</th></tr>`;
+					<tr><th>ID</th><th>Name</th><th>Description</th><th>NIST Approaches</th><th style="width:25%">NIST Controls</th></tr>`;
 				item.mitigation_ids.forEach(mitId => {
 					const mit = data.mitigations.find(m => m.ID === mitId);
 					if (mit) {
@@ -594,8 +594,9 @@ document.addEventListener("DOMContentLoaded", function () {
 							const firstCtrlsHtml = (first.control_ids || []).map(ctrlId => {
 								const ctrl = data.NIST_CRS?.low_level_controls?.find(c => c.id === ctrlId);
 								return ctrl
-									? `<a href="#" onclick="showPopup('${ctrl.id}', 'low-control', globalData)">${toTitleCase(ctrl.name)}</a>`
-									: ctrlId;
+										? `<div style="margin-bottom:6px;">
+											<a href="#" onclick="showPopup('${ctrl.id}','low-control',globalData)"><b>&lt;${ctrlId}&gt;</b>&nbsp;${toTitleCase(ctrl.name)}</a>`
+										: `<div style="margin-bottom:6px;"><b>&lt;${ctrlId}&gt;</b></div>`;
 							}).join("<br>");
 
 							content += `<tr>
@@ -606,7 +607,6 @@ document.addEventListener("DOMContentLoaded", function () {
 								<td>${firstCtrlsHtml || "—"}</td>
 							</tr>`;
 
-							// Remaining mappings: approaches + controls only
 							for (let i = 1; i < mappings.length; i++) {
 								const m = mappings[i];
 								const app = data.NIST_CRS?.approaches?.find(a => a.id === m.approach_id);
@@ -616,9 +616,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 								const ctrlsHtml = (m.control_ids || []).map(ctrlId => {
 									const ctrl = data.NIST_CRS?.low_level_controls?.find(c => c.id === ctrlId);
+									console.log("&lt;" + ctrl.id + ">" +toTitleCase(ctrl.name));
 									return ctrl
-										? `<a href="#" onclick="showPopup('${ctrl.id}', 'low-control', globalData)">${toTitleCase(ctrl.name)}</a>`
-										: ctrlId;
+										? `<div style="margin-bottom:6px;">
+											<a href="#" onclick="showPopup('${ctrl.id}','low-control',globalData)"><b>&lt;${ctrlId}&gt;</b>&nbsp;${toTitleCase(ctrl.name)}</a>`
+										: `<div style="margin-bottom:6px;"><b>&lt;${ctrlId}&gt;</b></div>`;
 								}).join("<br>");
 								content += `<tr>
 									<td>${appHtml}</td>
@@ -643,8 +645,9 @@ document.addEventListener("DOMContentLoaded", function () {
 								.map(ctrlId => {
 									const ctrl = data.NIST_CRS?.low_level_controls?.find(c => c.id === ctrlId);
 									return ctrl
-										? `<a href="#" onclick="showPopup('${ctrl.id}', 'low-control', globalData)">${toTitleCase(ctrl.name)}</a><br>`
-										: ctrlId;
+										? 	`<div style="margin-bottom:6px;">
+											<a href="#" onclick="showPopup('${ctrl.id}','low-control',globalData)"><b>&lt;${ctrlId}&gt;</b>&nbsp;${toTitleCase(ctrl.name)}</a>`
+										: `<div style="margin-bottom:6px;"><b>&lt;${ctrlId}&gt;</b></div>`;
 								})
 								.join("<br>");
 
@@ -653,7 +656,7 @@ document.addEventListener("DOMContentLoaded", function () {
 								<td><a href="#" onclick="showPopup('${mit.ID}', 'mitigation', globalData)">${mit.name}</a></td>
 								<td>${combinedDesc}</td>
 								<td>${approachLinks || "—"}</td>
-								<td>${controlLinks || "—"}</td>
+								<td style="width:25%" >${controlLinks || "—"}</td>
 							</tr>`;
 						}
 					}
@@ -1144,11 +1147,5 @@ document.addEventListener("DOMContentLoaded", function () {
 window.showPopup = showPopup;
 window.closePopup = closePopup;
 window.toggleSubTechniques = toggleSubTechniques;
-	
-	
-	
-	
-	
-	
 	
 	
