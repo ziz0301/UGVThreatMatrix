@@ -1009,7 +1009,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (linkedControls.length > 0) {
 				content += `<ul>`;
 				linkedControls.forEach(ctrl => {
-					content += `<li><a href="#" onclick="showPopup('${ctrl.id}', 'low-control', globalData)">${ctrl.name}</a></li>`;
+					content += `<li><a href="#" onclick="showPopup('${ctrl.id}', 'low-control', globalData)">${ctrl.name}</a> &lt;${ctrl.id}&gt</li>`;
 				});
 				content += `</ul>`;
 			} else {
@@ -1147,5 +1147,11 @@ document.addEventListener("DOMContentLoaded", function () {
 window.showPopup = showPopup;
 window.closePopup = closePopup;
 window.toggleSubTechniques = toggleSubTechniques;
+	
+	
+	
+	
+	
+	
 	
 	
