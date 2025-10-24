@@ -124,7 +124,7 @@
             "full_description": "Impact consists of techniques that degrade vehicle functionality, compromise safety, or exploit vulnerabilities at scale. Through malicious commands, system output manipulation, or disruption of essential operations, attackers can inflict physical harm, cause financial losses, and create widespread security breaches, threatening safety, security, and privacy.\nCommon impact techniques include forcing vehicles off-road, causing accidents, initiating emergency shutdowns, and impairing safe operation. Attackers may also steal sensitive vehicle data, including operational and security-critical information, or exploit vulnerabilities across identical vehicle models to launch large-scale attacks after breaching a single vehicle.\nThis tactic is adapted from MITRE ATT&CK (Enterprise and ICS domain).",
             "created": "25/02/2025",
             "modified": "03/04/2025",
-            "technique_ids": ["T5004","T5078","T5081","T5069","T5077","T5073","T5075","T5074","T5079","T5072","T5006","T5005","T5080"]
+            "technique_ids": ["T5004","T5082","T5078","T5081","T5069","T5077","T5073","T5075","T5074","T5079","T5072","T5006","T5005","T5080"]
         }
     ],
     "techniques": [
@@ -2325,7 +2325,39 @@
 				}
             ],
             "reference ID": ["RE0038","RE0039","RE0040"]
-        }
+        },		
+		{
+			"ID": "T5082",
+			"name": "Battery Depletion",
+			"short_description": "Adversaries may intentionally cause excessive battery consumption in UGVs to limit their operational duration or make them inoperative.",
+			"full_description": "UGVs may rely on high-capacity electric batteries to power mobility, perception, and control subsystems. As noted by Yaacoub et al. [RE0036], robotic devices are inherently resource-constrained and prone to excessive battery consumption or depletion. Similarly, Kaasen et al. [RE0005] describe the THeMIS 4.5 UGV, which employs dual electric motors powered by a high-voltage battery pack, making it vulnerable to power-drain attacks.\n\nAlthough no specific literature exists on UGV battery attacks, several UAV-focused studies demonstrate analogous threats that can be extended to ground systems. For instance, Tlili et al. [RE0122], Desnitsky and Kotenko [RE0123], and Dey et al. [RE0124] explore attacks that prohibit charging or exhaust battery capacity through continuous control-plane activity, denial-of-sleep mechanisms, or energy-hungry operations.\n\n Adversaries can trigger battery depletion in UGVs through multiple methods: remotely forcing the system into ready mode, issuing repeated motion or restart commands, activating high-power subsystems (e.g., cameras, heaters, lights), injecting continuous wireless signaling to prevent low-power states, or spoofing navigation data (e.g., GPS/GNSS) to cause unnecessary re-routing. Other attacks may target charging interfaces or back-end energy management services to prevent recharging or apply harmful charge profiles. These actions collectively drain stored energy and may immobilize the vehicle during a mission.",
+			"created": "25/02/2025",
+			"modified": "03/04/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": ["M5001", "M5002", "M5017"],
+			"assets_id": [
+				{"id": "AM-01-009", "explanation": "Battery Pack is the primary energy source and main target of depletion attacks."},
+				{"id": "AM-01-010", "explanation": "Power Distribution Unit can be exploited to activate multiple subsystems simultaneously."},
+				{"id": "AM-01-011", "explanation": "Charging Interface may be attacked to block or manipulate the recharging process." },
+				{"id": "AM-01-014", "explanation": "Telematics Control Unit can be abused to send repeated activation or wake-up commands remotely."},
+				{"id": "AM-03-005", "explanation": "Cellular Communication may be leveraged for continuous signaling or authentication floods that waste energy."}
+			],
+			"example": [
+				{
+					"reference ID": "RE0122",
+					"description": "Researchers examined multiple battery exhaustion scenarios in UAVs, focusing on vulnerabilities in both charging systems and operational power consumption. They demonstrated that attackers could manipulate the charging control unit or inject falsified voltage and current parameters to cause overcharging, undercharging, or rapid voltage drops that permanently damage the battery. The study also analysed battery depletion attacks through GPS interference, excessive payloads, and denial-of-sleep mechanisms, showing how such actions accelerate power drain, reduce mission endurance, and potentially lead to UAV crashes or mission failures."
+				},
+				{
+					"reference ID": "RE0123",
+					"description": "Researchers evaluated many battery-depletion attacks on a UAV testbed, such as illegal switch-on/standby, denial-of-sleep on the radio, added payload/centering shifts, unauthorized hovering and extra motions, wired power-drain, faulty battery replacement, and activation of peripherals. Their measurements show large, attack-specific impacts, for example, disabling one microcircuit gave a 5.43 h lifetime while turning on all modules reduced it to ~4 h."
+				},
+				{
+					"reference ID": "RE0124",
+					"description": "Researchers examined a Denial-of-Battery (DoB) attack on UAVs through the 5G control channel, where the attacker floods the network with unauthorized synchronization and PFCP session messages. They implemented three variants—Session Establishment, Modification, and Deletion request floods, which overwhelm the UAV by forcing it to process continuous control-plane traffic. This causes resource exhaustion, disrupts communication stability, and rapidly depletes the UAV’s battery due to persistent CPU and radio activity."
+				}
+			],
+			"reference ID": ["RE0036", "RE0005", "RE0122", "RE0123", "RE0124"]
+		}		
     ],
     "sub-techniques": [
 		{
@@ -2790,7 +2822,7 @@
 			"ID": "M5001",
 			"name": "Adaptive Response and Recovery system",
 			"short_description": "Adaptive Response and Recovery system for UGVs involves dynamic, intelligent strategies that respond to detected threats and recover the system to maintain safe and reliable operation.",
-			"full_description": "Adaptive Response and Recovery systems in UGVs are designed to react to detected intrusions or physical attacks by deploying context-aware countermeasures. These systems combine techniques like deep reinforcement learning, simulation-guided safety policies, and intelligent controller switching to ensure vehicles maintain safe functionality even under active attacks. They go beyond simple fail-safes by enabling mission continuity and resilience through autonomous recovery mechanisms.",
+			"full_description": "Adaptive Response and Recovery systems in UGVs are designed to react to detected intrusions or physical attacks by deploying context-aware countermeasures. These systems combine techniques like deep reinforcement learning, simulation-guided safety policies, and intelligent controller switching to ensure vehicles maintain safe functionality even under active attacks. They go beyond simple fail-safes by enabling mission continuity and resilience through autonomous recovery mechanisms.\n\nFor battery depletion threats specifically, adaptive systems can detect abnormal battery consumption and immediately enact energy-preserving policies, or re-plan missions to reduce travel or prioritise safe return-to-base behaviours.",
 			"example": [
 				{
 					"reference ID": "RE0051",
@@ -2803,6 +2835,11 @@
 				{
 					"reference ID": "RE0053",
 					"description": "An uncertainty-aware deep reinforcement learning-based intrusion response system is developed to autonomously respond to detected attacks in in-vehicle networks, selecting optimal defense strategies to ensure mission success and minimal disruption."
+				},
+				{
+				
+					"reference ID": "RE0122",
+					"description": "Researchers suggests adaptive policies such as disabling non-essential subsystems, prioritising safe return behaviours, and scheduling cooperative charging—measures can mitigate the battery depletion attack."
 				}
 			],
 			"techniques": ["T5018", "T5020","T5024", "T5081", "T5073", "T5072"],
@@ -2817,13 +2854,13 @@
 			],
 			"created": "15/05/2025",
 			"modified": "15/05/2025",
-			"reference_ID": ["RE0051", "RE0052", "RE0053"]
+			"reference_ID": ["RE0051", "RE0052", "RE0053", "RE0122"]
 		},
 		{
 			"ID": "M5002",
 			"name": "Anomaly Detection for Sensor and Actuator Systems",
 			"short_description": "Detect and respond to abnormal behaviours in sensor and actuator systems of UGVs.",
-			"full_description": "Anomaly Detection for Sensor and Actuator Systems is a mitigation strategy that monitors the behaviour of vehicle sensors and actuators to identify unexpected patterns that may indicate faults or attacks. This includes validating sensor inputs (e.g., from LiDAR, GPS, IMU), verifying actuator commands (e.g., throttle, braking), and using redundancy checks or predictive models to flag inconsistencies. Upon detection of abnormal behaviour, the system may isolate faulty components, switch to backup modules, or initiate corrective actions to maintain safe vehicle operation. This mitigation plays a critical role in ensuring the reliability and security of perception and control subsystems in UGVs.",
+			"full_description": "Anomaly Detection for Sensor and Actuator Systems is a mitigation strategy that monitors the behaviour of vehicle sensors and actuators to identify unexpected patterns that may indicate faults or attacks. This includes validating sensor inputs (e.g., from LiDAR, GPS, IMU), verifying actuator commands (e.g., throttle, braking), and using redundancy checks or predictive models to flag inconsistencies. Upon detection of abnormal behaviour, the system may isolate faulty components, switch to backup modules, or initiate corrective actions to maintain safe vehicle operation. This mitigation plays a critical role in ensuring the reliability and security of perception and control subsystems in UGVs. \n\nFor battery-depletion threats, anomaly detectors should also monitor power and battery telemetry and detect unusual patterns such as sustained high current consumption, repeated wake-up sequences, or continuous activation of high-power peripherals.",
 			"example": [
 				{
 					"reference ID": "RE0054",
@@ -2844,6 +2881,10 @@
 				{
 					"reference ID": "RE0058",
 					"description": "Researchers proposes a fault detection algorithm for sensors and actuators in autonomous vehicles based on the vehicle’s longitudinal dynamics. It uses analytical redundancy through a prediction model to compare expected and actual signals. Discrepancies in signals such as braking force or acceleration are flagged as anomalies, supporting both detection and isolation of faulty components."
+				},
+				{
+					"reference ID": "RE0124",
+					"description": "Researcher develop an early-detection method for battery depletion attacks in 5G-based UAV networks using CUSUM and dynamic thresholds on control-plane activity and energy use. The study shows these statistical detectors can flag session-flooding and energy-exhaustion attacks quickly; the same approach can be applied to UGV battery telemetry and control system to detect draining attacks."
 				}
 			],
 			"techniques": ["T5005", "T5006", "T5024", "T5027", "T5072", "T5075", "T5004"],
@@ -2857,7 +2898,7 @@
 			],
 			"created": "15/05/2025",
 			"modified": "15/05/2025",
-			"reference_ID": ["RE0054", "RE0055", "RE0056", "RE0057", "RE0058"]
+			"reference_ID": ["RE0054", "RE0055", "RE0056", "RE0057", "RE0058", "RE0124"]
 		},
 		{
 			"ID": "M5003",
@@ -4033,87 +4074,87 @@
 			{
 				"id": "NISTC-AC",
 				"name": "Access Control",
-				"control_ids": ["NISTC-AC-2(6)", "NISTC-AC-2(8)", "NISTC-AC-2(12)", "NISTC-AC-3(2)", "NISTC-AC-3(7)", "NISTC-AC-3(11)", "NISTC-AC-3(12)", "NISTC-AC-3(13)", "NISTC-AC-4(2)", "NISTC-AC-4(3)", "NISTC-AC-4(8)", "NISTC-AC-4(12)", "NISTC-AC-4(17)", "NISTC-AC-4(21)", "NISTC-AC-4(27)", "NISTC-AC-4(29)", "NISTC-AC-4(30)", "NISTC-AC-6", "NISTC-AC-6(1)", "NISTC-AC-6(2)", "NISTC-AC-6(3)", "NISTC-AC-6(4)", "NISTC-AC-6(5)", "NISTC-AC-6(6)", "NISTC-AC-6(7)", "NISTC-AC-6(8)", "NISTC-AC-6(10)", "NISTC-AC-7(4)", "NISTC-AC-12", "NISTC-AC-23"]
+				"control_ids": ["NISTC-AC-3(7)", "NISTC-AC-3(11)", "NISTC-AC-3(12)", "NISTC-AC-3(13)", "NISTC-AC-4(2)", "NISTC-AC-4(3)", "NISTC-AC-4(8)",  "NISTC-AC-4(17)", "NISTC-AC-4(21)", "NISTC-AC-6", "NISTC-AC-6(2)", "NISTC-AC-6(4)", "NISTC-AC-6(5)", "NISTC-AC-6(7)", "NISTC-AC-6(8)", "NISTC-AC-12"]
 			},
 			{
 				"id": "NISTC-AT",
 				"name": "Awareness and Training",
-				"control_ids": ["NISTC-AT-2(1)", "NISTC-AT-2(3)", "NISTC-AT-2(5)", "NISTC-AT-3(3)"]
+				"control_ids": []
 			},
 			{
 				"id": "NISTC-AU",
 				"name": "Audit and Accountability",
-				"control_ids": ["NISTC-AU-5(3)", "NISTC-AU-6","NISTC-AU-6(3)","NISTC-AU-6(5)","NISTC-AU-6(6)","NISTC-AU-6(8)","NISTC-AU-6(9)", "NISTC-AU-9(1)","NISTC-AU-9(2)","NISTC-AU-9(3)","NISTC-AU-9(5)","NISTC-AU-9(6)","NISTC-AU-9(7)", "NISTC-AU-10(2)","NISTC-AU-13", "NISTC-AU-13(3)"]
+				"control_ids": ["NISTC-AU-5(3)", "NISTC-AU-6", "NISTC-AU-10(2)"]
 			},
 			{
 				"id": "NISTC-CA",
 				"name": "Assessment, Authorization, and Monitoring",
-				"control_ids": ["NISTC-CA-7(3)","NISTC-CA-7(5)", "NISTC-CA-7(6)", "NISTC-CA-8", "NISTC-CA-8(1)","NISTC-CA-8(2)","NISTC-CA-8(3)"]
+				"control_ids": ["NISTC-CA-7(5)", "NISTC-CA-7(6)", "NISTC-CA-8"]
 			},
 			{
 				"id": "NISTC-CM",
 				"name": "Configuration Management",
-				"control_ids": ["NISTC-CM-2(7)", "NISTC-CM-4(1)", "NISTC-CM-5(4)", "NISTC-CM-5(5)", "NISTC-CM-5(6)", "NISTC-CM-7(2)", "NISTC-CM-7(4)", "NISTC-CM-7(5)", "NISTC-CM-7(6)", "NISTC-CM-7(7)", "NISTC-CM-8(3)", "NISTC-CM-14"]
+				"control_ids": ["NISTC-CM-5(5)", "NISTC-CM-7(2)", "NISTC-CM-7(5)", "NISTC-CM-7(6)", "NISTC-CM-8(3)", "NISTC-CM-14"]
 			},
 			{
-				"id": "NISTC-CM",
+				"id": "NISTC-CP",
 				"name": "Contingency Planning",
-				"control_ids": ["NISTC-CP-2(1)", "NISTC-CP-2(5)", "NISTC-CP-2(8)", "NISTC-CP-4(5)", "NISTC-CP-8(3)", "NISTC-CP-9", "NISTC-CP-9(1)", "NISTC-CP-9(6)", "NISTC-CP-9(7)", "NISTC-CP-9(8)", "NISTC-CP-11", "NISTC-CP-12", "NISTC-CP-13"]
+				"control_ids": ["NISTC-CP-2(1)", "NISTC-CP-2(5)", "NISTC-CP-9", "NISTC-CP-9(6)", "NISTC-CP-11", "NISTC-CP-12"]
 			},
 			{
 				"id": "NISTC-IA",
 				"name": "Identification and Authentication",
-				"control_ids": ["NISTC-IA-2(6)","NISTC-IA-2(13)", "NISTC-IA-3(1)", "NISTC-IA-10"]
+				"control_ids": ["NISTC-IA-3(1)", "NISTC-IA-10"]
 			},
 			{
 				"id": "NISTC-IR",
 				"name": "Incident Response",
-				"control_ids": ["NISTC-IR-4(2)", "NISTC-IR-4(3)", "NISTC-IR-4(4)", "NISTC-IR-4(9)", "NISTC-IR-4(10)", "NISTC-IR-4(11)","NISTC-IR-4(12)", "NISTC-IR-4(13)", "NISTC-IR-5"]
+				"control_ids": ["NISTC-IR-4(2)", "NISTC-IR-4(3)", "NISTC-IR-4(9)", "NISTC-IR-4(13)", "NISTC-IR-5"]
 			},
 			{
 				"id": "NISTC-MA",
 				"name": "Maintenance",
-				"control_ids": ["NISTC-MA-4(4)"]
+				"control_ids": []
 			},
 			{
 				"id": "NISTC-PE",
 				"name": "Physical and Environmental Protection",
-				"control_ids": ["NISTC-PE-3(5)", "NISTC-PE-6", "NISTC-PE-6(2)", "NISTC-PE-6(4)", "NISTC-PE-9(1)", "NISTC-PE-11(1)", "NISTC-PE-11(2)", "NISTC-PE-17"]
+				"control_ids": ["NISTC-PE-6", "NISTC-PE-6(2)", "NISTC-PE-6(4)"]
 			},
 			{
 				"id": "NISTC-PL",
 				"name": "Planning",
-				"control_ids": ["NISTC-PL-8(1)", "NISTC-PL-8(2)"]
+				"control_ids": ["NISTC-PL-8(1)"]
 			},
 			{
 				"id": "NISTC-PM",
 				"name": "Program Management",
-				"control_ids": ["NISTC-PM-7(1)", "NISTC-PM-16", "NISTC-PM-16(1)", "NISTC-PM-30(1)", "NISTC-PM-31", "NISTC-PM-32"]
+				"control_ids": ["NISTC-PM-16", "NISTC-PM-16(1)", "NISTC-PM-31", "NISTC-PM-32"]
 			},
 			{
 				"id": "NISTC-RA",
 				"name": "Risk Assessment",
-				"control_ids": ["NISTC-RA-3(2)", "NISTC-RA-3(3)", "NISTC-RA-3(4)", "NISTC-RA-5(4)", "NISTC-RA-5(5)", "NISTC-RA-5(6)", "NISTC-RA-5(8)", "NISTC-RA-5(10)", "NISTC-RA-9", "NISTC-RA-10"]
+				"control_ids": ["NISTC-RA-3(2)", "NISTC-RA-3(3)", "NISTC-RA-5(4)", "NISTC-RA-5(6)", "NISTC-RA-5(8)", "NISTC-RA-5(10)", "NISTC-RA-9"]
 			},
 			{
 				"id": "NISTC-SA",
 				"name": "System and Services Acquisition",
-				"control_ids": ["NISTC-SA-3(2)", "NISTC-SA-8(2)", "NISTC-SA-8(3)", "NISTC-SA-8(4)", "NISTC-SA-8(6)", "NISTC-SA-8(7)", "NISTC-SA-8(8)", "NISTC-SA-8(13)", "NISTC-SA-8(15)", "NISTC-SA-8(16)", "NISTC-SA-8(17)", "NISTC-SA-8(18)", "NISTC-SA-8(19)", "NISTC-SA-8(31)", "NISTC-SA-9(7)", "NISTC-SA-11(2)", "NISTC-SA-11(5)", "NISTC-SA-11(6)", "NISTC-SA-15(5)", "NISTC-SA-17(6)", "NISTC-SA-17(8)", "NISTC-SA-17(9)", "NISTC-SA-20", "NISTC-SA-23"]
+				"control_ids": ["NISTC-SA-8(3)", "NISTC-SA-8(8)", "NISTC-SA-8(15)","NISTC-SA-11(2)"]
 			},
 			{
 				"id": "NISTC-SC",
 				"name": "System and Communications Protection",
-				"control_ids": ["NISTC-SC-2", "NISTC-SC-2(1)", "NISTC-SC-3", "NISTC-SC-3(1)", "NISTC-SC-3(2)", "NISTC-SC-3(3)", "NISTC-SC-3(5)", "NISTC-SC-5(2)", "NISTC-SC-5(3)", "NISTC-SC-7", "NISTC-SC-7(10)", "NISTC-SC-7(11)", "NISTC-SC-7(13)", "NISTC-SC-7(15)", "NISTC-SC-7(16)", "NISTC-SC-7(20)", "NISTC-SC-7(21)", "NISTC-SC-7(22)", "NISTC-SC-7(29)", "NISTC-SC-8(1)", "NISTC-SC-8(4)", "NISTC-SC-8(5)", "NISTC-SC-10", "NISTC-SC-11", "NISTC-SC-15(1)", "NISTC-SC-16(1)", "NISTC-SC-16(3)", "NISTC-SC-18(5)", "NISTC-SC-22", "NISTC-SC-23(3)", "NISTC-SC-25", "NISTC-SC-26", "NISTC-SC-27", "NISTC-SC-28(1)", "NISTC-SC-29", "NISTC-SC-29(1)", "NISTC-SC-30", "NISTC-SC-30(2)", "NISTC-SC-30(3)", "NISTC-SC-30(4)", "NISTC-SC-30(5)", "NISTC-SC-32", "NISTC-SC-32(1)", "NISTC-SC-34", "NISTC-SC-34(1)", "NISTC-SC-34(2)", "NISTC-SC-35", "NISTC-SC-36", "NISTC-SC-36(1)", "NISTC-SC-36(2)", "NISTC-SC-37", "NISTC-SC-39", "NISTC-SC-39(1)", "NISTC-SC-39(2)", "NISTC-SC-40(2)", "NISTC-SC-40(3)", "NISTC-SC-44", "NISTC-SC-46", "NISTC-SC-47", "NISTC-SC-48", "NISTC-SC-48(1)", "NISTC-SC-49", "NISTC-SC-50", "NISTC-SC-51"]
+				"control_ids": ["NISTC-SC-3", "NISTC-SC-3(3)", "NISTC-SC-7", "NISTC-SC-7(10)", "NISTC-SC-7(11)", "NISTC-SC-7(20)", "NISTC-SC-7(21)", "NISTC-SC-7(22)", "NISTC-SC-7(29)", "NISTC-SC-8(1)", "NISTC-SC-8(5)", "NISTC-SC-10", "NISTC-SC-18(5)", "NISTC-SC-23(3)", "NISTC-SC-26", "NISTC-SC-28(1)", "NISTC-SC-29", "NISTC-SC-30", "NISTC-SC-30(4)","NISTC-SC-40(2)","NISTC-SC-44"]
 			},
 			{
 				"id": "NISTC-SI",
 				"name": "System and Information Integrity",
-				"control_ids": ["NISTC-SI-3(10)", "NISTC-SI-4(1)", "NISTC-SI-4(2)", "NISTC-SI-4(3)", "NISTC-SI-4(4)", "NISTC-SI-4(7)", "NISTC-SI-4(10)", "NISTC-SI-4(11)", "NISTC-SI-4(13)", "NISTC-SI-4(16)", "NISTC-SI-4(17)", "NISTC-SI-4(18)", "NISTC-SI-4(24)", "NISTC-SI-4(25)", "NISTC-SI-6", "NISTC-SI-7", "NISTC-SI-7(1)", "NISTC-SI-7(5)", "NISTC-SI-7(6)", "NISTC-SI-7(7)", "NISTC-SI-7(9)", "NISTC-SI-7(10)", "NISTC-SI-7(12)", "NISTC-SI-7(15)", "NISTC-SI-10(3)", "NISTC-SI-10(5)", "NISTC-SI-14", "NISTC-SI-14(1)", "NISTC-SI-14(2)", "NISTC-SI-14(3)", "NISTC-SI-15", "NISTC-SI-16", "NISTC-SI-19(4)", "NISTC-SI-19(6)", "NISTC-SI-19(8)", "NISTC-SI-20", "NISTC-SI-21", "NISTC-SI-22", "NISTC-SI-23"]
+				"control_ids": ["NISTC-SI-3(10)", "NISTC-SI-4(2)", "NISTC-SI-4(3)", "NISTC-SI-4(4)", "NISTC-SI-4(7)", "NISTC-SI-4(11)", "NISTC-SI-4(13)", "NISTC-SI-4(16)", "NISTC-SI-4(24)", "NISTC-SI-7", "NISTC-SI-7(1)", "NISTC-SI-7(6)", "NISTC-SI-7(9)", "NISTC-SI-7(10)", "NISTC-SI-7(12)", "NISTC-SI-7(15)", "NISTC-SI-10(3)", "NISTC-SI-10(5)", "NISTC-SI-14(2)", "NISTC-SI-14(3)", "NISTC-SI-16", "NISTC-SI-20", "NISTC-SI-21"]
 			},
 			{
 				"id": "NISTC-SR",
 				"name": "Supply Chain Risk Management",
-				"control_ids": ["NISTC-SR-3(1)", "NISTC-SR-3(2)", "NISTC-SR-4", "NISTC-SR-4(1)", "NISTC-SR-4(2)", "NISTC-SR-4(3)", "NISTC-SR-4(4)", "NISTC-SR-5", "NISTC-SR-5(1)", "NISTC-SR-6(1)", "NISTC-SR-7", "NISTC-SR-9", "NISTC-SR-9(1)", "NISTC-SR-10", "NISTC-SR-11", "NISTC-SR-11(3)"]
+				"control_ids": ["NISTC-SR-4", "NISTC-SR-4(1)", "NISTC-SR-4(2)","NISTC-SR-10", "NISTC-SR-11"]
 			}
 		],
 		"low_level_controls": [
@@ -7020,7 +7061,27 @@
             "cite": "Jeong, S., Ryu, M., Kang, H., & Kim, H. K. (2023). Infotainment System Matters: Understanding the Impact and Implications of In-Vehicle Infotainment System Hacking with Automotive Grade Linux. CODASPY 2023 - Proceedings of the 13th ACM Conference on Data and Application Security and Privacy, 201–212. https://doi.org/10.1145/3577923.3583650",
             "link": "https://doi.org/10.1145/3577923.3583650",
             "description": "This paper investigates the impact of IVI system vulnerabilities through a large-scale hacking competition using Automotive Grade Linux (AGL). The researchers set up a Raspberry Pi-based IVI testbed running AGL and invited cybersecurity teams to submit proofs-of-concept (PoCs). Across 33 verified exploit submissions, participants uncovered critical vulnerabilities in multiple AGL services such as the dashboard, homescreen, and Bluetooth daemons. \n A key technical finding was the use of insecure inter-process communication (IPC) across open TCP ports with no encryption or authentication, allowing unauthorised remote access. Additionally, services were found to be running with coarse-grained permissions and privileged execution rights. For instance, exploitation of afbd-homescreen and bluetoothd revealed that privileged services could be accessed without user interaction or proper access control. \n The paper highlights that improper permission boundaries between services and the lack of role-based access control significantly expanded the attack surface. The study concludes with mitigation suggestions including applying least privilege principles and isolating processes based on their roles."
-        }
-		
+        },
+		{
+			"ID": "RE0122",
+			"name": "Investigation on vulnerabilities, threats and attacks prohibiting UAVs charging and depleting UAVs batteries: Assessments & countermeasures",
+			"cite": "Tlili, F., Fourati, L. C., Ayed, S., & Ouni, B. (2022). Investigation on vulnerabilities, threats and attacks prohibiting UAVs charging and depleting UAVs batteries: Assessments & countermeasures. Ad Hoc Networks, 129, 102805. https://doi.org/10.1016/j.adhoc.2022.102805",
+			"link": "https://doi.org/10.1016/j.adhoc.2022.102805",
+			"description": "This paper presents a comprehensive survey on UAV security, focusing on vulnerabilities and attacks that prevent charging or deplete UAV batteries. It analyses both UAV base systems and charging infrastructures, proposing a taxonomy of threats across software, sensor, communication, GPS, and battery management layers. The authors identify that battery depletion and charging disruption are understudied yet critical issues for UAV reliability and mission endurance. \n The paper examines multiple attack types including physical tampering, wireless interference, overcharging, undercharging, and denial-of-sleep attacks. It further categorises these threats by their impact on availability and power management. The study reviews 169 papers from 2016–2021 and summarises key countermeasures such as secure charging protocols, energy-efficient task scheduling, and adaptive battery management. The authors highlight open research needs, including secure energy-aware architectures and intrusion detection for charging control units."
+		},
+		{
+			"ID": "RE0123",
+			"name": "Simulation and assessment of battery depletion attacks on unmanned aerial vehicles for crisis management infrastructures",
+			"cite": "Desnitsky, V., & Kotenko, I. (2021). Simulation and assessment of battery depletion attacks on unmanned aerial vehicles for crisis management infrastructures. Simulation Modelling Practice and Theory, 107, 102244. https://doi.org/10.1016/j.simpat.2020.102244",
+			"link": "https://doi.org/10.1016/j.simpat.2020.102244",
+			"description": "This paper investigates the impact of energy depletion attacks on UAVs through both theoretical analysis and experimental simulation. Using a testbed based on Parrot AR.Drone 2.0, the authors reproduce various attack scenarios including illegal activation, unauthorized hovering, denial-of-sleep, and battery replacement. These experiments demonstrate how such attacks accelerate power loss, shorten flight time, and increase mission risk. \n The study measures the effects of specific attack types and identifies the most harmful cases, such as continuous hovering, activation of energy consuming drone equipment, denial-of-Sleep attack or wired energy drain. It also highlights the role of microcontroller architecture and sleep mode parameters in determining attack effectiveness. The results show that attacks preventing energy-saving transitions or forcing persistent CPU and radio activity can drastically reduce operational duration. The authors conclude that improved power management policies and protection of control interfaces are essential for UAV resilience against depletion-based threats."
+		},
+		{
+			"ID": "RE0124",
+			"name": "Early Detection of Battery Depletion Attack in 5G-based UAV Networks",
+			"cite": "Dey, M. R., Bhumika, C., Ankitha, H. N., Nethravathi, B., & Patra, M. (2024). Early Detection of Battery Depletion Attack in 5G-based UAV Networks. International Symposium on Advanced Networks and Telecommunications Systems (ANTS), 1–3. https://doi.org/10.1109/ANTS63515.2024.10898930",
+			"link": "https://doi.org/10.1109/ANTS63515.2024.10898930",
+			"description": "This paper studies a battery depletion (DoB) attack on UAVs operating within 5G networks. The attack targets the control channel by flooding it with unauthorized Packet Forwarding Control Protocol (PFCP) messages, which forces UAVs to process excessive high-priority traffic and consume energy rapidly. \n The authors design an early detection method based on the Cumulative Sum (CUSUM) statistical technique combined with a dynamic threshold mechanism. The detection algorithm monitors abnormal increases in energy consumption and battery drain over time. Simulation experiments with varying numbers of attackers show that as the attack intensity grows, detection becomes faster and more accurate due to the adaptive threshold. The study demonstrates that this approach effectively detects depletion attacks early while reducing false positives, providing a foundation for energy-aware intrusion detection in UAV-5G environments."
+		}		
     ]
 }
