@@ -686,11 +686,11 @@
 			],
             "example": [
                 {
-					"reference ID": "RE0022",
+					"reference ID": "RE0005",
 					"description": "Researchers used compromised nodes to inject fake ROS messages to topics like drive state, generator mode, or brakes, resulting in system disruptions."
 				}
             ],
-            "reference ID": ["RE0022"]
+            "reference ID": ["RE0005"]
         },
 		{
             "ID": "T5022",
@@ -7085,3 +7085,4 @@
 		}		
     ]
 }
+
