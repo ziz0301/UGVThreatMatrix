@@ -1,0 +1,793 @@
+{
+    "tactics": [
+		{
+            "ID": "TA0701",
+            "name": "Reconnaissance",
+            "short_description": "The adversary gathers information about USV systems, networks, and communication behaviour to prepare an attack.",
+			"full_description": "Reconnaissance in the USV context involves observing and analysing onboard systems, internal networks, and communication patterns to understand how navigation, control, and data exchange operate. This may include monitoring live traffic, identifying software components, and studying technical documentation. These activities help adversaries select suitable attack techniques and increase the likelihood of successful exploitation.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7007","T7008","T7009", "T7010"]
+        },	
+		{
+            "ID": "TA0702",
+            "name": "Resource Development ",
+            "short_description": "The adversary develops or acquires tools and capabilities needed to attack USV systems.",
+			"full_description": "Resource development in USV attacks involves preparing software tools, scripts, or components that can interact with maritime navigation or control systems. This includes creating custom payloads or reusing existing tools to support later attack stages such as message interception, manipulation, or system disruption.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7011","T7012"]
+        },	
+        {
+            "ID": "TA0703",
+            "name": "Initial Access",
+            "short_description": "The adversary gains unauthorised access to USV systems or internal communication networks.",
+			"full_description": "Initial access in USV systems refers to techniques that allow adversaries to enter onboard systems or trusted communication environments. This may involve physical access, insecure interfaces, or unprotected network connections. Once access is obtained, attackers can interact with internal components and prepare for further control or data manipulation.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7013"]
+        },
+        {
+            "ID": "TA0704",
+            "name": "Execution",
+            "short_description": "The adversary executes unauthorised commands or actions within USV systems.",
+			"full_description": "Execution in the USV context involves running commands, scripts, or logic that alter system behaviour during operation. These actions enable attackers to manipulate navigation data, control processes, or system functions without legitimate authorisation, directly influencing vehicle behaviour.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7015", "T7002", "T7014","T7004", "T7016"]
+        },        
+		{
+            "ID": "TA0705",
+            "name": "Persistence",
+            "short_description": "The adversary maintains ongoing access or control within USV systems.",
+			"full_description": "Persistence in USV systems refers to techniques that allow adversaries to maintain execution or influence across system restarts or operational cycles. This enables repeated or long-term manipulation of navigation, control, or system behaviour without requiring repeated access.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7018", "T7017"]
+        },
+		{
+            "ID": "TA0706",
+            "name": "Credential Access",
+           "short_description": "The adversary attempts to obtain authentication material used by USV systems.",
+			"full_description": "Credential access in the USV context involves obtaining passwords, tokens, or other authentication data that protect access to onboard systems or communication channels. Compromised credentials allow attackers to bypass security controls and perform unauthorised actions.",
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7005"]
+        },
+        {
+            "ID": "TA0707",
+            "name": "Discovery",
+            "short_description": "The adversary collects information about USV data, configuration, or operational state.",
+			"full_description": "Discovery in USV systems involves obtaining sensitive or operational information from onboard components or communications. This may include extracting system data, observing configuration details, or learning how the vehicle behaves during operation to support further attacks.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7019"]
+        },
+        {
+            "ID": "TA0708",
+            "name": "Impact",
+            "short_description": "The adversary disrupts USV operation or causes unsafe behaviour.",
+			"full_description": "Impact in the USV context refers to techniques that result in degraded control, unsafe navigation, mission failure, or loss of operational integrity. These effects arise from manipulation or disruption of control, communication, or navigation processes during system operation.",  
+            "created": "25/12/2025",
+            "modified": "25/12/2025",
+            "technique_ids": ["T7001","T7003","T7006","T7019"]
+        }
+    ],
+    "techniques": [
+		{
+			"ID": "T7001",
+			"name": "Denial of Service",
+			"short_description": "Adversaries disrupt USV operation by blocking or degrading the availability of control or communication signals.",
+			"full_description": "In the USV context, denial-of-service attacks aim to degrade or disrupt vehicle operation by preventing the reliable delivery of control or communication signals. This may be achieved through channel blocking, interference, jamming, or flooding that causes messages or signals to be delayed, corrupted, or lost. These attacks can result in degraded control performance, reduced communication throughput, intermittent connectivity, or unsafe system behaviour during operation.",  
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": ["T7001.001"],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0152",
+					"description": "This paper models a Denial-of-Service attack as intermittent blocking of control commands transmitted from the controller to the USV actuators. During attack periods, control inputs are not received, causing temporary loss of closed-loop control. The attack is assumed to be bounded in duration and frequency, representing realistic intermittent communication disruption rather than permanent system shutdown."
+				},
+				{
+					"reference ID": "RE0162",
+					"description": "This paper studies a malicious jamming attack targeting underwater acoustic communication links between a source node, a relay USV, and a destination node. The jammer injects interference signals that reduce the signal-to-interference-plus-noise ratio, leading to degraded achievable throughput. The attack does not manipulate control commands or vehicle behaviour directly but causes communication disruption, which impacts the reliability and availability of end-to-end data transmission."
+				},
+				{
+					"reference ID": "RE0164",
+					"description": "This paper models aperiodic Denial-of-Service attacks that intermittently block communication links among networked unmanned surface vehicles. During attack activation periods, information exchange between USVs is completely disabled, preventing distributed coordination and degrading consensus performance. The attack impacts the availability of the control communication channel rather than injecting or modifying control commands."
+				},
+				{
+					"reference ID": "RE0165",
+					"description": "This paper considers intermittent Denial-of-Service attacks that simultaneously interrupt all communication links among underactuated USVs and the leader. The DoS model blocks information exchange during attack intervals, directly degrading formation coordination and requiring resilient estimation and control to maintain stability and safety."
+				}
+
+			],
+			"reference ID": ["RE0152", "RE0162", "RE0164", "RE0165"]
+		},
+		{
+			"ID": "T7002",
+			"name": "Control Channel Manipulation",
+			"short_description": "Adversaries manipulate control-related data exchanged between vehicle subsystems to influence system behaviour during operation.",
+			"full_description": "Control Channel Manipulation refers to adversary actions that interfere with control data during system runtime. By gaining a position on these channels, such as acting as an adversary in the middle, attackers can modify, delay, or replay control-relevant information. This manipulation causes the vehicle to execute incorrect control actions, leading to unintended motion, loss of mission integrity, or unsafe behaviour, without requiring malware execution or direct actuator access.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": ["T7002.001", "T7002.002", "T7002.003"],
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0153",
+					"description": "Researchers demonstrated control channel manipulation on a real unmanned surface vehicle by placing an adversary-in-the-middle on the internal Ethernet network between the navigation system and the guidance and control system. By intercepting navigation messages in transit, the attacker was able to influence vehicle motion during closed-loop operation without modifying onboard software or sensors."
+				},
+				{
+					"reference ID": "RE0156",
+					"description": "This paper analyses control channel manipulation in USV applications by modelling attackers who inject, delay, or semantically alter commands and messages exchanged between remote processing units and onboard systems. The framework shows that manipulation of control-relevant communication channels, such as CLI commands and message queues, can cause unsafe behaviour even when authentication mechanisms are present, highlighting the impact of runtime control channel interference."
+				},
+				{
+					"reference ID": "RE0158",
+					"description": "This paper models false data injection attacks that manipulate control-relevant signals in unmanned surface vehicles by injecting biased and periodic false data into sensor-to-controller and controller-to-actuator channels during runtime. The injected false data alters the effective control inputs of the USV, causing trajectory deviation and degraded tracking performance without requiring malware execution, firmware modification, or direct actuator takeover."
+				},
+				{
+					"reference ID": "RE0159",
+					"description": "This paper models control channel manipulation in unmanned surface vehicles by injecting deception signals directly into the controller-to-actuator input during runtime. The attacker strategically alters control inputs to maximise tracking errors, while the defender designs a resilient control policy that anticipates and adapts to the attack. The work demonstrates that manipulation of control commands alone, without malware or protocol exploitation, can disrupt cooperative USV behaviour."
+				},
+				{
+					"reference ID": "RE0160",
+					"description": "This paper also considers false data injection attacks on the control–actuator channel of a networked unmanned surface vehicle. The attack modifies control commands using unknown multiplicative and additive signals before they reach the actuators, resulting in time-varying and corrupted control inputs. To mitigate this manipulation, the control design incorporates adaptive neural learning to compensate for the unknown attack-induced control gain while preserving bounded control execution."
+				},
+				{
+					"reference ID": "RE0163",
+					"description": "This paper models stochastic cyber-attacks that randomly disrupt control and measurement signal transmission in a networked USV system. These disturbances affect the integrity and reliability of control-channel data during runtime, leading to degraded control performance without direct actuator takeover. The attack impact is captured as stochastic interference on the control channel, aligning with control channel manipulation."
+				}
+
+
+
+
+
+			],
+			"reference ID": ["RE0153", "RE0154","RE0158", "RE0159", "RE0160","RE0163"]
+		},
+		{
+			"ID": "T7003",
+			"name": "Loss of Control",
+			"short_description": "Adversaries cause a USV to lose reliable control during operation.",
+			"full_description": "Loss of Control in unmanned surface vehicles occurs when adversaries interfere with control-relevant communication or system behaviour in a way that prevents the vehicle from being operated as intended. This may result in the USV deviating from its planned trajectory, responding incorrectly to guidance commands, entering unsafe states, or aborting its mission.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0153",
+					"description": "This paper demonstrates loss of control in an unmanned surface vehicle by manipulating navigation data exchanged within the closed-loop guidance, navigation, and control system. The attacker causes the vehicle to deviate from its intended path and behave unsafely during operation, resulting in loss of mission integrity."
+				},
+				{
+					"reference ID": "RE0156",
+					"description": "This paper demonstrates loss of control in USV-based applications by showing how manipulated or improperly validated commands and messages can drive the vehicle into unsafe operational states. Through formal verification of application logic, the authors show that adversaries who inject, delay, or alter control-relevant communication can prevent the USV from behaving as intended, resulting in unsafe navigation, incorrect responses to commands, or mission failure."
+				}
+			],
+			"reference ID": ["RE0153", "RE0156"]
+		},		
+		{
+			"ID": "T7004",
+			"name": "Position Data Manipulation",
+			"short_description": "Adversaries manipulate position data exchanged between system components to mislead downstream decision-making processes.",
+			"full_description": "This technique refers to adversaries intentionally altering, injecting, replaying, delaying, or selectively dropping position-related data transmitted between trusted components within a system. Position data is commonly used by navigation and guidance functions to estimate location and determine movement decisions. By manipulating this data in transit, adversaries can influence system behaviour without directly controlling actuators or executing code on the target platform. In cyber-physical systems such as unmanned surface vehicles, this technique enables attackers to exploit trust relationships between navigation, guidance, and control modules, resulting in incorrect state perception and unsafe operational decisions.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0155",
+					"description": "This paper demonstrates position data manipulation by intercepting navigation messages exchanged between the navigation module and the guidance and control module of a USV. After establishing an adversary-in-the-middle position using ARP spoofing, the attacker alters position data through multiple methods, including dropping position updates (position blackhole), injecting constant position offsets, replacing legitimate positions with attacker-defined trajectories, and replaying delayed position data. These manipulations corrupt the position information consumed by the guidance and control logic, leading to incorrect heading and control decisions."
+				},
+				{
+					"reference ID": "RE0160",
+					"description": "This paper considers intermittent denial-of-service attacks on the sensor control channel of a networked unmanned surface vehicle. The attack prevents position measurements from being transmitted to the controller during active attack intervals, resulting in intermittent sensor availability. To operate under this interference, the system relies on event-sampled position updates and a neural state observer to reconstruct missing velocity information and maintain trajectory tracking despite disrupted sensor data."
+				}
+
+			],
+			"reference ID": ["RE0155","RE0160"]
+		},
+
+		{
+			"ID": "T7005",
+			"name": "Adversary-in-the-Middle",
+			"short_description": "Adversaries position themselves between communicating components to intercept, relay, or manipulate transmitted data.",
+			"full_description": "Adversary-in-the-Middle refers to techniques in which an adversary places itself between two or more legitimate communicating components in order to intercept, observe, modify, replay, or selectively drop transmitted data. This is commonly achieved by abusing weaknesses in network protocols that determine traffic routing, such as ARP, DNS, DHCP. Once established, this position enables follow-on behaviors including data manipulation, replay attacks, traffic blocking, or credential interception. In USV, this technique allows adversaries to compromise trusted communication paths between navigation, guidance, and control components without directly accessing sensors or executing code on the target system.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0155",
+					"description": "This paper demonstrates an adversary-in-the-middle attack in a USV internal network by exploiting the lack of authentication in the Address Resolution Protocol (ARP). The attacker performs ARP cache poisoning to deceive both the navigation module and the guidance and control module into associating the adversary’s MAC address with legitimate IP addresses. As a result, all navigation data exchanged between these modules is transparently routed through the adversary. This man-in-the-middle position enables the attacker to intercept, drop, modify, or replay position data, which is later used to conduct position blackhole, bias injection, hijacking, and delayed replay attacks against the USV’s navigation system."
+				}
+			],
+			"reference ID": ["RE0155"]
+		},
+		{
+			"ID": "T7006",
+			"name": "Manipulate Navigation",
+			"short_description": "Adversaries manipulate a vehicle’s navigation behaviour to cause unsafe movement or deviation from intended routes.",
+			"full_description": "In the USV context, manipulate navigation refers to attacks that target the correctness and reliability of navigation behaviour, causing a vehicle to deviate from its intended trajectory, follow incorrect waypoints, or operate in an unsafe manner. This impact is typically achieved by corrupting inputs used by navigation or guidance functions rather than directly issuing control commands. As a result, the vehicle continues to operate autonomously but makes incorrect movement decisions based on false or misleading information, increasing the risk of collision, grounding, or mission failure.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0155",
+				  "description": "This paper shows that manipulating position data supplied to the USV guidance and control system results in significant navigation deviation. Under multiple attack scenarios, including position hijacking and delayed position replay, the USV is observed to deviate tens of meters from its intended path. These deviations exceed safe navigation thresholds, particularly in constrained maritime environments, demonstrating direct manipulation of navigation behaviour without disabling the system or issuing explicit control commands."
+				},
+				{
+					"reference ID": "RE0156",
+					"description": "This paper demonstrates loss of control in USV-based applications by showing how manipulated or improperly validated commands and messages can drive the vehicle into unsafe operational states. Through formal verification of application logic, the authors show that adversaries who inject, delay, or alter control-relevant communication can prevent the USV from behaving as intended, resulting in unsafe navigation, incorrect responses to commands, or mission failure."
+				},
+				{
+					"reference ID": "RE0161",
+					"description": "This paper demonstrates manipulation of USV navigation through GPS spoofing attacks that inject false position information into the leader vessel. The spoofed GPS data causes the leader to deviate from its true trajectory, which propagates navigation errors to follower USVs in a formation. As a result, the entire multi-USV system follows an incorrect path and experiences formation displacement, increasing collision and obstacle avoidance risks while the vessels continue operating normally without direct control command injection."
+				},
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates manipulation of navigation by intercepting and modifying GPS coordinates within the Integrated Navigation System. The malware introduces a gradual positional drift by altering NMEA navigation messages, causing the ECDIS display to diverge from the vessel’s true trajectory while the system continues operating normally. During sea trials, the displayed route deviates progressively from the actual track, increasing the risk of unsafe navigation without issuing direct control commands."
+				}
+
+			],
+			"reference ID": ["RE0155","RE0156", "RE0161", "RE0166"]
+		},
+		{
+			"ID": "T7007",
+			"name": "Active Scanning",
+			"short_description": "Adversaries actively probe systems or networks to observe behaviour and collect technical details.",
+			"full_description": "In the USV context, active scanning refers to directly interacting with onboard systems or networks to observe data flows, communication patterns, and system behaviour during operation. This may include monitoring live traffic or testing connectivity to understand how navigation and control data is exchanged.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates active scanning by connecting a laptop to the Integrated Navigation System (INS) network and capturing live traffic using Wireshark. The authors observe UDP multicast traffic between the Sensor Integrator and ECDIS operator stations to identify communication behaviour, message frequency, and data flow during vessel operation."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},	
+		{
+			"ID": "T7008",
+			"name": "Gather Victim Host Information",
+			"short_description": "Adversaries collect information about system hosts, software, and operating environments.",
+			"full_description": "In the USV context, gathering host information involves identifying operating systems, software components, privileges, and runtime dependencies of onboard computers that support navigation or control functions.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper shows host information gathering by inspecting ECDIS operator stations to identify the Windows operating system, administrator-level user accounts, and the use of Winsock 2.0 for network communication. The attackers also analyse ECDIS configuration files to understand software behaviour and dependencies."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7009",
+			"name": "Search Closed Sources",
+			"short_description": "Adversaries obtain non-public information from restricted or internal sources.",
+			"full_description": "In the USV context, search closed sources refers to accessing internal documentation, system configurations, or operational knowledge that is not publicly available but is critical for understanding system design and behaviour.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper uses closed sources by obtaining technical documentation of the INS installation and ECDIS configuration files, as well as receiving explanations from system providers and vessel operators during field trips. This information is used to understand network architecture, data paths, and system configuration."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7010",
+			"name": "Search Open Technical Databases",
+			"short_description": "Adversaries use publicly available technical resources to understand protocols or technologies.",
+			"full_description": "In the USV context, this technique involves consulting publicly available technical specifications, standards, or references to interpret navigation, communication, or control data formats used by maritime systems.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper relies on publicly available technical references to understand the NMEA 0183 standard. The authors study open documentation to interpret GPS NMEA sentences, identify position fields, and correctly recalculate checksums when modifying navigation data."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7011",
+			"name": "Develop Capabilities",
+			"short_description": "Adversaries develop custom tools or payloads to support their operations.",
+			"full_description": "In the USV context, develop capabilities refers to creating tailored software components or scripts that are designed to interact with maritime navigation or control systems, often using system-specific protocols and data formats.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates capability development by implementing a custom fake Winsock DLL that acts as a man-in-the-middle between the ECDIS software and incoming navigation data. The DLL is specifically designed to intercept UDP multicast NMEA 0183 messages, modify GPS coordinates, and recalculate checksums so that manipulated data is accepted by the navigation application."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7012",
+			"name": "Obtain Capabilities",
+			"short_description": "Adversaries acquire existing tools or code to support their operations.",
+			"full_description": "In the USV context, obtain capabilities involves using publicly available tools, libraries, or utilities that can be integrated into an attack without being developed from scratch.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper shows capability acquisition by reusing available proxy DLL skeleton code and the PsKill utility from the Windows Sysinternals suite. These existing tools are incorporated into the attack to support network interception and deliberate system crashes without requiring full custom development."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7013",
+			"name": "Hardware Additions",
+			"short_description": "Adversaries introduce unauthorised hardware to gain initial access to vehicle systems.",
+			"full_description": "In the USV context, hardware additions involve physically connecting malicious or modified devices to onboard computers or interfaces in order to execute commands, deliver payloads, or bypass software-based security controls, especially in air-gapped environments.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates hardware additions by inserting a custom-built USB device composed of a Teensy microcontroller, a USB flash drive, and a USB hub into an ECDIS operator station. The device emulates a keyboard and mouse to inject commands, disable application protections, open a command prompt, and load a malicious payload onto the air-gapped navigation system without exploiting software vulnerabilities."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7014",
+			"name": "Input Injection",
+			"short_description": "Adversaries inject malicious input to execute commands on target systems.",
+			"full_description": "In the USV context, input injection refers to adversaries simulating human input, such as keyboard or mouse actions, to execute commands or scripts on onboard systems without exploiting software vulnerabilities.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates input injection by using a malicious USB device that emulates a keyboard and mouse. The device injects keystrokes to disable ECDIS input restrictions, open a command prompt, and type commands required to install and execute malicious scripts on the operator station."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7015",
+			"name": "Command and Scripting Interpreter",
+			"short_description": "Adversaries use command-line or scripting environments to execute malicious actions.",
+			"full_description": "In the USV context, this technique involves using onboard command-line interfaces or scripting engines to run commands or scripts that modify system behaviour, install malware, or trigger malicious actions.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper shows the use of a command and scripting interpreter by executing commands through the Windows command prompt and running VBScript files. These scripts are used to install the malicious payload, copy files from USB storage, modify system configuration, and trigger deliberate system crashes."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7016",
+			"name": "Scheduled Task/Job",
+			"short_description": "Adversaries use scheduled tasks to repeatedly execute malicious actions.",
+			"full_description": "In the USV context, scheduled tasks or jobs are used to automate the execution of malicious scripts or programs at defined intervals or system events to maintain ongoing execution.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates scheduled task abuse by creating a Windows scheduled task that periodically checks trigger conditions and executes a script to crash the ECDIS operator station when those conditions are met, ensuring repeated execution without user interaction."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7017",
+			"name": "Modify Registry",
+			"short_description": "Adversaries modify system registry settings to maintain persistent execution.",
+			"full_description": "In the USV context, registry modification refers to altering operating system registry entries to influence software loading behaviour or bypass built-in trust mechanisms, enabling malicious components to execute persistently.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates registry modification by changing Windows KnownDLLs settings to exclude the legitimate Winsock library. This forces the ECDIS software to load a malicious replacement DLL on startup, enabling persistent interception of navigation data."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7018",
+			"name": "Boot or Logon Autostart Execution",
+			"short_description": "Adversaries configure systems to automatically execute malicious code during startup or logon.",
+			"full_description": "In the USV context, boot or logon autostart execution involves ensuring that malicious components are automatically loaded when onboard systems start or when operator sessions begin, enabling persistence without user action.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper shows boot or logon autostart execution by installing a malicious Winsock DLL within the ECDIS installation directory. When the operator station reboots and automatically launches the ECDIS application at logon, the fake DLL is loaded without user interaction, maintaining persistent control."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "T7019",
+			"name": "System Location Discovery",
+			"short_description": "Adversaries determine the physical or geographic location of a vehicle or system.",
+			"full_description": "In the USV context, system location discovery refers to identifying the real-time or inferred geographic position of the vehicle in order to guide attack timing, triggering conditions, or operational impact.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper demonstrates system location discovery by continuously monitoring GPS coordinates received from the Sensor Integrator. The malware compares the vessel’s position against predefined geographic regions and uses this location information to determine when to activate navigation manipulation or trigger a system crash."
+				}
+			],
+			"reference ID": ["RE0166"]
+		}
+    ],
+	"sub-techniques": [
+		{
+			"ID": "T7002.001",
+			"name": "Message Injection",
+			"short_description": "Adversaries inject manipulated control-related messages into internal vehicle communication channels.",
+			"full_description": "Message Injection involves inserting forged or modified messages into control-related communication channels during vehicle operation. In USV, navigation and control messages are often trusted by design. If these messages lack cryptographic protection, an adversary positioned on the communication path can alter their contents and reintroduce them into the system. The receiving components accept the injected messages as valid, causing the vehicle to execute incorrect control actions based on falsified data.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0153",
+					"description": "In the study, the attacker used ARP spoofing to act as an adversary-in-the-middle between the navigation system and the guidance and control system. The attacker modified heading or position values inside navigation messages, recomputed the CRC checksum, and forwarded the forged messages. As a result, the guidance system generated incorrect control commands, causing the unmanned surface vehicle to deviate from its intended path."
+				},
+				{
+					"reference ID": "RE0154",
+					"description": "This paper studies false data injection attacks on the control channel between the control station and the actuator of a network-based USV. The attacker injects manipulated control commands during runtime, causing the USV to deviate from its reference trajectory without blocking communication or modifying onboard software."
+				}
+
+			],
+			"reference ID": ["RE0153","RE0154"]
+		},
+		{
+			"ID": "T7002.002",
+			"name": "Incremental Spoofing",
+			"short_description": "Adversaries gradually manipulate control-related data to slowly influence vehicle behaviour over time.",
+			"full_description": "Incremental Spoofing is a form of message injection where control-related values are altered in small, continuous steps rather than by a large, immediate change. This approach reduces the likelihood of sudden detection while still causing cumulative control errors. In USV, even small inaccuracies in navigation data can propagate through guidance and control loops, resulting in gradual deviation from the intended trajectory.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0153",
+					"description": "The authors demonstrated incremental spoofing by slowly adding small offsets to heading or latitude values in navigation messages while acting as an adversary-in-the-middle. Each individual change was minor, but over time the accumulated error caused the unmanned surface vehicle to drift away from its planned path. This showed that gradual manipulation of control data can achieve effective hijacking while remaining difficult to observe."
+				}
+			],
+			"reference ID": ["RE0153"]
+		},
+		{
+			"ID": "T7002.003",
+			"name": "Message Replay",
+			"short_description": "Adversaries replay previously valid control-related messages to disrupt real-time decision making.",
+			"full_description": "Message Replay involves capturing legitimate control-related messages and retransmitting them at a later time. Even when messages are authenticated, replayed data may still appear valid if freshness is not verified. In USV, replayed navigation or control messages can introduce delays or outdated state information, leading to incorrect control responses during critical phases.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0153",
+					"description": "In the replay attack experiment, the attacker recorded valid navigation messages while positioned as an adversary-in-the-middle and replayed them with a delay during a planned course change. The unmanned surface vehicle reacted to outdated heading information, resulting in delayed control actions and incorrect mission execution, despite the messages being unmodified and previously valid."
+				}
+			],
+			"reference ID": ["RE0153"]
+		},
+		{
+			"ID": "T7001.001",
+			"name": "Communication DoS",
+			"short_description": "Adversaries disrupt the availability of communication links to degrade or prevent data exchange between USV system components.",
+			"full_description": "Communication Denial of Service (DoS) refers to adversary actions that reduce or block the availability of communication channels used by USVs and associated nodes. This is commonly achieved by overwhelming the channel with interference or noise, preventing reliable data transmission without directly interacting with control logic or executing commands. The primary impact is degraded throughput, intermittent connectivity, or complete loss of communication during system operation.",
+			"created": "25/12/2025",
+			"modified": "25/12/2025",
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0162",
+					"description": "This paper studies a malicious jamming attack targeting underwater acoustic communication links between a source node, a relay USV, and a destination node. The jammer injects interference signals that reduce the signal-to-interference-plus-noise ratio, leading to degraded achievable throughput. The attack does not manipulate control commands or vehicle behaviour directly but causes communication disruption, which impacts the reliability and availability of end-to-end data transmission."
+				}
+			],
+			"reference ID": ["RE0162"]
+		}
+	],
+    "mitigations": [
+		{
+			"ID": "M7001",
+			"name": "Adaptive Response and Recovery system",
+			"short_description": "Adaptive Response and Recovery systems for USVs adjust control behaviour at runtime to maintain safe operation when disruptions.",
+			"full_description": "Adaptive Response and Recovery systems in USVs modify system behaviour at runtime in response to disturbances such as communication interruption, signal loss, interference, or harsh environmental conditions. These adaptations are typically applied at the control or guidance level and aim to preserve stability and safety rather than prevent the attack itself. Instead of detecting or attributing attacks, the system adjusts control control strategies, control gains, or recovery actions to ensure the USV can continue operating safely or return to a stable state under adverse conditions. This mitigation emphasises resilience and safe operation under degraded communication.",
+			"example": [
+				{
+					"reference ID": "RE0152",
+					"description": "This paper proposes a memory-based event-triggered path-following controller that allows a USV to maintain stable motion under intermittent Denial-of-Service attacks on the control signal channel. When control commands are blocked, the USV continues operating using the last received inputs. The event-triggered mechanism adapts its triggering threshold based on recent control history, enabling faster recovery and improved path tracking once communication resumes."
+				},
+				{
+					"reference ID": "RE0154",
+					"description": "This paper proposes an adaptive attack compensation method that adjusts control inputs at runtime to counteract false data injection attacks on the control channel. Instead of detecting or blocking the attack, the USV applies an adaptive correction based on output deviation, allowing it to maintain trajectory tracking and stable operation under manipulated control commands."
+				},
+				{
+					"reference ID": "RE0157",
+					"description": "This paper presents a hierarchical control framework in which USVs dynamically adapt their operational behaviour during adversarial encounters. The system performs runtime task reallocation, switches between patrol, pursuit, interception, and formation strategies, and applies safety-constrained obstacle avoidance when risk conditions are detected. These adaptive transitions allow USVs to maintain safe and stable operation under changing mission conditions, demonstrating adaptive response and recovery at the control and coordination level."
+				},
+				{
+					"reference ID": "RE0158",
+					"description": "This paper proposes a disturbance observer-based control framework that enables a USV to adapt its control behaviour at runtime under false data injection attacks and environmental disturbances. By estimating attack-induced and disturbance-induced effects and compensating them through control input adjustment, the system maintains trajectory tracking and stable operation without preventing or blocking the attack itself."
+				},
+				{
+					"reference ID": "RE0159",
+					"description": "This paper implements an adaptive response and recovery mechanism by designing a secure surrounding controller that explicitly accounts for deception attacks during runtime. The controller models the attacker as a strategic follower in a Stackelberg game and adapts its control policy based on the attacker’s best response. Reinforcement learning with actor–critic neural networks is used to update the control policy online without requiring knowledge of USV dynamics. By continuously adjusting control inputs in response to injected false actuator signals, the system maintains bounded tracking errors and preserves safe surrounding behaviour, demonstrating runtime recovery of control performance under control channel manipulation."
+				},
+				{
+					"reference ID": "RE0160",
+					"description": "This paper implements an adaptive response and recovery mechanism that allows an unmanned surface vehicle to maintain trajectory tracking under denial-of-service and false data injection attacks. The system adapts sensing and control at runtime using event-sampled measurements, a neural state observer, and adaptive control laws to compensate for missing sensor data and corrupted control commands, enabling continued operation without system shutdown"
+				},
+				{
+					"reference ID": "RE0161",
+					"description": "This paper implements an adaptive response and recovery mechanism for multi-USV systems operating under GPS spoofing attacks. When abnormal changes in the leader USV’s position exceed a predefined threshold, the system detects the presence of a GPS attack and applies a trajectory correction strategy to compensate for the spoofed position information. The formation controller adapts at runtime by adjusting control inputs using fuzzy logic approximation and artificial potential field forces, allowing follower USVs to maintain formation, avoid collisions and obstacles, and gradually recover the intended navigation trajectory. This approach does not prevent GPS spoofing but enables the system to respond to and recover from navigation manipulation while maintaining safe operation."
+				},
+				{
+					"reference ID": "RE0162",
+					"description": "This paper proposes a deep reinforcement learning-based adaptive strategy that enables a relay USV to dynamically adjust its trajectory and transmit power under underwater communication jamming. Rather than preventing the jamming attack, the system adapts control decisions at runtime to maximise achievable throughput and maintain communication performance, demonstrating an adaptive response approach to communication denial-of-service conditions."
+				},
+				{
+					"reference ID": "RE0163",
+					"description": "This paper proposes an adaptive output sampling control strategy that maintains USV stability under stochastic cyber-attacks affecting networked control signals. By adjusting control behaviour based on sampled outputs and using a sampling-time-dependent Lyapunov function, the system adapts to attack-induced disturbances and guarantees bounded control cost. The approach focuses on resilience and safe operation rather than attack detection or prevention."
+				},
+				{
+					"reference ID": "RE0164",
+					"description": "This paper proposes an event-based distributed secure control strategy that adapts USV control behaviour in response to aperiodic Denial-of-Service attacks. When communication is unavailable, the controller automatically switches to a decentralized mode using local state and fault estimates, and resumes cooperative control during attack dormancy. This adaptive control reconfiguration enables the USV network to maintain exponential consensus and safe operation under degraded communication conditions."
+				},
+				{
+					"reference ID": "RE0165",
+					"description": "This paper proposes a distributed adaptive resilient formation control framework that dynamically adjusts control inputs and estimation processes to maintain safe USV formation under intermittent DoS attacks and actuator faults. The system adapts online using fuzzy logic approximation, fault-tolerant control laws, and resilient state estimation, enabling continued operation and collision avoidance despite communication loss and actuator degradation."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0152", "RE0154", "RE0157", "RE0158", "RE0159", "RE0161", "RE0162", "RE0163","RE0164","RE0165"]
+		},		
+		{
+			"ID": "M7002",
+			"name": "Encrypt Network Traffic",
+			"short_description": "Encrypt internal and external network traffic to prevent unauthorised interception, modification, and replay of control-related data in USV systems.",
+			"full_description": "Encrypt Network Traffic in unmanned surface vehicle systems focuses on protecting the confidentiality and integrity of communication between onboard subsystems, such as navigation, guidance, and control. USVs often rely on internal networks to exchange control-relevant data during operation. If these communications are unprotected, adversaries with network access can eavesdrop on messages, inject falsified data, or replay previously valid messages. Applying cryptographic encryption and authentication ensures that control data cannot be read or manipulated by unauthorised parties.",
+			"example": [
+				{
+					"reference ID": "RE0153",
+					"description": "This paper secures the internal Ethernet communication between the navigation system and the guidance and control system of an USV using authenticated encryption. Navigation data is encrypted and authenticated, and timestamps are included to ensure message freshness. This prevents adversary-in-the-middle attacks such as message injection and replay, as spoofed or delayed messages are detected and discarded during closed-loop operation."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0153"]
+		},
+		{
+			"ID": "M7003",
+			"name": "Vulnerability Management",
+			"short_description": "Implement a vulnerability management process to detect, assess, and mitigate security weaknesses in USV systems before they can be exploited.",
+			"full_description": "Vulnerability Management in unmanned surface vehicle environments refers to the systematic process of identifying, analysing, and addressing security weaknesses in software components, communication workflows, and application logic. This includes proactive security assessment during development and deployment, analysis of control and communication behaviour, and evaluation of how vulnerabilities may lead to unsafe operational states.\n Unlike traditional IT vulnerability management, USV vulnerability management must account for cyber-physical interactions, where software flaws or misconfigurations can directly impact navigation, control, and mission safety. Effective vulnerability management supports early detection of logic-level and runtime vulnerabilities that may not be captured by signature-based scanners. \n This mitigation is relevant throughout the USV lifecycle, from system design and implementation to deployment and maintenance. While it does not eliminate unknown zero-day vulnerabilities, it significantly reduces risk by identifying exploitable weaknesses and unsafe behaviours before adversaries can leverage them in real-world operations.",
+			"example": [
+				{
+					"reference ID": "RE0155",
+					"description": "This paper presents USVScout, an automated security inspection framework that supports vulnerability management by identifying application-level security weaknesses in USV-based marine systems. By analysing USV application source code and formally verifying safety properties related to control, communication, and power management, the framework uncovers vulnerabilities arising from unsafe logic, improper command handling, and exploitable communication workflows. The results demonstrate how systematic analysis can detect vulnerabilities that are missed by conventional static analysis tools, supporting proactive vulnerability identification in USV applications."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0155"]
+		},
+		{
+			"ID": "M7004",
+			"name": "Fail-Safe Mechanism",
+			"short_description": "Transition the USV to a safe operational state when unsafe conditions or abnormal behaviour are detected.",
+			"full_description": "Fail-Safe Mechanisms in unmanned surface vehicles refer to control and operational strategies that ensure the USV enters a safe and stable state when faults, unsafe conditions, or high-risk situations occur. These mechanisms prioritise navigation safety and collision avoidance over mission completion.\n In USV systems, fail-safe behaviour may include switching to patrol or low-speed modes, maintaining safe separation distances, or stopping behaviours when normal operation becomes unsafe. The goal is to prevent collisions, loss of control, or unintended entry into restricted areas.\n Fail-safe mechanisms act as a last line of defence when adaptive control or coordination is insufficient. While other mitigations aim to maintain operational performance, fail-safe mechanisms ensure that the USV behaves safely even when mission objectives cannot be fully achieved.",
+			"example": [
+				{
+					"reference ID": "RE0157",
+					"description": "This paper presents a hierarchical control framework in which USVs adapt their behaviour during adversarial encounters to maintain safety. When interception conditions, distance thresholds, or collision risks are detected, USVs switch between patrol, pursuit, interception-point, or obstacle-avoidance behaviours. These runtime transitions prevent unsafe proximity, enforce speed and steering limits, and ensure collision-free operation during both domain protection and invasion tasks, demonstrating fail-safe behaviour at the control and operational level."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0157"]
+		},
+		{
+			"ID": "M7005",
+			"name": "Anomaly Detection for Sensor and Actuator Systems",
+			"short_description": "Detect abnormal behaviour in USV sensor and actuator systems that may indicate faults or cyber attacks.",
+			"full_description": "Anomaly Detection for Sensor and Actuator Systems is a mitigation strategy that monitors sensor outputs and control-related signals in unmanned surface vehicles to identify deviations from expected system behaviour. This includes checking the consistency of navigation data, motion states, and actuator-related signals against dynamic models or predicted responses. By detecting abnormal patterns caused by faults, environmental disturbances, or malicious data manipulation, the system can trigger alerts or corrective actions to support safe and stable operation. This mitigation is commonly used as an early defence mechanism to identify cyber–physical attacks that affect control and navigation during runtime.",
+			"example": [
+				{
+					"reference ID": "RE0158",
+					"description": "This paper proposes a residual-based anomaly detection method for unmanned surface vehicles that monitors discrepancies between measured system behaviour and model-based expectations. The detection mechanism identifies false data injection attacks by analysing abnormal residual patterns in control-relevant signals while distinguishing them from random ocean disturbances."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference ID": ["RE0158"]
+		},
+		{
+			"ID": "M7006",
+			"name": "Redundancy of Service",
+			"short_description": "Provide redundant sensors, communication paths, or services to maintain safe operation and detect inconsistencies under attack.",
+			"full_description": "In the USV context, redundancy of service refers to deploying multiple independent sources of navigation, sensing, or communication to support continued operation and to expose discrepancies caused by faults or malicious manipulation. Redundant components may include parallel networks, multiple sensors providing overlapping data, or independent communication paths. While redundancy alone may not prevent attacks, it can improve resilience by enabling cross-checking, anomaly detection, and graceful degradation when primary data sources are compromised.",
+			"example": [
+				{
+					"reference ID": "RE0166",
+					"description": "This paper discuss redundancy mechanisms in an Integrated Navigation System, including dual LAN networks, multiple positioning sensors, and serial sensor connections to operator stations. During the attack demonstration, manipulated GPS data transmitted over the network was detected through comparison with GPS data received via a separate serial connection, triggering a Position Deviation Alarm. Although the attacker could potentially extend the malware to manipulate additional redundant inputs, the existing redundancy increased attack complexity and enabled detection of navigation inconsistencies."
+				}
+			],
+			"reference ID": ["RE0166"]
+		},
+		{
+			"ID": "M7007",
+			"name": "Threat Analysis and Risk Assessment",
+			"short_description": "Perform structured threat analysis and risk assessment to identify cybersecurity risks and evaluate mitigation priorities in unmanned surface vessel (USV) systems.",
+			"full_description": "Threat Analysis and Risk Assessment for USVs involves systematically identifying critical vessel functions, system assets, vulnerabilities, and potential cyber threats to assess overall security risk. This process supports understanding how attacks may propagate across interconnected vessel systems such as navigation, engine control, cargo management, and bridge systems. TARA is applied throughout the USV lifecycle, from design and integration to operation and maintenance, and is used to prioritise security controls based on risk rather than implementing protections uniformly. While TARA does not directly prevent attacks, it provides the analytical foundation needed to select, evaluate, and justify cybersecurity mitigations for USV networks.",
+			"example": [
+				{
+					"reference ID": "RE0167",
+					"description": "This paper presents a quantitative threat analysis and risk assessment framework for maritime vessel networks by modelling vessel systems, vulnerabilities, and network connectivity using the MV-HARM model. It evaluates attack paths, attack success probability, and system and threat-specific risk for critical vessel functions such as navigation, engine control, and cargo systems. The framework supports risk-informed decision-making by comparing the effectiveness of mitigation strategies such as patching, firewall rule changes, and network separation based on their impact on overall vessel security."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0167"]
+		}
+	],	
+    "references": [	    		
+		{
+			"ID": "RE0152",
+			"name": "Memory-based event-triggered path-following control for a USV in the presence of DoS attack",
+			"cite": "C. Jiang, G. Zhang, C. Huang, and W. Zhang, “Memory-based event-triggered path-following control for a USV in the presence of DoS attack,” Ocean Eng., vol. 310, no. P1, p. 118627, 2024, doi: 10.1016/j.oceaneng.2024.118627.",
+			"link": "http://doi.org/10.1016/j.oceaneng.2024.118627",
+			"description": "This paper studies how an unmanned surface vehicle (USV) can keep following a planned path when its control commands are sometimes blocked by a Denial-of-Service (DoS) attack.The main goal is to design a control method that still works even when commands are lost. At the same time, the authors want to reduce unnecessary control updates to protect the actuators and save communication resources. \n The paper assumes that the USV is underactuated, meaning it can only control forward motion and turning, but not sideways motion directly. The ship model includes unknown dynamics and environmental disturbances, such as wind and waves, but these disturbances are assumed to be bounded. The DoS attack is assumed to be intermittent, not permanent. Each attack has a limited duration, and there are always recovery periods when communication becomes available again. This assumption is to make sure that the USV is not permanently out of control. When the attack is active, the control commands sent from the controller to the ship’s actuators are blocked and not received. When the attack is inactive, the commands are transmitted normally. \n To support smooth path following, the paper first proposes a new guidance method, called Double Distance Logical Virtual Ship (DDLVS). A virtual ship moves along the desired path, and the real USV follows it. Unlike time-based turning methods, this guidance uses distance information to update the turning motion. This avoids error accumulation when the USV follows curved paths and helps maintain smoother motion. The main contribution of the paper is a memory-based event-triggered controller. In normal operation, the controller does not send new control commands continuously. Instead, it sends them only when certain conditions are met. This reduces actuator wear and communication load. The “memory-based” part means that the controller also uses past control values when deciding whether to trigger a new update. When a DoS attack causes control commands to be lost, the controller does not immediately fail. The event-triggered mechanism is designed to account for missing signals. If the USV’s tracking performance becomes worse due to a recent attack, the triggering condition becomes easier to satisfy. This allows more control updates after an attack, helping the USV recover its path-following performance. The controller also uses neural networks to estimate unknown ship dynamics. These neural networks do not detect attacks or make decisions. They only help approximate unknown physical effects in the ship model. A technique called Dynamic Surface Control is used to simplify the control design and avoid complex calculations. \n Using Lyapunov stability analysis, the paper proves that all control and tracking errors remain bounded, even when DoS attacks occur. This means the USV does not lose stability and can continue operating safely. Simulation results show that the USV can keep following the path and recover after attacks, while using fewer control updates than traditional continuous controllers."
+		},
+		{
+			"ID": "RE0153",
+			"name": "Hijacking of unmanned surface vehicles: A demonstration of attacks and countermeasures in the field",
+			"cite": "P. Solnør, Ø. Volden, K. Gryte, S. Petrovic, and T. I. Fossen, “Hijacking of unmanned surface vehicles: A demonstration of attacks and countermeasures in the field,” J. F. Robot., vol. 39, no. 5, pp. 631–649, 2022, doi: 10.1002/rob.22068.",
+			"link": "http://doi.org/10.1002/rob.22068",
+			"description": "This paper studies how an unmanned surface vehicle (USV) can be hijacked through cyber attacks on its internal communication system. The main goal is to show that attacks described in theory can be carried out in the real world and can directly change how a USV moves. The authors also want to show that proper cryptographic protection can stop these attacks. All experiments are done on a real USV in a harbour environment. \n The authors assume a USV with a distributed guidance, navigation, and control (GNC) system. Navigation runs on one computer and sends position and heading estimates to another computer that handles guidance and control. These components communicate over Ethernet inside the vehicle. The attacker is assumed to have access to this internal network, and can intercepts and modifies messages travelling between computers. \n The USV used in the paper is underactuated. It has two thrusters at the stern and no direct sideways control. Because of this, the USV mainly controls its motion by changing heading and moving forward. To follow a path, the USV uses a line-of-sight (LOS) guidance method. This method looks at how far the vehicle is from the desired path and computes a desired heading that will bring it back. The guidance system strongly depends on correct position and heading estimates from the navigation system. \n To implement the attacks, the authors use a man-in-the-middle setup. They perform ARP spoofing so that all traffic between navigation and control passes through the attacker’s computer. The attacker inspects each message and modifies specific navigation values, such as heading or position. Since the protocol only uses a CRC checksum, the attacker can recompute the checksum and send a valid-looking message. In the first attack experiment, the attacker performs a fixed heading spoof. A constant offset is added to the heading estimate. The USV believes it is facing a different direction than it really is. As a result, the guidance system steers the vehicle along a path that is parallel to, but different from, the desired path. In the second experiment, the attacker performs a fixed position spoof. A constant offset is added to the latitude value. The USV believes it is located somewhere else. The guidance system then tries to correct an error that does not exist, which causes the USV to leave the real path. In the third experiment, the attacker performs an incremental heading spoof. Instead of adding a large offset at once, the attacker slowly changes the heading estimate over time. Each change is small and difficult to notice. Over time, the accumulated error causes the USV to drift away from the desired path. This experiment shows how gradual manipulation can be stealthy and still effective. In the fourth experiment, the attacker performs an incremental position spoof. The latitude estimate is slowly changed over time. The USV keeps trying to correct its path, but because the error is artificial, the vehicle is slowly pulled off course. In the fifth experiment, the attacker performs a replay attack. The attacker records valid navigation messages and later replays them with a delay. The messages are not modified, so they still look authentic. During a planned course change, the USV receives old heading information and reacts too late. This causes incorrect behaviour and premature mission completion. This experiment shows that message authentication alone is not enough, because old but valid messages can still be harmful. \n To defend against these attacks, the authors propose using authenticated encryption with timestamps. Navigation data is encrypted and authenticated, and a timestamp is included in each message. On the receiving side, messages are checked for correctness and freshness. If a message is modified or replayed, it is rejected. The authors implement this using a fast symmetric cryptographic algorithm that does not introduce noticeable delay. With these countermeasures enabled, injection and replay attacks are detected and prevented. The attacker can no longer steer the USV by modifying navigation data. In some cases, when valid data is no longer available, the USV aborts the mission and enters a safe error state. While this may take the vehicle out of service, it prevents hijacking and active control by the attacker."
+		},
+		{
+			"ID": "RE0154",
+			"name": "USV Control With Adaptive Compensation Under False Data Injection Attacks",
+			"cite": "P. Bai, H. Zhang, J. Zhang, and H. Li, “USV Control With Adaptive Compensation Under False Data Injection Attacks,” IEEE INFOCOM 2022 - IEEE Conf. Comput. Commun. Work. (INFOCOM WKSHPS), vol. 1, no. 3, pp. 1–2, 2022, doi: 10.1109/INFOCOMWKSHPS54753.2022.9798253.",
+			"link": "https://doi.org/10.1109/INFOCOMWKSHPS54753.2022.9798253",
+			"description": "This paper studies how to keep an unmanned surface vehicle (USV) following its planned path when its control commands are manipulated by a cyber attack. The goal is to maintain stable control of the USV during the attack. The authors focus on a network-based USV, where sensor data and control commands are sent over a wireless communication network. The paper assumes that the USV operates in a harsh marine environment. Waves, water current, and wind can disturb the vehicle’s motion. It also assumes that communication between the control station and the USV has delay. \n The attack considered in this paper is a False Data Injection (FDI) attack. The attack happens in the communication channel between the control station and the actuator of the USV. This means the attacker does not block messages, but changes the control commands sent to the USV. As a result, the USV receives incorrect control signals and may deviate from its intended trajectory, even though it believes the commands are valid. \n  To handle this problem, the authors propose an adaptive attack compensation method. The main idea is to add an extra correction signal to the normal control command. This correction is based on the difference between recent output values of the USV. When the USV behaviour changes abnormally due to the injected false data, the adaptive compensation term increases and counteracts the effect of the attack. In this way, the USV can continue tracking its reference trajectory even when false commands are injected. In addition, the paper introduces an event-triggered communication mechanism. Instead of sending sensor data continuously, the USV only sends data when the change in output exceeds a predefined threshold. This helps reduce communication delay and unnecessary network usage. The event-triggered mechanism supports the adaptive compensation by allowing faster and more efficient response when abnormal behaviour occurs. \n Simulation results show that, without compensation, the FDI attack causes large deviation in the USV output. When the adaptive compensation method is applied, the USV output closely follows the reference trajectory again. This demonstrates that the proposed method can reduce the impact of FDI attacks under the assumed conditions."
+		},
+		{
+			"ID": "RE0155",
+			"name": "Position Spoofing Attacks on Unmanned Surface Vehicles",
+			"cite": "J. Wang, Y. Xiao, T. Li, and P. C. L. Chen, “Position Spoofing Attacks on Unmanned Surface Vehicles,” J. Mar. Sci. Eng., vol. 13, no. 12, pp. 1–25, 2025, doi: 10.3390/jmse13122269.",
+			"link": "https://doi.org/10.3390/jmse13122269",
+			"description": "This paper studies position spoofing attacks against Unmanned Surface Vehicles (USVs) from an offensive security perspective. The main goal is to understand how attackers can deliberately manipulate navigation data inside a USV to cause unsafe movement, path deviation, or loss of navigational safety. \n The paper makes several clear assumptions to scope the analysis. First, the USV uses a distributed Navigation–Guidance–Control (GNC) architecture, where navigation, guidance, and control are separate modules communicating over a network. Second, the guidance module applies a Line-of-Sight (LOS) path-tracking algorithm, and the control module uses a PID controller. Third, communication between GNC modules is based on IP networking, typically over Ethernet. The paper assumes that attackers do not need to compromise hardware or cryptographic keys, but only the network communication between modules. \n The USV is modelled as a cyber-physical system, where navigation data directly affects physical motion. The paper adopts a standard ship kinematic and dynamic model, in which position and velocity determine control forces applied to propellers and rudders. The navigation module provides position and velocity data, the guidance module calculates desired heading and speed based on waypoints, and the control module generates actuator commands. Because guidance and control rely heavily on position data, any manipulation of this data can propagate through the system and cause physical deviation of the USV. \n The attacker is defined using a Dolev–Yao-style threat model. The attacker is assumed to gain Man-in-the-Middle (MITM) access within the USV’s internal network. This allows interception, modification, replay, or dropping of packets exchanged between GNC modules. The attacker is assumed to know the high-level control structure of the USV (LOS guidance and PID control), but not internal secrets such as cryptographic keys or mission plans. The attacker’s objective is to mislead the guidance and control system so that the USV deviates from its intended route or follows an attacker-defined trajectory. \n The paper identifies five potential attack locations in a USV system: (1) navigation output, (2) guidance output, (3) internal control module, (4) control output, and (5) external interfaces. These cover spoofing, denial-of-service, and physical attacks. However, the paper only focuses on spoofing-based attacks at the navigation output and internal control locations.\n The paper proposes four position spoofing attacks. The Position Blackhole (PBH) attack selectively drops position packets, preventing guidance and control modules from receiving valid navigation updates. The Position Bias Injection (PBI) attack injects a small constant offset into position data, causing gradual and stealthy path deviation. The Position Hijacking (PH) attack replaces real position data with attacker-designed fake positions, allowing the attacker to redirect the USV toward arbitrary waypoints. The Delayed-Position Replay (DPR) attack records valid position data and replays it later, which is effective even when communication is encrypted. All four attacks aim to disrupt navigation safety by corrupting the position information used by guidance and control. All attacks are implemented using ARP spoofing to establish a Man-in-the-Middle position in the internal USV network. By poisoning ARP tables, the attacker redirects communication between navigation and control modules through their own device. For unencrypted traffic, the attacker parses IP packets, modifies position data, recalculates checksums, and forwards forged packets. For encrypted traffic, the attacker relies on replaying previously captured packets. This approach requires no cryptographic compromise and exploits the lack of authentication in standard ARP-based IP networking. Simulation results show that all four attacks cause significant navigation deviation. The Position Hijacking attack produces the largest error, with deviations exceeding 25 metres, while the other attacks also exceed safety thresholds commonly required for maritime navigation. Even smaller deviations are shown to be dangerous in ports and narrow waterways."
+		},
+		{
+			"ID": "RE0156",
+			"name": "Distributed penetration strategy for multi-USV based on scalable deep reinforcement learning",
+			"cite": "Z. Zhang, X. Liang, C. Chen, D. Liu, C. Yu, and Y. Song, “Distributed penetration strategy for multi-USV based on scalable deep reinforcement learning,” Ocean Eng., vol. 345, no. November 2025, p. 123793, 2026, doi: 10.1016/j.oceaneng.2025.123793.",
+			"link": "https://doi.org/10.1016/j.oceaneng.2025.123793",
+			"description": "This paper proposes USVScout, an automated security inspection framework for detecting application-level security vulnerabilities in Unmanned Surface Vehicle (USV) systems. The work focuses on USV-based marine applications that rely on remote processing units, onboard processing units, and wireless communication channels such as CLI commands and message queues (e.g., MQTT). Unlike prior maritime security studies that mainly analyse communication protocols, this paper targets vulnerabilities arising from application logic and service workflows.\n The paper introduces a USV-specific threat model with three attacker personas: remote attackers, onboard attackers, and onboard attackers assisted by UAVs. These attackers can perform impersonation, command and message injection, timing manipulation, and logic manipulation attacks that alter command semantics or context. Based on this threat model, the authors design USVScout, which performs automated security inspection directly on application source code. USVScout translates the source code into an Abstract State Transition System (ASTTS) using an existing code-to-model translation technique. Security analysis is then formalised as a security attribute verification problem under a standard computing model. The framework automatically generates formal security properties and verifies them using the NeS model checker, which supports verification using 1-counter Linear Temporal Logic (LTL). This approach allows USVScout to reason about application behaviour over time, rather than relying on pattern matching or rule-based static analysis. The paper defines several core security attributes relevant to USV applications. These include critical communication safety (preventing unsafe navigation commands), critical message handling (ensuring timely and reliable status reporting), power management safety (preventing unsafe or unauthorised shutdown), and multi-USV control safety (preventing unnecessary simultaneous control of multiple USVs). Each attribute is expressed as a formal property using predicates that capture command semantics, message timing, authentication status, battery level, and environmental safety conditions. \n USVScout is evaluated on three real-world USV applications: maritime rescue, waterway maintenance, and bathymetry. The framework verifies security properties related to safe navigation, message delivery, power management, and multi-USV control. Experimental results show that USVScout can identify previously undiscovered vulnerabilities that are missed by existing static analysis tools, while achieving sub-second verification time on commodity hardware."
+		},
+		{
+			"ID": "RE0157",
+			"name": "Hierarchical Attack-Defense Strategy of Unmanned Surface Vehicles for Domain Protection and Invasion Task",
+			"cite": "J. Wang et al., “Hierarchical Attack-Defense Strategy of Unmanned Surface Vehicles for Domain Protection and Invasion Task,” Unmanned Syst., pp. 1–20, 2025, doi: 10.1142/S2301385026500214.",
+			"link": "https://doi.org/10.1142/S2301385026500214",
+			"description": "This paper proposes a hierarchical control framework for unmanned surface vehicles (USVs) to perform domain protection and domain invasion tasks in multi-USV confrontation scenarios. The framework is designed to maintain safe and effective operation when USVs face adversarial behaviour from other vessels, rather than cyber attacks. The focus is on adaptive control, coordination, and safety at runtime. \n The framework is structured into three layers. The top layer performs dynamic task allocation using a consensus-based auction algorithm, allowing defenders or attackers to be reassigned in real time as the situation changes. This enables the system to adapt when targets move, are intercepted, or new threats appear. The middle layer executes task-specific strategies, such as patrol, pursuit, interception, or formation attack, depending on the role of the USV and its current state. The bottom layer enforces safety using an enhanced artificial potential field method to avoid collisions and maintain safe distances between vessels. \n For domain protection tasks, defender USVs adaptively switch between patrol, pursuit, and interception-point strategies based on the relative positions of invaders and the protected area. For domain invasion tasks, attacker USVs use a leader–follower formation combined with an angle-adaptive potential field method to evade interception while maintaining formation stability. These behaviours allow the system to respond dynamically to changing conditions without stopping the mission. \n The framework is validated through both simulation and hybrid virtual-real experiments conducted in real maritime environments. The experiments show that USVs can maintain collision-free operation, respect speed and steering constraints, and successfully adapt their behaviour during adversarial encounters. "
+		},
+		{
+			"ID": "RE0158",
+			"name": "False data injection attack detection and security control for unmanned surface vehicles",
+			"cite": "K. Leng, L. Liu, and Z. Wang, “False data injection attack detection and security control for unmanned surface vehicles,” Ocean Eng., vol. 349, no. May 2025, p. 124078, 2026, doi: 10.1016/j.oceaneng.2025.124078.",
+			"link": "https://doi.org/10.1016/j.oceaneng.2025.124078",
+			"description": "This paper studies the security of unmanned surface vehicles (USVs) under false data injection (FDI) attacks and environmental disturbances. The authors focus on the problem that stealthy FDI attacks can manipulate sensor and communication data while appearing similar to natural ocean disturbances, making detection difficult. To address this, the paper considers a cyber–physical USV system where both the sensor-to-controller and controller-to-actuator channels may be compromised. The USV dynamics are modelled using a three-degree-of-freedom surface vessel model with stochastic environmental disturbances.\n The paper first constructs a highly concealed FDI attack model that combines slowly converging bias attacks and periodic harmonic attacks. This attack design allows false data to be injected gradually, avoiding traditional residual-based detection methods. Based on this model, the authors propose a dual-mode attack detection method using a nonlinear residual generator. By analysing residual signal characteristics and predefined thresholds, the method can distinguish FDI attacks from random ocean disturbances, which is a key limitation of many existing approaches.\n After detection, the paper introduces observer-based estimation methods to quantify both attack signals and environmental disturbances in real time. Separate observers are designed to estimate bias attacks and harmonic attacks, while a disturbance observer estimates aggregated environmental effects and model uncertainties. Lyapunov-based stability analysis is provided to show that the estimation errors are uniformly ultimately bounded under attack and disturbance conditions.\n To mitigate the impact of attacks and disturbances, the paper proposes a disturbance observer-based control (DOBC) strategy. The estimated attack and disturbance signals are compensated through feedforward and feedback control mechanisms, allowing the USV to recover its trajectory and maintain stable operation. Simulation results demonstrate that the proposed detection, estimation, and compensation framework enables effective path tracking and station keeping under FDI attacks, and outperforms sliding mode and adaptive fault-tolerant control methods in terms of tracking accuracy, energy efficiency, and robustness."
+
+		}, 
+		{
+			"ID": "RE0159",
+			"name": "Distributed Secure Surrounding Control for Multiple USVs Against Deception Attacks: A Stackelberg Game Approach With Reinforcement Learning",
+			"cite": "Q. Wang, C. Liu, J. Lan, X. Ren, Y. Meng, and X. Wang, “Distributed Secure Surrounding Control for Multiple USVs Against Deception Attacks: A Stackelberg Game Approach With Reinforcement Learning,” IEEE Trans. Intell. Veh., vol. 9, no. 11, pp. 7003–7015, 2024, doi: 10.1109/TIV.2024.3392423.",
+			"link": "https://doi.org/10.1109/TIV.2024.3392423",
+			"description": "This paper proposes a distributed secure surrounding control method for multiple unmanned surface vehicles (USVs) under deception attacks by modelling the interaction between the controller and the attacker as a Stackelberg game.\nThe method first designs a distributed target estimator that allows USVs to estimate the target position and velocity using neighbour communication, even when only some USVs have access to the true target information.\nBased on the estimated target state, the surrounding control problem is transformed into a velocity tracking problem, which simplifies the control design under unknown target motion.\nThe attacker is modelled as a follower in the Stackelberg game and injects false control inputs into the USV actuators to maximise tracking errors, while the controller acts as the leader and designs control inputs that anticipate the attacker’s best response.\nTo solve the resulting coupled control and attack problem without knowing the USV dynamics, the paper uses reinforcement learning with actor–critic neural networks to learn both the optimal secure control policy and the optimal deception attack policy online.\nAn additional neural network is introduced to approximate unknown USV dynamics, and a value function decomposition technique is applied to accelerate learning and improve robustness.\nThe proposed method guarantees bounded tracking and estimation errors and enables multiple USVs to maintain stable surrounding control of a moving target under targeted deception attacks."
+		},
+		{
+			"ID": "RE0160",
+			"name": "Resource-Constrained Adaptive Neural Output Feedback Security Control for Networked USVs Under Dual-Channel Malicious Attacks",
+			"cite": " G. Zhu, C. Wu, Y. Ma, S. Member, and S. Hu, “Resource-Constrained Adaptive Neural Output Feedback Security Control for Networked USVs Under Dual-Channel Malicious Attacks,” IEEE Trans. Veh. Technol., vol. 74, no. 7, pp. 10109–10121, 2025, doi: 10.1109/TVT.2025.3546500.",
+			"link": "https://doi.org/10.1109/TVT.2025.3546500",
+			"description": "This paper studies the security tracking control problem for networked Unmanned Surface Vehicles (USVs) operating in a cyber–physical system environment. The authors focus on situations where the USV is exposed to malicious cyber attacks while also suffering from model uncertainties, external disturbances, and limited communication resources. The objective is to ensure that the USV can still track a desired trajectory safely and reliably under these adverse conditions. \n The paper considers dual-channel malicious attacks, meaning that two communication paths are attacked at the same time. The sensor–control (S–C) channel is affected by Denial-of-Service (DoS) attacks, which cause intermittent loss of sensor data. The control–actuator (C–A) channel is affected by False Data Injection (FDI) attacks, where the control commands are maliciously modified through unknown multiplicative and additive signals. These attacks are assumed to be bounded but time-varying and difficult to detect, especially in the case of FDI attacks. \n The USV dynamics are modelled using a three degrees-of-freedom (3-DOF) nonlinear model, including surge, sway, and yaw motion. The inertia matrix, Coriolis matrix, and damping matrix are all assumed to be unknown, which reflects practical marine conditions. External disturbances caused by wind, waves, and currents are assumed to be bounded but time-varying. The desired trajectory and its derivatives are assumed to be known and bounded. \n To deal with intermittent sensor data caused by DoS attacks, the authors propose a novel event-sampled transmission mechanism for the S–C channel. Instead of continuously transmitting position measurements, the position signal is updated only when a triggering condition is satisfied. During DoS active intervals, the last valid measurement is held. This mechanism both isolates the impact of DoS attacks and reduces communication load, allowing the controller to operate with incomplete sensor information. \n Based on this mechanism, the paper develops an Event-Sampled Adaptive Neural State Observer (ESANSO). The observer is designed to reconstruct the USV velocity using only event-sampled position measurements. It employs Radial Basis Function (RBF) neural networks to approximate unknown nonlinear dynamics and uses adaptive laws to update neural parameters online. Importantly, the observer design is independent of the control law, and the paper proves that the velocity estimation error remains bounded even under DoS attacks. \n To further reduce communication usage in the control–actuator channel, a Self-Triggering Mechanism (STM) is introduced. Instead of continuously checking triggering conditions, the next control update time is computed in advance using the current control signal and its derivative. The control input is held between triggering instants. This approach significantly reduces computation and communication requirements and guarantees that Zeno behaviour does not occur. \n The control strategy itself is an adaptive neural output feedback controller, designed using the backstepping method. RBF neural networks are used to approximate unknown nonlinear terms, while a single-parameter learning technique is applied to compensate for the unknown time-varying control gain introduced by FDI attacks. Hyperbolic tangent functions are used to ensure that control inputs remain bounded. The controller relies only on estimated velocities and event-sampled position signals, without requiring any prior knowledge of system parameters. \n A detailed Lyapunov-based stability analysis is provided. The authors prove that all signals in the closed-loop system are bounded, the tracking error converges to a small neighbourhood around zero, and the triggering mechanisms avoid Zeno behaviour. These theoretical results confirm that the proposed scheme maintains stability and performance under dual-channel attacks. \n  Finally, the effectiveness of the proposed method is verified through numerical simulations and real-world water experiments. Simulations using the CyberShip II USV model show accurate trajectory tracking under intensive DoS and FDI attacks, reduced communication events, and improved robustness compared to zero-value compensation and compensator-based observers. Water experiments conducted in a lake environment further demonstrate the practicality and robustness of the proposed control framework."
+		},
+		{
+			"ID": "RE0161",
+			"name": "Improved Artificial Potential-Based Formation Control of Multi-USV Systems for Collision and Obstacle Avoidance Under GPS Attacks",
+			"cite": "S. Cheng, X. Li, and Y. Yang, “Improved Artificial Potential-Based Formation Control of Multi-USV Systems for Collision and Obstacle Avoidance Under GPS Attacks,” 2024 14th Int. Conf. Inf. Sci. Technol. ICIST 2024, no. 52031009, pp. 810–820, 2024, doi: 10.1109/ICIST63249.2024.10805370.",
+			"link": "https://doi.org/10.1109/ICIST63249.2024.10805370",
+			"description": "This paper investigates formation control of a multi–Unmanned Surface Vessel (USV) system operating under GPS attacks, with a particular focus on GPS spoofing. The system follows a leader–follower structure, where one leader USV provides navigation information and multiple follower USVs track the leader while maintaining predefined relative positions. The authors model each USV using a three-degree-of-freedom dynamic model that includes surge, sway, and yaw motion, and they explicitly consider practical issues such as model uncertainty, unknown nonlinear dynamics, external environmental disturbances, and actuator input saturation. GPS spoofing attacks are modelled as a position bias injected into the leader’s GPS signal, which causes the leader to deviate from its true trajectory and propagates formation errors to the follower USVs. A detection mechanism based on abnormal changes in the leader’s position is used to identify the presence of GPS attacks, and a trajectory correction method is applied to gradually recover the leader’s position. To handle unknown system dynamics, the paper employs a fuzzy logic system to approximate nonlinear terms and compensate for disturbances through adaptive parameter updates. For safety, an improved artificial potential field (APF) method is designed to generate repulsive forces for collision avoidance between USVs and obstacle avoidance in the environment, while ensuring that USVs can still reach the target position even when obstacles are nearby. These APF-based forces are integrated into the formation control law together with formation tracking errors and fuzzy compensation terms. The authors conduct a Lyapunov-based stability analysis to prove that the closed-loop multi-USV system remains stable under GPS attacks and that formation tracking errors are uniformly ultimately bounded. Simulation results involving multiple USVs, static obstacles, and injected GPS spoofing attacks demonstrate that the proposed control strategy allows the USVs to maintain formation, avoid collisions and obstacles, recover from GPS spoofing, and operate within actuator saturation limits."
+		},
+		{
+			"ID": "RE0162",
+			"name": "Throughput Maximization for USV-Enabled Underwater Wireless Networks Under jamming Attack",
+			"cite": "H. Zhang et al., “Throughput Maximization for USV-Enabled Underwater Wireless Networks Under jamming Attack,” IEEE Sens. J., vol. 24, no. 14, pp. 21987–21996, 2024, doi: 10.1109/JSEN.2023.3325552.",
+			"link": "https://doi.org/10.1109/JSEN.2023.3325552",
+			"description": "This paper studies underwater wireless networks (UWNs) supported by an unmanned surface vehicle (USV) under malicious jamming attacks. Underwater communication relies on acoustic signals, which are open, noisy, bandwidth-limited, and highly vulnerable to jamming. The authors consider a scenario where a source node (SN) communicates with a destination node (DN) via a relay USV (R-USV) because direct communication is unavailable, while a jammer interferes with both communication links. The objective is to maximize the achievable end-to-end throughput despite jamming. \n The system consists of four nodes: SN, DN, R-USV, and jammer. The USV moves on the water surface over a finite time divided into discrete time slots. Its motion is constrained by minimum and maximum sailing speeds, ocean current effects, and a maximum steering angle for safe navigation. The USV’s transmit power is limited by average and peak power constraints. Underwater acoustic channel loss is modelled using geometric spreading loss and absorption loss, which depend on distance, frequency, and propagation conditions. Using Shannon’s capacity formula, the achievable throughput of each link is computed while accounting for jamming power and noise. \n An information causality constraint is imposed so the USV can only forward data it has received within the same time slot. Therefore, the end-to-end throughput at each time slot is defined as the minimum of the SN–USV and USV–DN throughputs. The overall problem is to maximize the sum of these per-slot throughputs while satisfying trajectory, power, steering, and causality constraints. \n To solve this complex problem, the authors formulate it as a Markov decision process (MDP) and apply deep reinforcement learning (DRL). The USV is the learning agent. The state includes the USV position, transmit power, and link throughputs; the action includes changes in sailing direction and transmit power. A reward function encourages higher throughput while penalising constraint violations and guiding the USV toward its destination. \n The paper proposes a Double Deep Q-Network (D2QN)-based joint trajectory and power optimization algorithm (D2QN-JTP). Compared with a standard Deep Q-Network (DQN), D2QN reduces Q-value overestimation by separating action selection and value evaluation. Simulation results show that D2QN-JTP achieves more stable learning, higher cumulative rewards, and higher achievable throughput than DQN under different jamming intensities and operation times. The optimized USV adapts both its trajectory and transmit power to reduce jamming impact. \n The paper concludes that joint trajectory and power optimization using deep reinforcement learning significantly improves the anti-jamming performance and throughput of USV-enabled underwater wireless networks. Future work suggests extending the approach to multiple cooperative USVs."
+		},		
+		{
+			"ID": "RE0163",
+			"name": "Network-Based Modeling and Sampling Guaranteed Cost Control for Unmanned Surface Vehicle Systems Under Stochastic Cyber-Attacks",
+			"cite": "K. Ding, Q. Zhu, and S. Member, “Network-Based Modeling and Sampling Guaranteed Cost Control for Unmanned Surface Vehicle Systems Under Stochastic Cyber-Attacks,” IEEE Trans. Intell. Transp. Syst., vol. 25, no. 6, pp. 6173–6185, 2024, doi: 10.1109/TITS.2023.3348841.",
+			"link": "https://doi.org/10.1109/TITS.2023.3348841",
+			"description": "This paper studies guaranteed cost output sampling control for unmanned surface vehicles operating over communication networks under stochastic cyber-attacks. The authors model cyber-attacks as stochastic disturbances using white noise, which randomly affect the transmission of measurement and control signals. A network-based USV model is developed where only finite sampled output information is available to the controller.\n\nTo ensure stability and performance, the paper proposes an output point-sampling control strategy and constructs a sampling-time-dependent Lyapunov function. This Lyapunov function explicitly captures information at sampling instants and within sampling intervals, allowing the system to be analysed under mean-square exponential stability. Based on this formulation, sufficient conditions are derived to guarantee an upper bound on a quadratic cost function.\n\nThe guaranteed cost control problem is formulated as a set of linear matrix inequalities, and a suboptimal controller design method is provided to minimise the upper bound of the control cost. Simulation results using a USV model under different operating speeds show that the proposed method stabilises the system under stochastic cyber-attacks while reducing control effort and communication burden."
+		},
+		{
+			"ID": "RE0164",
+			"name": "Event-Based Distributed Secure Control of Unmanned Surface Vehicles with DoS Attacks",
+			"cite": "C. Liu, B. Jiang, X. Wang, Y. Zhang, and S. Xie, “Event-Based Distributed Secure Control of Unmanned Surface Vehicles with DoS Attacks,” IEEE Trans. Syst. Man, Cybern. Syst., vol. 54, no. 4, pp. 2159–2170, 2024, doi: 10.1109/TSMC.2023.3341158.",
+			"link": "https://doi.org/10.1109/TSMC.2023.3341158",
+			"description": "This paper proposes an event-based distributed secure control framework for networked unmanned surface vehicles operating under combined cyber and physical threats. The study considers unified abrupt and incipient rudder angle actuator faults, wave-induced disturbances, and aperiodic Denial-of-Service (DoS) attacks that intermittently block inter-vehicle communication. A decentralized unknown input observer is designed to estimate both vehicle states and actuator faults without requiring prior bounds on disturbances. Based on these estimates, an event-triggered distributed control law is developed, which switches between cooperative control during DoS dormancy and purely local control during DoS activation. Stability analysis based on Lyapunov methods establishes explicit conditions on DoS attack frequency and average dwelling time to guarantee exponential consensus of multiple USVs while avoiding Zeno behavior."
+		},
+		{
+			"ID": "RE0165",
+			"name": "Collision-Free Distributed Adaptive Resilient Formation Control for Underactuated USVs Subject to Intermittent Actuator Faults and Denial-of-Service Attacks",
+			"cite": "X. Wu, G. Zong, H. Wang, B. Niu, and X. Zhao, “Collision-Free Distributed Adaptive Resilient Formation Control for Underactuated USVs Subject to Intermittent Actuator Faults and Denial-of-Service Attacks,” IEEE Trans. Veh. Technol., vol. 74, no. 9, pp. 13606–13617, 2025, doi: 10.1109/TVT.2025.3565820.",
+			"link": "10.1109/TVT.2025.3565820",
+			"description": "This paper investigates collision-free distributed formation control for underactuated unmanned surface vehicles (USVs) under intermittent actuator faults and Denial-of-Service (DoS) attacks. The USVs are subject to unknown nonlinear dynamics and limited actuation, where only surge and yaw are directly controlled. To address these challenges, fuzzy logic systems are used to approximate unknown dynamics, and an adaptive fault-tolerant controller is designed to compensate for intermittent actuator faults. \nA resilient distributed formation estimator is developed to maintain formation tracking during DoS attacks, when communication among USVs and the leader is temporarily unavailable. An artificial potential field with continuous partial derivatives is integrated into the estimator to guarantee collision avoidance without introducing abrupt control actions. In addition, a simple prescribed performance control scheme is proposed to ensure that formation tracking errors converge to a predefined accuracy within a user-specified settling time. Lyapunov-based analysis proves closed-loop stability, and simulation results confirm effective formation tracking, fault tolerance, and collision avoidance under combined cyber and physical attacks."
+		},
+		{
+			"ID": "RE0166",
+			"name": "An Attack on an Integrated Navigation System",
+			"cite": "M. S. Lund, O. S. Hareide, and Ø. Jøsok, “An Attack on an Integrated Navigation System,” Necesse, vol. 3, no. 2, pp. 149–163, 2018, doi: 10.21339/2464-353x.3.2.149.",
+			"link": "https://doi.org/10.21339/2464-353x.3.2.149",
+			"description": "This paper presents a proof-of-concept cyber attack against an Integrated Navigation System (INS) used on modern vessels. An INS is a networked navigation system that integrates multiple sensors, such as the Global Positioning System (GPS), gyrocompass, Automatic Identification System (AIS), and others, and distributes this data to Electronic Chart Display and Information Systems (ECDIS) running on operator stations. ECDIS is the software used by operators to visualise vessel position, heading, and surrounding traffic on electronic nautical charts. The study demonstrates that it is possible to manipulate navigation data inside the internal network of the vessel, without attacking satellite GPS signals directly. \n The authors design an attack that compromises an ECDIS operator station running on Windows. The core idea is to install malware that acts as a man-in-the-middle between the navigation software and incoming sensor data. Instead of spoofing GPS radio signals, the malware intercepts network messages sent from the Sensor Integrator (SINT), which is the component that collects sensor data and broadcasts it to operator stations. These messages are sent using UDP (User Datagram Protocol) and follow the NMEA 0183 standard, which is a plaintext maritime data format for navigation information. Because the messages are unencrypted and unauthenticated, the malware can modify GPS coordinates before they are displayed on the chart. \n The attack is structured using the intrusion kill chain model, which includes reconnaissance, weaponisation, delivery, exploitation, installation, command and control, and actions on objectives. During reconnaissance, the authors capture network traffic directly from the INS by connecting a laptop to the internal switch and analysing packets with Wireshark. They discover that the ECDIS software communicates using Windows Sockets (Winsock) and that all devices use static IP addresses. This allows the attackers to fully understand message formats, port numbers, and sensor data flows. \n For weaponisation, the attackers create a malicious replacement Winsock dynamic-link library (DLL). A DLL is a shared code library used by Windows applications. By exploiting DLL search-order hijacking, the fake DLL is loaded instead of the legitimate one, allowing the malware to intercept incoming network traffic. When the malware detects GPS NMEA sentences (for example, GPGGA messages), it modifies latitude and longitude values and recalculates the checksum so that the ECDIS software accepts the manipulated data. In addition to position manipulation, the malware also includes a script that can deliberately crash the operator station by terminating a critical Windows process, causing a blue screen of death (BSOD). \n Delivery of the malware assumes the system is air-gapped, meaning it has no Internet connection. Therefore, the authors use a USB Human Interface Device (HID) attack. A programmable microcontroller is configured to behave like a keyboard and mouse. When inserted into a USB port, it automatically types commands, disables ECDIS keyboard restrictions using a maintenance password, opens a command prompt, copies malware from an attached USB storage device, and installs it. The attack does not exploit software vulnerabilities but relies on physical access, administrator-level user accounts, and weak operational security practices. \n Once installed, the malware does not require external command-and-control communication. Instead, it uses navigation data itself as a trigger mechanism. The malware activates when the vessel enters predefined geographic regions. Within these regions, it gradually introduces positional drift by adding small deviations to each GPS update, causing the displayed vessel position to slowly diverge from reality. In another trigger region, the malware forces the operator station to crash. This makes the attack stealthy, as changes appear gradual and context-dependent. \n The attack is experimentally demonstrated on a real vessel operated by the Royal Norwegian Navy. During sea trials, one operator station is infected while another remains clean, allowing direct comparison. The results show visible divergence between true vessel position and manipulated ECDIS output, with position errors accumulating over time. The authors confirm that the attack works without modifying the INS configuration beforehand and without exploiting known software vulnerabilities. \n The paper also discusses feasibility and countermeasures. The attack succeeds mainly because of plaintext navigation data, lack of integrity protection, excessive user privileges, and reliance on air-gapping. Potential mitigations include restricting user privileges, disabling scripting engines, deploying integrity checks on navigation data, cryptographic signing of sensor messages, and better physical security. Redundancy mechanisms, such as dual networks and multiple sensors, can raise alarms but do not fully prevent manipulation unless all data paths are protected. \n The paper shows that internal navigation data manipulation is a realistic and practical threat to maritime systems. Although demonstrated on a conventional vessel, the attack principles directly apply to USVs, which rely even more heavily on automated navigation and sensor fusion. The work highlights that navigation cyber attacks do not require sophisticated exploits and can be executed with modest resources if system design and operational security are weak. "
+		},
+		{
+			  "ID": "RE0167",
+			  "name": "Novel security models, metrics and security assessment for maritime vessel networks",
+			  "cite": "S. Y. Enoch, J. S. Lee, and D. S. Kim, “Novel security models, metrics and security assessment for maritime vessel networks,” Comput. Networks, vol. 189, no. October 2020, p. 107934, 2021, doi: 10.1016/j.comnet.2021.107934.",
+			  "link": "https://doi.org/10.1016/j.comnet.2021.107934",
+			  "description": "This paper presents a comprehensive security modelling and assessment approach for modern maritime vessel networks, including unmanned and autonomous surface vessels (USVs). The authors describe how vessel systems such as navigation (ECDIS), engine control, cargo management, bridge control, and administrative systems are interconnected and often linked to shore networks through permanent connections (e.g., satellite VSAT) or temporary wireless links, which significantly increases the cyber-attack surface. To address the lack of quantitative cybersecurity analysis for vessel networks, the paper proposes the Maritime Vessel Hierarchical Attack Representation Model (MV-HARM), a formal graphical security model that captures vessel systems, their vulnerabilities, network reachability, and multi-stage attack paths. MV-HARM is structured as a two-layer model, where the upper layer represents system connectivity with probabilistic weights reflecting temporal and permanent connections, and the lower layer represents system vulnerabilities using attack trees. The model supports analysing attacks targeting single or multiple vessel functions through logical AND/OR attack goals. To quantify security, the paper defines three metrics: attack success probability, system risk, and threat-specific risk based on STRIDE threat categories. Vulnerability impact and exploitability values are derived from CVSS, and threats are weighted according to their effect on vessel functions. The framework also models attacker behaviour and evaluates conventional defence strategies such as vulnerability patching, firewall rule changes, and network separation. Overall, the paper provides a structured and quantitative method to analyse attack paths, assess cybersecurity risk, and evaluate defensive measures in maritime and USV networked systems."
+		}
+    ]
+}

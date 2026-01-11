@@ -1,0 +1,948 @@
+{
+    "tactics": [
+		{
+            "ID": "TA0601",
+            "name": "Reconnaissance",
+            "short_description": "The adversary is attempting to gather information about the UAV system, communication environment, and control interfaces to prepare for an attack",
+            "full_description": "Reconnaissance consists of techniques used by adversaries to observe, enumerate, and analyse UAV systems and their surrounding communication environment prior to or during an attack. \n In UAV scenarios, reconnaissance activities often focus on wireless communication channels rather than public or organisational information. Adversaries may passively or actively monitor Wi-Fi or radio signals to identify UAV access points, service set identifiers (SSIDs), basic service set identifiers (BSSIDs), MAC addresses, channels, and traffic patterns. ",
+            "created": "12/12/2025",
+            "modified": "12/12/2025",
+            "technique_ids": ["T6001","T6022","T6002"]
+        },	
+        {
+            "ID": "TA0602",
+            "name": "Initial Access",
+            "short_description": "The adversary is attempting to gain unauthorised access to UAV systems or communication channels.",
+            "full_description": "Initial Access in UAV systems consists of techniques that allow adversaries to obtain an initial foothold in the drone or its control infrastructure. This foothold may be obtained either during deployment or earlier in the software supply chain.\n Based on reported UAV attacks, entry points include open or weakly protected Wi-Fi networks, exposed services such as FTP and Telnet, weak authentication mechanisms, and insecure software development kits used by drone manufacturers. \n Adversaries may exploit these weaknesses to connect directly to the UAV, impersonate legitimate controllers, or bypass authentication checks, enabling subsequent command injection, data theft, or loss-of-control attacks.",
+            "created": "12/12/2025",
+            "modified": "12/12/2025",
+            "technique_ids": ["T6018","T6014","T6008", "T6015","T6003" ]
+        },
+        {
+            "ID": "TA0603",
+            "name": "Execution",
+            "short_description": "The adversary is attempting to execute unauthorised commands or control logic on a UAV.",
+            "full_description": "Execution in UAV environments involves adversaries running unauthorised commands or injecting control instructions into the drone’s operating system or flight control interfaces. \n Attacks reported in UAV systems include command execution through Telnet shell access, man-in-the-middle command injection, and manipulation of control parameters after authentication bypass. \n These actions allow attackers to control flight behaviour, trigger landing or crashing events, and override legitimate operator commands.",
+            "created": "12/12/2025",
+            "modified": "12/12/2025",
+            "technique_ids": ["T6004"]
+        },        
+        {
+            "ID": "TA0609",
+            "name": "Collection",
+            "short_description": "The adversary is attempting to collect sensitive data from the UAV system or its communications.",
+            "full_description": "Collection in UAV systems refers to techniques used to obtain data of interest from the drone or its communication links. \n The paper reports multiple attacks where adversaries collect sensitive information such as images, videos, system logs, configuration files, and authentication data by exploiting insecure services, intercepting wireless communications, or gaining shell access through Telnet or FTP. \n Eavesdropping attacks and unauthorized file access allow attackers to monitor UAV operations, extract mission-related data, and gather intelligence that can support further exploitation or privacy violations.",
+            "created": "12/12/2025",
+            "modified": "12/12/2025",
+            "technique_ids": ["T6005"]
+        },
+        {
+			"ID": "TA0610",
+			"name": "Command and Control",
+			"short_description": "The adversary communicates with a compromised UAV system to issue commands or receive data.",
+			"full_description": "Command and Control in the UAV context refers to techniques that allow adversaries to maintain communication with a compromised drone or its onboard components during operation. Through these communication channels, attackers can send unauthorised commands or extract information while remaining logically connected to the UAV.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"technique_ids": ["T6006"]
+		},  
+        {
+            "ID": "TA0614",
+            "name": "Impact",
+            "short_description": "The adversary is attempting to disrupt or take control of UAV operations.",
+            "full_description": "Impact in UAV systems refers to techniques that result in loss of control, mission failure, or physical damage to the drone. \n The reviewed attacks demonstrate outcomes such as UAV hijacking, forced landing, mid-air crashing, and persistent control loss caused by spoofing, deauthentication, buffer overflow, and denial-of-service attacks. \n These impacts directly threaten safety, mission success, and public trust in UAV operations, especially in civilian, military, and emergency-response contexts.",
+            "created": "12/12/2025",
+            "modified": "12/12/2025",
+            "technique_ids": ["T6017","T6023","T6012","T6021","T6007","T6010","T6013","T6024", "T6016", "T6020","T6011"]
+        }
+    ],
+    "techniques": [
+		{
+			"ID": "T6001",
+			"name": "Active Scanning",
+			"short_description": "Adversaries actively probe the UAV communication environment to identify reachable systems, services, and interfaces.",
+			"full_description": "Active scanning consists of techniques used by adversaries to actively interact with a UAV’s communication environment in order to discover reachable devices, open services, and potential entry points. This may include scanning wireless networks, probing IP addresses and ports, or eliciting responses from UAV systems and associated controllers. These activities allow adversaries to understand how the UAV is connected and which interfaces may be targeted in later stages of an attack.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0127",
+				  "description": "Researchers scanned the UAV’s wireless environment to identify the active Wi-Fi network and control interfaces before launching further attacks."
+				},
+				{
+				  "reference ID": "RE0130",
+				  "description": "After joining the UAV’s Wi-Fi network, the author performed active port scanning using Nmap to identify exposed services such as Telnet and FTP."
+				}
+			],
+			"reference ID": ["RE0127", "RE0130"]
+		}, 
+		{
+			"ID": "T6002",
+			"name": "Gather Victim Network Information",
+			"short_description": "Adversaries collect detailed information about the UAV’s wireless network and communication characteristics.",
+			"full_description": "This technique involves collecting network-related information from a UAV’s communication environment, such as wireless connectivity properties, exposed service ports, communication flows, and protocol endpoints. The gathered information allows adversaries to understand the UAV’s network-facing interfaces and identify accessible services that may be targeted in subsequent attack stages.",  
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0127",
+				  "description": "By capturing wireless traffic, researchers identified the UAV’s SSID, BSSID, and the MAC address of the legitimate controller."
+				},
+				{
+				  "reference ID": "RE0130",
+				  "description": "The author captured and analysed wireless traffic to observe MAC addresses, communication flows, and the format of control commands exchanged between the UAV and its controller."
+				},
+				{
+					"reference ID": "RE0138",
+					"description": "This paper demonstrates the use of Nmap to scan the AR.Drone 2.0 and identify exposed network services, including FTP, Telnet, and the video streaming interface, prior to launching denial-of-service attacks."
+				}
+			],
+			"reference ID": ["RE0127", "RE0130"]
+		},
+		{
+			"ID": "T6003",
+			"name": "Wireless Compromise",
+			"short_description": "Adversaries gain unauthorised access to a UAV by exploiting weaknesses in its wireless communication interface.",
+			"full_description": "Wireless compromise consists of techniques that exploit insecure or weakly protected wireless communication mechanisms used by UAVs. This includes abuse of open or unauthenticated wireless networks, weak access control mechanisms such as MAC filtering, or manipulation of wireless management and control frames. By exploiting these weaknesses, adversaries can establish unauthorised network-level access to the UAV and position themselves to perform further attacks.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0127",
+				  "description": "Researchers used forged de-authentication frames to disconnect the legitimate controller and force the Parrot AR.Drone to reconnect to the attacker’s system, enabling unauthorised wireless access."
+				},
+				{
+				  "reference ID": "RE0130",
+				  "description": "This paper shows that the Parrot AR.Drone exposes an open Wi-Fi network with no encryption or authentication, and relies only on MAC address filtering, which is bypassed through MAC spoofing to gain unauthorised network-level access."
+				},
+				{
+					"reference ID": "RE0133",
+					"description": "The SkyJack project exploits the UAV’s unsecured Wi-Fi control channel by using 802.11 monitor mode and deauthentication frames to disconnect the legitimate operator. The attacker then reconnects to the UAV’s open wireless network, achieving unauthorised network-level access."
+				},
+				{
+					"reference ID": "RE0137",
+					"description": "This paper demonstrates Wi-Fi deauthentication attacks against UAVs as part of a honeypot evaluation scenario, where attackers disconnect the legitimate controller and attempt to hijack the wireless control link."
+				},
+				{
+					"reference ID": "RE0151",
+					"description": "This paper describes an attacker who exploits the lack of authentication in the UAV’s MAVLink radio communication. By capturing the system ID and transmitting forged MAVLink messages over the wireless telemetry link using a directional antenna, the attacker gains unauthorised access to the UAV’s control channel."
+				}
+
+			],
+			"reference ID": ["RE0127", "RE0130", "RE0133", "RE0151"]
+		},
+		{
+			"ID": "T6004",
+			"name": "Command and Scripting Interpreter",
+			"short_description": "Adversaries execute unauthorised actions by injecting commands into UAV command interpretation mechanisms.",
+			"full_description": "This technique involves injecting unauthorised but syntactically valid commands into a UAV’s command interpretation mechanisms to influence flight behaviour or execute actions. These commands may target control software, middleware, or communication channels that parse and interpret command formats rather than traditional operating system shells. By exploiting insufficient authentication or validation, adversaries can cause the UAV to respond to malicious control inputs originating from an unauthorised source.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0127",
+				  "description": "After gaining access, researchers used the Robot Operating System (ROS) to publish unauthorised flight control commands over Wi-Fi, allowing the attacker to control the Parrot AR.Drone."
+				},
+				{
+				  "reference ID": "RE0130",
+				  "description": "This paper reconstructs and injects forged control commands into the UAV’s command channel, causing the drone to execute unauthorised movements and disconnect the legitimate pilot."
+				},
+				{
+					"reference ID": "RE0137",
+					"description": "This paper demonstrates the injection of unauthorised MAVLink control commands after wireless hijacking, redirecting the UAV’s flight path as part of a honeypot-based attack demonstration."
+				},
+				{
+					"reference ID": "RE0151",
+					"description": "In this paper, the attacker injects unauthorised but syntactically valid MAVLink control commands (e.g., position and heading messages) into the UAV’s command interpretation mechanism. These injected commands alter the UAV’s flight path during mission execution without modifying onboard software."
+				}
+			],
+			"reference ID": ["RE0127", "RE0130", "RE0137", "RE0151"]
+		},
+		{
+			"ID": "T6005",
+			"name": "Sensor Data Access",
+			"short_description": "Adversaries access data generated by UAV sensors without authorisation.",
+			"full_description": "Sensor data access consists of techniques used to obtain information produced by UAV sensors, such as cameras or telemetry modules. This data may be accessed in real time through compromised communication channels and can provide situational awareness to the attacker.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0127",
+					"description": "During the attack, researchers accessed the Parrot AR.Drone’s live video feed after taking control of the UAV’s wireless connection."
+				}
+			],
+			"reference ID": ["RE0127"]
+		},
+		{
+			"ID": "T6006",
+			"name": "Application Layer Protocol",
+			"short_description": "Adversaries use application-layer communication protocols to maintain command-and-control over a compromised UAV.",
+			"full_description": "This technique involves using legitimate application-layer protocols to establish or maintain a command-and-control channel with a UAV. These protocols are commonly used by normal UAV systems and therefore allow adversary communication to blend with benign traffic. \n In UAV environments, adversaries may use application-layer protocols to continuously issue commands, receive telemetry, or maintain periodic communication with the compromised system. The communication may be interactive, such as direct control commands, or periodic, such as beaconing to a remote server. The technique focuses on how communication is performed, rather than how the UAV was initially compromised.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0127",
+				  "description": "Researchers maintained continuous control of the Parrot AR.Drone by sending ROS-based control messages over an established Wi-Fi connection, using application-layer communication to issue commands and receive feedback from the UAV."
+				},
+				{
+				  "reference ID": "RE0134",
+				  "description": "This paper assumes malware is already present on a UAV and focuses on its command-and-control communication. The malware periodically contacts a remote server using DNS queries. These DNS requests demonstrate the use of an application-layer protocol to maintain command-and-control communication in a UAV network."
+				}
+			],
+			"reference ID": ["RE0127", "RE0134"]
+		},
+		{
+			"ID": "T6007",
+			"name": "Loss of Control",
+			"short_description": "Adversaries cause the legitimate operator to lose control of the UAV.",
+			"full_description": "Loss of control occurs when adversaries disrupt, deny, or override legitimate control or communication channels, preventing authorised operators from commanding the UAV. This may be achieved without direct takeover of the UAV and can result in unsafe behaviour, mission failure, forced landing, or persistent inability to operate the UAV as intended.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": ["T6007.001"],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0127",
+				  "description": "After the wireless takeover, the legitimate operator received a 'Control Link not Available' error while the attacker fully controlled the Parrot AR.Drone."
+				},
+				{
+				  "reference ID": "RE0135",
+				  "description": "A coordinated swarm of UAVs applies close-range RF interference to disrupt the target UAV’s communication and sensing links, causing loss of control and mission failure without taking over the UAV."
+				}
+			],
+			"reference ID": ["RE0127", "RE0135"]
+		},
+		{
+			"ID": "T6008",
+			"name": "Supply Chain Compromise",
+			"short_description": "Adversaries introduce malicious code into UAV software components during development, integration, or update processes, allowing the code to execute onboard without exploiting runtime interfaces.",
+			"full_description": "In the UAV context, supply chain compromise refers to the introduction of malicious code into onboard software during development, integration, or software update processes. The compromised software may appear legitimate and function normally, while containing hidden logic that executes after deployment. Once running on the UAV’s onboard computing platform, the malicious code can initiate internal attacks without requiring physical access, wireless exploitation, or authentication bypass. These attacks are triggered as part of normal system operation and difficult to detect through monitoring.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0128",
+				  "description": "This paper assumes that the UAV’s complex controller software is compromised prior to deployment, potentially through untrusted updates or third-party components. The embedded malicious code later executes onboard and launches internal Denial-of-Service attacks against CPU, memory bandwidth, and internal communication channels without requiring external access."
+				}
+			],
+			"reference ID": ["RE0128"]
+		},
+		{
+			"ID": "T6010",
+			"name": "Manipulate Navigation",
+			"short_description": "Adversaries manipulate a UAV’s navigation by interfering with positioning signals, causing the vehicle to compute incorrect location or movement information.",
+			"full_description": "In the UAV context, manipulate navigation refers to attacks that target the systems responsible for positioning, navigation, and timing, with the goal of altering the UAV’s perceived location, trajectory, or velocity. A common approach is GPS spoofing, where adversaries transmit counterfeit GNSS signals to mislead the onboard receiver. GPS spoofing can take several forms, including asynchronous spoofing, where spoofed signals are not synchronised with authentic GPS signals; intermediate spoofing, where the attacker aligns spoofed signals based on knowledge of the target’s position and time; sophisticated spoofing, which uses advanced techniques such as multiple antennae transmission to overcome direction-of-arrival checks; and meaconing, which involves attacker receives authentic GPS signals and simply re-transmits them to deceive the receiver. Successful manipulation of navigation can result in mission deviation, loss of situational awareness, or safety hazards.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0129",
+					"description": "This paper evaluates an asynchronous GPS spoofing attack against a commercial drone and shows that the attack fails to manipulate the drone’s navigation under live-sky conditions."
+				},
+				{
+					"reference ID": "RE0139",
+					"description": "This paper demonstrates, in simulation, that GNSS spoofing can manipulate the perceived positions of UAVs in a swarm, causing them to deviate from their intended trajectories and collide. The spoofing targets the UAVs’ navigation inputs without compromising onboard software or control links, showing how navigation manipulation can directly lead to safety-critical outcomes."
+				}
+			],
+			"reference ID": ["RE0129", "RE0139"]
+		}, 
+		{
+			"ID": "T6011",
+			"name": "Sensor Data Manipulation",
+			"short_description": "Adversaries manipulate sensor data to mislead operators or onboard systems about the UAV’s state or environment.",
+			"full_description": "In the UAV context, sensor data manipulation refers to attacks that alter, replace, or falsify data produced by onboard sensors, such as cameras or other perception-related components. Rather than disrupting communication availability, these attacks affect the integrity of sensor outputs, causing operators or autonomous functions to receive incorrect information while the UAV may continue operating normally. This technique can target perception sensors, internal data pipelines, or interfaces between sensors and control software, leading to misinterpretation of the environment or vehicle state.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				"reference ID": "RE0130",
+				"description": "This paper demonstrates manipulation of the UAV’s video stream by intercepting system calls used to retrieve camera data and replacing shared memory buffers with falsified video, causing the pilot to receive deceptive visual information while the UAV continues normal operation."
+				}
+			],
+			"reference ID": ["RE0130"]
+		},
+		{
+			"ID": "T6012",
+			"name": "Denial of Service",
+			"short_description": "Adversaries disrupt UAV operation or mission execution by preventing or degrading normal communication or processing.",
+			"full_description": "In the UAV context, denial-of-service attacks aim to degrade or disable vehicle operation or mission effectiveness by preventing or degrading legitimate data exchange or processing. This may be achieved by overwhelming onboard resources, saturating communication channels, introducing interference that blocks critical information flows, or intentionally delaying message delivery so that time-sensitive data becomes unusable. These attacks do not require persistent access or code execution on the UAV and often exploit the limited resilience and strict timing requirements of UAV communication and processing systems, leading to loss of situational awareness, degraded coordination, or mission failure.",  
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": ["T6012.001"],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0128",
+					"description": "This paper describes an attacker launching a flooding attack by continuously sending excessive UDP packets over the internal control communication channel, which delays legitimate actuator commands and leads to unstable flight behaviour until a safety controller takes over."
+				},
+				{
+					"reference ID": "RE0130",
+					"description": "This paper demonstrates denial-of-service attacks by flooding the UAV’s network interface, overwhelming onboard processing and disrupting normal operation."
+				},
+				{
+					"reference ID": "RE0131",
+					"description": "This paper shows that optical jamming of inter-UAV Free Space Optical links prevents legitimate data exchange, resulting in communication disruption and mission degradation."
+				},
+				{
+					"reference ID": "RE0138",
+					"description": "This paper experimentally demonstrates resource-based denial-of-service attacks against the AR.Drone 2.0 using network flooding tools, resulting in increased communication latency and a significant reduction in video streaming performance."
+				},
+				{
+					"reference ID": "RE0148",
+					"description": "This paper defines a time delay attack in which a compromised UAV intentionally delays forwarding packets in a multi-hop UAV network. The attacker does not inject additional traffic or drop packets, but selectively delays forwarding to degrade communication timeliness. The paper shows that this behaviour significantly impacts mission performance and proposes a detection framework to identify such malicious UAVs based on forwarding delay patterns."
+				}
+			],
+			"reference ID": ["RE0128","RE0130", "RE0131", "RE0138", "RE0148"]
+		},
+		{
+			"ID": "T6013",
+			"name": "Manipulation of Control",
+			"short_description": "Adversaries interfere with control signals to alter or disrupt the UAV’s movement or operator authority.",
+			"full_description": "In the UAV context, manipulation of control refers to attacks that alter, inject, or disrupt control-related signals in order to influence vehicle movement or override legitimate operator input. Unlike Sensor Data Manipulation, this technique directly affects how the UAV responds to control commands, potentially resulting in unauthorised manoeuvres, forced landing, or loss of operator control. Such attacks exploit insufficient authentication or validation of control messages and can be transient or sustained.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				"reference ID": "RE0130",
+				"description": "This paper demonstrates manipulation of control by reconstructing and injecting control commands, allowing temporary control of UAV movement and disconnection of the legitimate pilot."
+				}
+			],
+			"reference ID": ["RE0130"]
+		}, 
+		{
+			"ID": "T6014",
+			"name": "Remote Service",
+			"short_description": "Adversaries execute commands on a UAV by abusing exposed remote services.",
+			"full_description": "In the UAV context, remote service execution refers to adversaries gaining the ability to execute commands by accessing network-exposed services such as remote shells, management interfaces, or maintenance services. These services may be left unauthenticated or weakly protected for debugging or maintenance purposes. Once accessed, attackers can directly interact with the UAV operating system, execute arbitrary commands, and manipulate system behaviour without modifying firmware or establishing long-term persistence.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0130",
+				  "description": "This paper shows that an exposed Telnet service provides unauthenticated root access, allowing the attacker to directly execute commands on the UAV operating system."
+				}
+			],
+			"reference ID": ["RE0130"]
+		},
+		{
+			"ID": "T6015",
+			"name": "System Service",
+			"short_description": "Adversaries execute code by abusing low-level system or operating system services.",
+			"full_description": "In the UAV context, system service execution involves abusing operating system components such as kernel modules, device drivers, or privileged system calls to execute adversary-controlled logic. These techniques operate below application-level controls and can affect core system behaviour, including sensor handling and data processing. Execution through system services typically requires elevated privileges and can enable powerful manipulation of UAV functions without relying on standard control interfaces.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0130",
+				  "description": "This paper demonstrates execution through system services by loading a malicious kernel module that hooks the ioctl() system call and manipulates camera data buffers."
+				}
+			],
+			"reference ID": ["RE0130"]
+		},
+		{
+			"ID": "T6016",
+			"name": "Optical Interference",
+			"short_description": "Adversaries disrupt UAV communication by interfering with optical data transmission.",
+			"full_description": "In the UAV context, optical interference refers to attacks that disrupt communication links based on optical or laser-based transmission methods, such as Free Space Optical (FSO) communication. Adversaries introduce intentional optical signals or reflections that interfere with legitimate transmissions, preventing correct reception of data. This technique targets the physical layer of optical communication and does not require access to UAV software, protocols, or control interfaces. Optical interference can degrade inter-UAV coordination, reduce data availability, and lead to mission failure.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0131",
+				  "description": "This paper describes hidden-node-based and reflection-based optical jamming attacks that interfere with Free Space Optical links between UAVs, disrupting inter-UAV data exchange."
+				}
+			],
+			"reference ID": ["RE0131"]
+		},
+		{
+			"ID": "T6017",
+			"name": "Adversarial Machine Learning (new)",
+			"short_description": "Adversaries may manipulate inputs to machine learning models used in UAV perception or control systems, causing incorrect predictions and unsafe flight behaviour.",
+			"full_description": "Adversarial Machine Learning (AML) attacks target machine learning models used in UAV perception, navigation, and control systems. By crafting adversarial inputs, adversaries can exploit weaknesses in these models and cause incorrect outputs without modifying the underlying software or hardware. \n\nIn UAV systems, AML attacks often target sensor-based models, such as vision-based navigation or obstacle avoidance. Adversarial inputs can cause the model to misinterpret the environment or produce unsafe control outputs. This can lead to incorrect steering, increased collision risk, or loss of stable flight. \n The impact of these attacks is significant. Even small and imperceptible input perturbations can result in unsafe navigation decisions, mission failure, or physical damage to the UAV.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0132",
+				  "description": "This paper demonstrates adversarial machine learning attacks against a deep-learning-based UAV navigation system. The attacker perturbs camera images used as input to a regression-based navigation model. These imperceptible perturbations cause large deviations in steering angle and collision probability, leading to unsafe navigation behaviour without executing malicious code on the UAV."
+				}
+			],
+			"reference ID": ["RE0132"]
+		},
+		{
+			"ID": "T6018",
+			"name": "Device Hijack",
+			"short_description": "Adversaries take control of a UAV by seizing its command and control interface, allowing them to issue unauthorised flight or system commands.",
+			"full_description": "Device hijack refers to techniques where adversaries gain direct control over a UAV by taking over its command interface. This is typically achieved by exploiting weak or absent authentication mechanisms in the UAV’s control channel. Once hijacked, the UAV accepts commands from the adversary as if they were the legitimate operator. This technique provides attackers with full control of the UAV without modifying firmware or executing malicious code on the device.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0133",
+				  "description": "The SkyJack project demonstrates UAV device hijacking by forcibly disconnecting the legitimate operator from a Parrot AR.Drone and reconnecting as the controller. After hijacking the wireless control link, the attacker gains full command control of the UAV and can issue flight commands without authorisation."
+				}
+			],
+			"reference ID": ["RE0133"]
+		},
+		{
+			"ID": "T6019",
+			"name": "Data Destruction",
+			"short_description": "Adversaries may destroy or corrupt onboard UAV data to disrupt operation or remove stored information.",
+			"full_description": "Data destruction in UAV systems involves the deliberate deletion or corruption of onboard data stored within the vehicle. This may include configuration files, mission data, logs, control-related files, or other system data residing in the UAV’s internal filesystem or memory. Such actions are typically performed after unauthorised access has been obtained and can disrupt normal operation, hinder recovery, or erase information of interest. \n Unlike traditional IT systems, data destruction in UAVs often affects operational and control-related data rather than user documents.",
+			"created": "12/12/2025",
+			"modified": "16/06/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0136",
+					"description": "This paper demonstrates the deletion of internal UAV filesystem files via unauthorised Telnet access after wireless hijacking, resulting in destruction of onboard system data as part of an attack demonstration."
+				}
+			],
+			"reference ID": ["RE0136"]
+		},
+		{
+			"ID": "T6020",
+			"name": "Physical Collision",
+			"short_description": "Adversaries cause UAVs to collide with other vehicles or objects, resulting in physical damage or loss of the platform.",
+			"full_description": "In the UAV context, physical collision refers to techniques that intentionally cause a UAV to collide with another UAV, obstacle, or terrain by manipulating its motion, coordination, or perception. Rather than directly destroying the vehicle through weapons or hard-kill methods, adversaries influence the UAV’s behavior so that a collision occurs as a consequence of incorrect navigation data, disrupted coordination, or unsafe relative positioning. In swarm scenarios, this technique may target cooperative flight behavior, causing members of the swarm to misjudge relative distances or trajectories and collide with each other. Successful collision induction can lead to loss of individual UAVs, degradation of swarm capability, or complete mission failure.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0139",
+				  "description": "This paper shows, in a ROS and Gazebo-based simulation, that GNSS spoofing can be used to induce collisions between UAVs in a swarm. By manipulating the UAVs’ perceived positions, it causes two UAVs to deviate from their intended paths and collide at a predefined point."
+				}
+			],
+			"reference ID": ["RE0139"]
+		}, 
+		{
+			"ID": "T6021",
+			"name": "False Surveillance Reporting",
+			"short_description": "Adversaries inject false or misleading information into UAV systems to disrupt surveillance or decision-making.",
+			"full_description": "In the UAV context, this technique involves a compromised or malicious UAV injecting false surveillance information into the system, such as reporting non-existent events or targets. The goal is to degrade the reliability of surveillance outputs, trigger false alarms, or reduce trust in the UAV network. This technique assumes the UAV already has legitimate participation in the network and does not describe how the compromise or execution was achieved.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				  "reference ID": "RE0141",
+				  "description": "This paper models a compromised insider UAV that injects false surveillance data. The attacker’s goal is to degrade trust, cause false alarms, or discredit surveillance output."
+				}
+			],
+			"reference ID": ["RE0141"]
+		},
+		{
+			"ID": "T6022",
+			"name": "Gather Victim Location",
+			"short_description": "Adversaries collect or infer the physical location of a UAV through observation or analysis of communication data.",
+			"full_description": "In the UAV context, this technique involves adversaries attempting to obtain a UAV’s location information without directly controlling the vehicle. This may include passive observation of wireless communications, visual monitoring of the UAV, or analysis of transmitted data to infer movement or position. Such activity is typically performed during the reconnaissance phase to build situational awareness about UAV operations, flight patterns, or operating areas, and does not require command execution or system compromise.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+				"reference ID": "RE0143",
+				"description": "This paper demonstrates that a passive attacker can gather UAV location information by eavesdropping on encrypted wireless transmissions and correlating them with partial real-world observations of the UAV. By using plaintext–ciphertext pairs obtained when the UAV is within visual range, the attacker trains a neural network to infer UAV location data from encrypted messages, even when the UAV is no longer directly observable."
+				}
+			],
+			"reference ID": ["RE0143"]
+		},
+		{
+			"ID": "T6023",
+			"name": "Battery Depletion",
+			"short_description": "Adversaries may intentionally drain a UAV’s battery to reduce flight time, force emergency landing, or cause mission failure.",
+			"full_description": "UAVs rely on limited onboard battery capacity to power flight, sensing, communication, and control systems. Adversaries can intentionally cause excessive energy consumption or prevent recharging, leading to premature battery depletion. Unlike conventional failures, these attacks exploit the UAV’s dependence on continuous power availability to maintain flight and communication.\n Battery depletion attacks may be triggered by forcing continuous operation of high-power subsystems, preventing low-power or sleep states, injecting repeated control or communication requests, or manipulating navigation data to cause unnecessary manoeuvres, hovering, or rerouting. Adversaries may also interfere with charging processes or battery management functions to prevent proper recharging or to degrade battery health over time.\n hese actions reduce mission endurance and can force the UAV to abort its mission, perform an emergency landing, or crash due to loss of power.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [],
+			"example": [
+				{
+					"reference ID": "RE0122",
+					"description": "Researchers examined multiple battery exhaustion scenarios in UAVs, focusing on vulnerabilities in both charging systems and operational power consumption. They demonstrated that attackers could manipulate the charging control unit or inject falsified voltage and current parameters to cause overcharging, undercharging, or rapid voltage drops that permanently damage the battery. The study also analysed battery depletion attacks through GPS interference, excessive payloads, and denial-of-sleep mechanisms, showing how such actions accelerate power drain, reduce mission endurance, and potentially lead to UAV crashes or mission failures."
+				},
+				{
+					"reference ID": "RE0123",
+					"description": "Researchers evaluated many battery-depletion attacks on a UAV testbed, such as illegal switch-on/standby, denial-of-sleep on the radio, added payload/centering shifts, unauthorized hovering and extra motions, wired power-drain, faulty battery replacement, and activation of peripherals. Their measurements show large, attack-specific impacts, for example, disabling one microcircuit gave a 5.43 h lifetime while turning on all modules reduced it to ~4 h."
+				}
+			],
+			"reference ID": ["RE0122", "RE0123"]
+		},
+		{
+			"ID": "T6024",
+			"name": "Mission Degradation",
+			"short_description": "Adversaries degrade UAV mission effectiveness by subtly interfering with mission execution without fully disabling the vehicle.",
+			"full_description": "Mission degradation consists of techniques that reduce the effectiveness or integrity of a UAV mission without causing a crash, loss of control, or complete denial of service. In such attacks, the UAV may remain operational and responsive, but mission objectives are partially or fully unmet. This may include causing the UAV to miss waypoints, collect incorrect or incomplete sensor data, or deviate from intended flight paths in ways that are difficult for operators to immediately detect.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"sub_technique_ids": [],
+			"mitigation_ids": [""],
+			"example": [
+				{
+					"reference ID": "RE0149",
+					"description": "This paper presents an attack scenario in which an adversary injects forged MAVLink commands to subtly alter the UAV’s flight path, causing it to miss surveillance waypoints. The UAV remains airborne and functional, but the mission fails due to incomplete data collection."
+				}
+			],
+			"reference ID": ["RE0149"]
+		}
+    ],
+	"sub-techniques": [
+		{
+			"ID": "T6007.001",
+			"name": "Swarm-Based Jamming",
+			"short_description": "Adversaries use a coordinated swarm of UAVs to disrupt a target UAV’s communication and sensing, resulting in loss of control.",
+			"full_description": "Adversaries deploy multiple cooperating UAVs to surround or closely approach a target UAV and transmit coordinated RF interference. By combining proximity, mobility, and simultaneous transmissions, the swarm increases the effective interference at the target, denying communication and sensing without requiring software exploitation or command execution on the UAV. This method can cause loss of control, mission failure, or forced landing through sustained signal disruption.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"mitigation_ids": [""],
+			"example": [
+				{
+				  "reference ID": "RE0135",
+				  "description": "This paper demonstrates a coordinated multi-UAV system that tracks a rogue drone and applies close-range RF jamming, denying communication and sensing and resulting in loss of control and mission failure."
+				}
+			],
+			"reference ID": ["RE0135"]
+		},
+		{
+			"ID": "T6012.001",
+			"name": "Delay-based DoS",
+			"short_description": "Adversaries degrade UAV communication and mission execution by intentionally delaying the forwarding or delivery of legitimate messages.",
+			"full_description": "Delay-based Denial of Service in UAV systems occurs when adversaries intentionally introduce abnormal delays into communication without dropping, corrupting, or flooding messages. Instead of overwhelming the network with traffic, the attacker delays packet forwarding or processing so that time-sensitive data arrives too late to be useful. This type of attack is particularly effective in UAV networks that rely on multi-hop communication, or strict timing requirements. Even though messages are eventually delivered, the induced delay can disrupt coordination, reduce situational awareness, and cause mission failure.",
+			"created": "12/12/2025",
+			"modified": "12/12/2025",
+			"mitigation_ids": ["M6002"],
+			"example": [
+				{
+					"reference ID": "RE0148",
+					"description": "This paper defines a time delay attack in which a compromised UAV intentionally delays forwarding packets in a multi-hop UAV network. The attacker does not inject additional traffic or drop packets, but selectively delays forwarding to degrade communication timeliness. The paper shows that this behaviour significantly impacts mission performance and proposes a detection framework to identify such malicious UAVs based on forwarding delay patterns."
+				}
+			],
+			"reference ID": ["RE0148"]
+		}
+	],
+    "mitigations": [
+		{
+			"ID": "M6001",
+			"name": "Communication Authenticity",
+			"short_description": "Ensure that UAV communication messages originate from legitimate and authorised sources and are not spoofed or forged.",
+			"full_description": "Communication Authenticity in UAV systems focuses on verifying that control and data messages are sent by legitimate and authorised entities, such as other UAVs or ground systems, and not by malicious transmitters. Due to the open and wireless nature of UAV communication, links are vulnerable to spoofing, impersonation, and message forgery. This mitigation includes techniques that validate message origin using cryptographic authentication or physical-layer characteristics. By enforcing communication authenticity, UAV systems can prevent unauthorised message injection and reduce the impact of malicious or compromised nodes.",
+			"example": [
+				{
+					"reference ID": "RE0136",
+					"description": "This paper proposes a physical-layer authentication method that enables a UAV to verify whether received control signals originate from the legitimate Ground Control Station or from a spoofing attacker, using channel characteristics such as angles of arrival, path loss, and Rician fading, without relying on shared cryptographic keys."
+				},
+				{
+					"reference ID": "RE0141",
+					"description": "The paper applies asymmetric cryptographic signatures to UAV observation reports, allowing receiving UAVs to verify the identity of the sender and prevent identity spoofing within the UAV-to-UAV surveillance network."
+				},
+				{
+					"reference ID": "RE0150",
+					"description": "This paper proposes a cryptographic authentication mechanism using encrypted challenge–response exchanges between the UAV and ground station to verify message origin and prevent unauthorised control via hijacked wireless channels."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0136", "RE0141", "RE0150"]
+		},
+		{
+			"ID": "M6002",
+			"name": "Network Intrusion Prevention",
+			"short_description": "Detect malicious or abnormal communication behaviour in UAV networks using lightweight monitoring or intrusion detection mechanisms.",
+			"full_description": "Network Intrusion Prevention in UAV systems aims to identify malicious or abnormal communication behaviour that could disrupt command, control, or mission execution. Due to real-time and safety constraints, many UAV defence approaches prioritise detection over active blocking. Lightweight intrusion detection mechanisms monitor network or routing behaviour to identify anomalies, such as spoofed messages, packet dropping, or inconsistent forwarding patterns. These systems typically operate as passive detectors that raise alerts or isolate suspicious nodes when malicious behaviour is observed.",
+			"example": [
+				{
+					"reference ID": "RE0136",
+					"description": "This paper presents a detection-based defence mechanism in which the UAV applies a generalized log-likelihood ratio test to identify spoofed control signals, effectively acting as an intrusion detection method for malicious command injection over the wireless control channel."
+				},
+				{
+					"reference ID": "RE0142",
+					"description": "This paper proposes a human immune system–inspired intrusion detection system that monitors routing and communication behaviour in UAV ad-hoc networks to detect and isolate malicious UAVs exhibiting attacks such as wormhole, black hole, grey hole, or false information behaviour."
+				},
+				{
+					"reference ID": "RE0148",
+					"description": "This paper proposes ETD, a lightweight intrusion detection framework for UAV networks that identifies time delay attacks. Instead of inspecting packet content, the system monitors packet forwarding behaviour and timing characteristics to detect UAVs that intentionally delay forwarding packets. The detection is performed at the ground station using behavioural features and clustering, enabling identification of malicious internal UAVs without active traffic blocking."
+				},
+				{
+					"reference ID": "RE0149",
+					"description": "This paper presents a lightweight, distributed intrusion detection system for UAV networks that monitors communication, routing, and flight behaviour to detect GPS spoofing and jamming attacks. The system uses self-taught learning and a multiclass SVM to identify abnormal network and control behaviour without actively blocking traffic. Detection results are used to raise alerts and trigger recovery actions, positioning the approach as a passive network intrusion detection mechanism rather than an active prevention system."
+				},
+				{
+					"reference ID": "RE0151",
+					"description": "This paper detects malicious MAVLink command injection by monitoring UAV telemetry at runtime and identifying inconsistencies between expected mission profiles and observed behaviour. Detection relies on cross-checking redundant sensor data, such as GPS and magnetometer readings, to identify abnormal control behaviour without actively blocking communication."
+				}
+
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0136", "RE0142", "RE0148", "RE0149", "RE0151"]
+		},
+		{
+			"ID": "M6003",
+			"name": "Maintain Deception Environment",
+			"short_description": "Deploy decoy or simulated UAV systems to attract, detect, and analyse attacker activity without exposing real vehicles.",
+			"full_description": "Maintain Deception Environment is a mitigation strategy in UAV systems that involves deploying decoy platforms, such as honeypots or simulated UAV components, to intentionally attract adversaries. These environments emulate real UAV communication interfaces, protocols, or system behaviour, making them appear as legitimate targets. By engaging attackers in a controlled and isolated setting, defenders can detect malicious activity, observe attack techniques, and collect forensic data, while reducing direct exposure of operational UAVs. This approach supports early warning, threat intelligence gathering, and attack surface reduction without interfering with normal vehicle operation.",
+			"example": [
+				{
+				  "reference ID": "RE0137",
+				  "description": "This paper presents a portable UAV honeypot that emulates UAV wireless interfaces, protocols (e.g., Wi-Fi, MAVLink), and onboard systems to lure attackers away from real drones and record their attack behaviour for detection and analysis."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "16/06/2025",
+			"reference_ID": ["RE0137"]
+		},
+		{
+			"ID": "M6004",
+			"name": "Conceal or Randomize Network Traffic",
+			"short_description": "Hide or randomise UAV communication behaviour to prevent attackers from observing, learning, or predicting information flows.",
+			"full_description": "Conceal or Randomize Network Traffic is a mitigation strategy designed to reduce information leakage from UAV communication links by making transmissions harder for unauthorised parties to observe or analyse. UAV systems often rely on wireless links for command and control, telemetry, and payload data, which can be monitored by passive eavesdroppers if communication behaviour is predictable or exposed.\n This mitigation addresses that risk through two complementary approaches. First, communication can be concealed by protecting the signal or its structure, for example through encryption, signal masking, or physical-layer encoding techniques that limit an observer’s ability to interpret or reproduce transmitted data. Second, communication patterns may be randomised by varying observable characteristics such as timing, power levels, routing paths, or encoding parameters, reducing an attacker’s ability to learn stable traffic patterns over time.",
+			"example": [
+				{
+					"reference ID": "RE0140",
+					"description": "The paper uses a cooperative jamming UAV to transmit artificial noise alongside legitimate UAV-to-ground communication. This noise masks the confidential signal at a passive eavesdropper, reducing its received signal quality and preventing effective interception. The concealment is achieved through adaptive power control and trajectory optimisation rather than encryption or protocol randomisation."
+				},
+				{
+					"reference ID": "RE0145",
+					"description": "This paper conceals inter-UAV optical communication by encoding data using predefined optical codewords and cyclically shifted patterns. Legitimate receivers decode packets based on the expected optical pattern, while injected or observed packets that do not match the current encoding are rejected. The concealment is implemented at the physical layer of Free Space Optical (FSO) links and aims to limit an attacker’s ability to analyse or inject valid traffic without knowledge of the encoding structure."
+				}
+			],			
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0140", "RE0145"]
+		}, 
+		{
+			"ID": "M6005",
+			"name": "Monitor Log",
+			"short_description": "Monitor system behaviour and message records in UAV systems to detect anomalies or malicious activity.",
+			"full_description": "Monitor Log is a mitigation strategy used in UAV systems to detect abnormal or suspicious behaviour over time. This mitigation involves recording and analysing system events, communication messages, and observation reports generated by UAVs during operation. By maintaining a history of behaviour, the system can identify patterns such as repeated false reporting, inconsistent observations, or abnormal communication activity. Log monitoring supports detection of compromised UAVs, investigation of security incidents, and long-term trust assessment. Without this mitigation, malicious or faulty behaviour may persist unnoticed, reducing the reliability of surveillance or mission outputs.",
+			"example": [
+				{
+				  "reference ID": "RE0141",
+				  "description": "The paper maintains a distributed history of UAV observation reports, which is used to monitor long-term UAV behaviour and identify nodes that repeatedly generate uncorroborated or false information."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0141"]
+		},
+		{
+			"ID": "M6006",
+			"name": "Adaptive Response and Recovery system",
+			"short_description": "Adaptive Response and Recovery systems for UAVs adjust vehicle behaviour at runtime to maintain safety and mission stability when threats or disruptions are detected.",
+			"full_description": "Adaptive Response and Recovery systems in UAVs modify system behaviour at runtime in response to detected disturbances such as communication loss, interference, jamming, or environmental anomalies. These adaptations may occur at different levels, including communication, control, or mission execution. Rather than preventing attacks, these systems focus on maintaining safe operation by adjusting transmission parameters, switching control strategies, adapting flight plans, or triggering recovery behaviours. This mitigation emphasises resilience and safe continuation or termination of the mission under adverse conditions, rather than attack detection or attribution.",
+			"example": [
+				{
+					"reference ID": "RE0144",
+					"description": "This paper studies simulation-based adaptive behaviour in unmanned aircraft under communication jamming. The UAV continuously evaluates mission outcomes using simulated future states and adapts its control decisions when jamming degrades command-and-control links. Instead of attempting to neutralise the jammer, the system modifies its behaviour to maintain flight stability and mission safety, demonstrating adaptive response and recovery at the control and mission-planning level."
+				},
+				{
+					"reference ID": "RE0146",
+					"description": "This paper proposes a cognitive radio–based adaptive communication system for UAV networks that responds to link degradation caused by interference, jamming, or propagation loss. The UAV continuously monitors communication quality and radio conditions, and dynamically adapts transmission parameters such as frequency, modulation, coding, power, and bandwidth to restore or maintain connectivity. The system does not attempt to detect or stop attackers, but instead focuses on recovering communication availability and preserving mission operation under adverse wireless conditions."
+				},
+				{
+					"reference ID": "RE0149",
+					"description": "This paper proposes a defence-oriented intrusion detection and recovery framework for UAV networks that supports adaptive response after signal spoofing or jamming is detected. When abnormal behaviour is identified, the system triggers recovery actions such as initiating return-to-home or routing the UAV to a nearby safe zone. The recovery logic is based on adaptive decision-making using learned system state information, focusing on maintaining UAV safety and mission termination rather than preventing the attack itself."
+				},
+				{
+					"reference ID": "RE0051",
+					"description": "Researchers proposed a simulation-guided policy model using deep reinforcement learning to ensure safe navigation under attack, allowing recovery actions to be executed dynamically and generalized to different robotic vehicles."
+				},
+				{
+					"reference ID": "RE0052",
+					"description": "PID-Piper framework introduces a dual-controller system where a machine-learning-based feed-forward controller takes over from the PID controller during physical attacks to guide the vehicle back to safety and resume its mission."
+				},
+				{
+					"reference ID": "RE0151",
+					"description": "This paper proposes an adaptive response and recovery architecture in which the UAV automatically synthesises and deploys a repaired flight plan after detecting malicious MAVLink command injection. The recovery focuses on avoiding the attacker’s radio influence while allowing the UAV to complete its mission and restoring operator trust."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0144", "RE0146","RE0149", "RE0051", "RE0052", "RE0151"]
+		},		
+		{
+			"ID": "M6007",
+			"name": "Encrypt Network Traffic",
+			"short_description": "Encrypt network traffic to prevent eavesdropping, spoofing, and message tampering in UAV communication links.",
+			"full_description": "Encrypt Network Traffic in UAV systems focuses on protecting the confidentiality and integrity of wireless communications used for command and control, telemetry, and inter-UAV coordination. UAVs commonly rely on open or shared wireless channels in ad-hoc or infrastructure-less environments, making them vulnerable to passive interception and unauthorised message injection. This mitigation applies cryptographic encryption and authentication mechanisms to ensure that only legitimate participants can read or modify transmitted data. By encrypting communication links, UAV networks reduce the risk of information leakage, spoofed nodes, and manipulation of control or mission data.",
+			"example": [
+				{
+					"reference ID": "RE0147",
+					"description": "This paper proposes an identity-based encryption framework for UAV ad-hoc networks, where cryptographic keys are derived directly from node identities. The approach ensures that only authorised UAVs can establish encrypted communication links without relying on certificate authorities. Encrypted communication is used to protect command, control, and data exchange between UAVs, cluster heads, and the ground station, reducing the risk of eavesdropping, spoofed nodes, and unauthorised participation in the network."
+				},
+				{
+					"reference ID": "RE0150",
+					"description": "This paper establishes an encrypted secondary communication channel using AES and authenticated key exchange between the UAV and ground station, protecting command, control, and data traffic from eavesdropping and hijacking on insecure wireless links."
+				}
+			],
+			"created": "15/05/2025",
+			"modified": "15/05/2025",
+			"reference_ID": ["RE0147", "RE0150"]
+		}
+	],	
+    "references": [	    		
+		{
+			"ID": "RE0051",
+			"name": "Beyond Detection : Securing Robotic Vehicles",
+			"cite": "P. Dash and K. Pattabiraman, “Beyond Detection : Securing Robotic Vehicles,” pp. 209–210, 2023, doi: 10.1109/DSN-S58398.2023.00058.",
+			"link": "http://doi.org/10.1109/DSN-S58398.2023.00058",
+			"description": "This paper proposes a new framework called PID-Piper that can recover robotic vehicles (RVs) from physical attacks. PID-Piper combines a Feed-forward controller (FFC) with a PID controller to predict actuator signals. Unlike the PID controller, the FFC doesn't measure and compensate for errors in the RV's physical states. Instead, it proactively prevents sensor perturbations from influencing actuator signals and predicts robust signals even under attack. The FFC is built using Reinforcement Learning with reward and penalty functions, trained to minimize the impact of attack-induced sensor perturbations. PID-Piper detects attacks by monitoring the deviation between both controllers. Once an attack is detected, the FFC takes over from the PID to recover the RV. The authors evaluated PID-Piper on three simulated and three real RV systems, finding that it prevents crashes and ensures mission success in 83% of cases. However, deploying PID-Piper in new RVs faces two challenges: building the target RV-specific FFC and analysing the target RV's cyber processes. \n The authors also propose a simulation-guided approach for recovering RVs from physical attacks that can transfer to new RVs. This approach involves pre-training a Deep Reinforcement Learning model in simulation to learn safety policies that represent State → Action mapping. The pre-trained Policy model operates seamlessly alongside the RV's primary controller. This model only needs to be pre-trained in various environments, scenarios, and tasks to learn safe policies, allowing it to be transferred to new RV systems."
+		},
+		{
+			"ID": "RE0052",
+			"name": "PID-Piper: Recovering Robotic Vehicles from Physical Attacks",
+			"cite": "P. Dash, G. Li, Z. Chen, M. Karimibiuki, and K. Pattabiraman, “PID-Piper: Recovering Robotic Vehicles from Physical Attacks,” Proc. - 51st Annu. IEEE/IFIP Int. Conf. Dependable Syst. Networks, DSN 2021, pp. 26–38, 2021, doi: 10.1109/DSN48987.2021.00020.",
+			"link": "http://doi.org/10.1109/DSN48987.2021.00020",
+			"description": "This paper proposes PID-Piper, a resilience framework for robotic vehicles (RVs) that autonomously detects and recovers from sensor-based physical attacks. The system uses a Feed-Forward Controller (FFC) trained with an LSTM model to mimic the PID controller's actuator outputs under normal conditions. At runtime, it monitors the deviation between FFC and PID outputs. If the deviation exceeds a threshold, PID-Piper assumes an attack has occurred. The recovery module then switches control from the PID to the FFC. The FFC was trained using engineered features to reduce parameter collinearity, which helps avoid overcompensation typical in PID logic. The system handles both overt (e.g., GPS spoofing) and stealthy attacks by comparing expected actuator behaviour against predictions. Experimental results across 6 RVs (3 real and 3 simulated) show 83% mission recovery success and 0% crash rates, outperforming earlier methods that default to emergency halts."
+		},
+		{
+			"ID": "RE0122",
+			"name": "Investigation on vulnerabilities, threats and attacks prohibiting UAVs charging and depleting UAVs batteries: Assessments & countermeasures",
+			"cite": "Tlili, F., Fourati, L. C., Ayed, S., & Ouni, B. (2022). Investigation on vulnerabilities, threats and attacks prohibiting UAVs charging and depleting UAVs batteries: Assessments & countermeasures. Ad Hoc Networks, 129, 102805. https://doi.org/10.1016/j.adhoc.2022.102805",
+			"link": "https://doi.org/10.1016/j.adhoc.2022.102805",
+			"description": "This paper presents a comprehensive survey on UAV security, focusing on vulnerabilities and attacks that prevent charging or deplete UAV batteries. It analyses both UAV base systems and charging infrastructures, proposing a taxonomy of threats across software, sensor, communication, GPS, and battery management layers. The authors identify that battery depletion and charging disruption are understudied yet critical issues for UAV reliability and mission endurance. \n The paper examines multiple attack types including physical tampering, wireless interference, overcharging, undercharging, and denial-of-sleep attacks. It further categorises these threats by their impact on availability and power management. The study reviews 169 papers from 2016–2021 and summarises key countermeasures such as secure charging protocols, energy-efficient task scheduling, and adaptive battery management. The authors highlight open research needs, including secure energy-aware architectures and intrusion detection for charging control units."
+		},
+		{
+			"ID": "RE0123",
+			"name": "Simulation and assessment of battery depletion attacks on unmanned aerial vehicles for crisis management infrastructures",
+			"cite": "Desnitsky, V., & Kotenko, I. (2021). Simulation and assessment of battery depletion attacks on unmanned aerial vehicles for crisis management infrastructures. Simulation Modelling Practice and Theory, 107, 102244. https://doi.org/10.1016/j.simpat.2020.102244",
+			"link": "https://doi.org/10.1016/j.simpat.2020.102244",
+			"description": "This paper investigates the impact of energy depletion attacks on UAVs through both theoretical analysis and experimental simulation. Using a testbed based on Parrot AR.Drone 2.0, the authors reproduce various attack scenarios including illegal activation, unauthorized hovering, denial-of-sleep, and battery replacement. These experiments demonstrate how such attacks accelerate power loss, shorten flight time, and increase mission risk. \n The study measures the effects of specific attack types and identifies the most harmful cases, such as continuous hovering, activation of energy consuming drone equipment, denial-of-Sleep attack or wired energy drain. It also highlights the role of microcontroller architecture and sleep mode parameters in determining attack effectiveness. The results show that attacks preventing energy-saving transitions or forcing persistent CPU and radio activity can drastically reduce operational duration. The authors conclude that improved power management policies and protection of control interfaces are essential for UAV resilience against depletion-based threats."
+		},
+		{
+			"ID": "RE0124",
+			"name": "Early Detection of Battery Depletion Attack in 5G-based UAV Networks",
+			"cite": "Dey, M. R., Bhumika, C., Ankitha, H. N., Nethravathi, B., & Patra, M. (2024). Early Detection of Battery Depletion Attack in 5G-based UAV Networks. International Symposium on Advanced Networks and Telecommunications Systems (ANTS), 1–3. https://doi.org/10.1109/ANTS63515.2024.10898930",
+			"link": "https://doi.org/10.1109/ANTS63515.2024.10898930",
+			"description": "This paper studies a battery depletion (DoB) attack on UAVs operating within 5G networks. The attack targets the control channel by flooding it with unauthorized Packet Forwarding Control Protocol (PFCP) messages, which forces UAVs to process excessive high-priority traffic and consume energy rapidly. \n The authors design an early detection method based on the Cumulative Sum (CUSUM) statistical technique combined with a dynamic threshold mechanism. The detection algorithm monitors abnormal increases in energy consumption and battery drain over time. Simulation experiments with varying numbers of attackers show that as the attack intensity grows, detection becomes faster and more accurate due to the adaptive threshold. The study demonstrates that this approach effectively detects depletion attacks early while reducing false positives, providing a foundation for energy-aware intrusion detection in UAV-5G environments."
+		},
+		{
+			"ID": "RE0125",
+			"name": "Cybersecurity of Unmanned Aerial Vehicles: A Survey",
+			"cite": "Z. Yu, Z. Wang, J. Yu, D. Liu, H. H. Song, and Z. Li, “Cybersecurity of Unmanned Aerial Vehicles: A Survey,” IEEE Aerosp. Electron. Syst. Mag., vol. 39, no. 9, pp. 182–215, 2024, doi: 10.1109/MAES.2023.3318226.",
+			"link": "https://doi.org/10.1109/MAES.2023.3318226",
+			"description": ""
+		},
+		{
+			"ID": "RE0126",
+			"name": "Cybersecurity in Unmanned Aerial Vehicles: a Review",
+			"cite": "W. Shafik, S. Mojtaba Matinkhah, and F. Shokoor, “Cybersecurity in Unmanned Aerial Vehicles: a Review,” Int. J. Smart Sens. Intell. Syst., vol. 16, no. 1, 2023, doi: 10.2478/ijssis-2023-0012.",
+			"link": "https://doi.org/10.2478/ijssis-2023-0012",
+			"description": "This paper present a systematic review of cybersecurity threats in Unmanned Aerial Vehicles , focusing on how modern drones are vulnerable due to wireless communication, limited computing resources, software complexity, and human factors. The paper collects, categorises, and analyses known UAV cyberattacks from prior studies using the STRIDE threat model (Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege). \n The authors review real, demonstrated attacks on commercial drones such as DJI Phantom, Parrot Bebop, Parrot AR Drone, and Cheerson CX-10W, showing how attackers can: Hijack UAV control, Force crashes or landings, Steal data (media, files, telemetry), Disrupt communication links, Gain root or privileged access. \n The paper highlights that spoofing and denial-of-service are the most dominant attack categories, mainly targeting wireless control channels, GPS, Wi-Fi, and onboard services (FTP, Telnet). It concludes that UAV cybersecurity strongly depends on secure communication, authentication, firmware protection, operator awareness, and regulatory compliance, and it outlines future research directions such as lightweight encryption, intrusion detection, and resilient UAV systems"
+		}, 
+		{
+			"ID": "RE0127",
+			"name": "Security of unmanned aerial vehicle systems against cyber-physical attacks",
+			"cite": "C. Rani, H. Modares, R. Sriram, D. Mikulski, and F. L. Lewis, “Security of unmanned aerial vehicle systems against cyber-physical attacks,” J. Def. Model. Simul., vol. 13, no. 3, pp. 331–342, 2016, doi: 10.1177/1548512915617252.",
+			"link": "https://doi.org/10.1177/1548512915617252",
+			"description": "This paper studies cyber-physical security vulnerabilities in UAV systems, with a strong focus on wireless communication attacks and their physical consequences. The paper first explains why UAVs are attractive targets. UAVs rely heavily on wireless communication (Wi-Fi, GPS, Bluetooth, ZigBee) and remote control, often without strong authentication or encryption. Because there is no onboard pilot, any successful cyber intrusion may result in complete loss of operator authority. The authors highlight that traditional IT security methods, such as encryption alone, are insufficient because they do not consider the interaction between sensors, actuators, and control logic in cyber-physical systems. The paper then reviews defense mechanisms for UAV security. These include encryption and authentication, DDoS mitigation architectures, and intrusion detection systems (IDS). \n Finally, the paper presents an experimental cyber-physical attack against a commercially available UAV, the Parrot AR.Drone, to demonstrate how communication-layer vulnerabilities can result in complete loss of control. The authors exploit the UAV’s Wi-Fi-based control channel by using Aircrack-ng to place a wireless interface into monitor mode, capture packets, and inject de-authentication frames to disconnect the legitimate operator. After forcing the disconnection, the attacker reconnects to the UAV and reconfigures the network parameters. \n Once access is obtained, the attacker uses the Robot Operating System (ROS) to issue unauthorised flight commands, manipulate the UAV’s trajectory, and access the video stream. The experiment shows that the entire attack can be completed in less than one minute and results in the legitimate user losing control while the attacker gains full operational authority."
+		},
+		{
+			"ID": "RE0128",
+			"name": "A Container-based DoS Attack-Resilient Control Framework for Real-Time UAV Systems",
+			"cite": " J. Chen, Z. Feng, J. Y. Wen, B. Liu, and L. Sha, “A Container-based DoS Attack-Resilient Control Framework for Real-Time UAV Systems,” Proc. 2019 Des. Autom. Test Eur. Conf. Exhib. DATE 2019, pp. 1222–1227, 2019, doi: 10.23919/DATE.2019.8714888.",
+			"link": "https://doi.org/10.23919/DATE.2019.8714888",
+			"description": "This paper studies how Denial-of-Service attacks launched from inside a UAV’s onboard software can disrupt flight control, and proposes a container-based isolation framework (ContainerDrone) to contain the damage and keep the UAV safe. The authors assume that the UAV’s complex controller may be compromised by malicious code and demonstrate how resource-based DoS attacks targeting CPU, memory bandwidth, and internal communication channels can destabilise flight control. Through real-world quadcopter experiments, they show that memory bandwidth exhaustion, UDP flooding, and controller termination can all lead to unsafe flight behaviour. The framework mitigates these attacks by enforcing resource isolation and using a Simplex architecture to switch from a vulnerable controller to a verified safety controller when violations are detected."
+		},
+		{
+			"ID": "RE0129",
+			"name": "Identification of GPS Spoofing as a Drone Cyber-vulnerability and Evaluation of Efficacy of Asynchronous GPS spoofing",
+			"cite": "M. S. Kumar, G. S. Kasbekar, and A. Maity, “Identification of GPS Spoofing as a Drone Cyber-vulnerability and Evaluation of Efficacy of Asynchronous GPS spoofing,” IFAC-PapersOnLine, vol. 55, no. 22, pp. 394–399, 2022, doi: 10.1016/j.ifacol.2023.03.066.",
+			"link": "https://doi.org/10.1016/j.ifacol.2023.03.066",
+			"description": "This paper investigates GPS spoofing as a cyber vulnerability in commercial UAVs and evaluates whether asynchronous GPS spoofing can be used as an effective countermeasure against rogue drones. The authors first conduct a risk assessment of common UAV cyber threats using the DREAD model and identify GPS spoofing as a high-risk vulnerability due to the heavy reliance of commercial drones on civilian GNSS signals for navigation and positioning. \n The paper then designs and implements an asynchronous GPS spoofing attack, where spoofed GPS signals are transmitted without synchronising with authentic satellite signals. Using software-generated GPS signals and a software-defined radio, the attack is tested against both GNSS receivers and a commercial drone under multiple scenarios. Contrary to earlier studies, the experimental results show that asynchronous GPS spoofing is ineffective against the tested commercial drone, suggesting that modern drones may already incorporate countermeasures or filtering mechanisms. The study concludes that GPS spoofing remains a critical vulnerability, but its practical effectiveness depends on the attack type and the target system’s defences"
+		},
+		{
+			"ID": "RE0130",
+			"name": "ARDrone corruption",
+			"cite": "E. Deligne, “ARDrone corruption,” Journal of Computer Virology, vol. 8, no. 1–2, pp. 15–27, 2012, doi: 10.1007/s11416-011-0158-4.",
+			"link": "https://doi.org/10.1007/s11416-011-0158-4",
+			"description": "This paper presents a black-box security analysis of a commercial quadrotor UAV, the Parrot AR.Drone, to demonstrate how device miniaturisation and limited onboard resources lead to weak security design. The study focuses on practical and reproducible attacks that exploit unsecured wireless communication and an insecure embedded operating system, using only commonly available hardware and penetration-testing tools. The target platform is a Wi-Fi–controlled UAV running a Linux operating system on an ARM9 processor, exposing open network services such as FTP and Telnet, using ASCII-encoded control commands, and accessing onboard cameras via the Linux Video4Linux (V4L2) API. Communication between the drone and the controller consists of three main data flows: a multicast video stream (port 5555), multicast navigation and state data (port 5554), and a unicast command and control channel (port 5556).\n\nThe author passively captures wireless traffic using tools such as Wireshark and Aircrack-ng, revealing that all communications are unencrypted and unauthenticated. Control commands are transmitted in plain-text ASCII using AT (Hayes) command format, allowing an attacker to easily observe, replay, and forge commands. Although the drone applies MAC address filtering, this weak access control is bypassed by spoofing the legitimate controller’s MAC address, enabling network-level access and port scanning with Nmap. This exposes open Telnet and FTP services, including unauthenticated root access via Telnet.\n\nBased on this analysis, the paper demonstrates three attack scenarios. First, denial-of-service attacks are performed by shutting down the system through root access, abusing emergency flight commands, and flooding the drone’s network interface using Hping to overwhelm its limited processing resources. Second, a wireless command injection attack is implemented by reconstructing valid Wi-Fi frames using Scapy and injecting forged control packets with higher command counters, desynchronising the legitimate pilot and allowing the attacker to take control of the UAV, force landing, or disconnect the pilot. Third, a video stream hijacking attack is carried out by loading a malicious kernel module that hooks the ioctl() system call used by V4L2, replaces shared memory buffers with attacker-supplied video data, and causes the pilot to receive manipulated video while the drone continues normal operation."
+		},
+		{
+			"ID": "RE0131",
+			"name": "Jamming Attack Detection in Optical UAV Network",
+			"cite": "M. Sliti, W. Abdallah, and N. Boudriga, “Jamming Attack Detection in Optical UAV Networks,” International Conference on Transparent Optical Networks, 2018.",
+			"link": "https://doi.org/10.1109/ICTON.2018.8473921",
+			"description": "This paper studies jamming attacks in optical UAV networks that use Free Space Optical (FSO) links for high data-rate communication. The focus is on inter-UAV communication, where UAVs exchange collected data using narrow optical beams rather than radio signals. The authors consider a three-layer UAV network architecture, in which multiple UAVs forward data to parent UAVs through FSO links.\n\nThe communication system is modelled as a MIMO-FSO link, meaning that multiple optical transmitters and receivers are used to improve reliability. Binary Phase Shift Keying (BPSK) modulation is applied because it is robust to signal intensity variations caused by atmospheric conditions. The optical channel is modelled using a log-normal distribution to represent turbulence effects, and channel conditions are assumed to remain stable for short periods.\n\nThe paper classifies several attacks against FSO links, including jamming, black hole, and replay attacks, but focuses exclusively on jamming attacks. Two jamming scenarios are described. In hidden-node-based jamming, the attacker injects optical interference that makes the receiver believe multiple legitimate UAVs are colliding. In reflection-based jamming, the attacker uses reflective equipment to introduce sporadic optical signals into the communication link. These attacks operate purely at the physical layer and aim to disrupt data exchange without compromising protocols or systems.\n\nThe main contribution of the paper is a jamming detection and recovery method based on the Multi-Channel Ratio (MCR). The key idea is that the ratio between the jammer’s signals received on multiple antennas remains constant for a short time. By monitoring changes in this ratio, the receiver can detect the presence of jamming. Once detected, the same ratio is used to mathematically remove the jamming component from the received signal, allowing partial or significant recovery of the legitimate data. The effectiveness of this approach depends on channel stability, the number of samples used, and the jammer-to-signal power ratio."
+		},
+		{
+			"ID": "RE0132",
+			"name": "Adversarial Attacks and Defenses for Deep-Learning-Based Unmanned Aerial Vehicles",
+			"cite": "J. Tian, B. Wang, R. Guo, Z. Wang, K. Cao, and X. Wang, “Adversarial Attacks and Defenses for Deep-Learning-Based Unmanned Aerial Vehicles,” IEEE Internet Things J., vol. 9, no. 22, pp. 22399–22409, 2022, doi: 10.1109/JIOT.2021.3111024.",
+			"link": "https://doi.org/10.1109/JIOT.2021.3111024",
+			"description": "This paper studies adversarial machine-learning attacks against deep-learning-based UAV navigation systems. It focuses on regression models rather than classification models. The target system is a DL-based UAV navigation pipeline using DroNet. DroNet is a convolutional neural network that takes camera images (200×200 grayscale) as input and outputs two continuous values: steering angle and collision probability. These outputs are then converted into UAV control commands. The UAV is modelled as a cyber–physical system with three main components: a camera sensor, a DL-based controller, and an actuator. These components communicate over Wi-Fi links. \n\nThe paper assumes a white-box adversary with full knowledge of the DL model architecture and parameters. The attacker is assumed to manipulate camera images transmitted over a vulnerable Wi-Fi link. This allows imperceptible perturbations to be injected into the input images without being noticed by human operators. \n\nThe authors propose two adversarial attack methods designed for regression models. The first is a Forward Derivative-based Nontargeted Attack (FNA). This method computes the Jacobian of the regression outputs with respect to the input image. It identifies pixels that have the largest influence on steering angle and collision probability. Small perturbations are applied only to a selected set of influential pixels. The goal is to degrade navigation and control, rather than to achieve a specific control outcome. \n\nThe second method is an Optimization-based Targeted Attack (OTA). This method formulates adversarial example generation as an optimisation problem. The goal is to achieve a predefined minimum change in the regression output while minimising input perturbation. This allows more precise control manipulation, such as forcing unsafe steering behaviour. A change-of-variables technique and binary search over a trade-off parameter are used to generate valid adversarial images. \n\nBoth attack methods are evaluated against the DroNet model using simulation data. The results show that small and visually imperceptible perturbations can cause large changes in steering angle and collision probability. These changes pose a significant risk to UAV navigation and control. \n\nThe paper also evaluates two defence strategies. The first is adversarial training, where adversarial samples are generated and included during model retraining. The second is defensive distillation, where a smoothed model is trained using outputs from a previously trained network. Both methods improve robustness to some extent. However, they do not fully mitigate regression-based adversarial attacks. The authors note that suitable defence evaluation metrics for regression-based CPS models are still lacking."
+		},
+		{
+			"ID": "RE0133",
+			"name": "SkyJack Project",
+			"cite": "S. Kamkar, “SkyJack: Autonomous Drone Hacking Project,” GitHub repository, 2013.",
+			"link": "https://github.com/samyk/skyjack",
+			"description": "This project demonstrates a proof-of-concept UAV hijacking attack against consumer drones. SkyJack scans for nearby drones, forcibly disconnects the legitimate operator using Wi-Fi deauthentication, and reconnects to the drone by impersonating the owner. Once connected, the attacker gains full command control of the target drone. The project shows how unsecured wireless control links can be exploited to take over UAVs in flight, enabling the creation of hijacked drone swarms."
+		},
+		{
+			"ID": "RE0134",
+			"name": "Malware on Internet of UAVs Detection Combining String Matching and Fourier Transformation",
+			"cite": "W. Niu et al., “Malware on Internet of UAVs Detection Combining String Matching and Fourier Transformation,” IEEE Internet Things J., vol. 8, no. 12, pp. 9905–9919, 2021, doi: 10.1109/JIOT.2020.3029970.",
+			"link": "https://doi.org/10.1109/JIOT.2020.3029970",
+			"description": "This paper studies the detection of malware-related command-and-control activity in Internet of UAV (IoUAV) networks. The paper does not demonstrate how malware is deployed or executed on UAVs. Instead, it assumes that malware has already been implanted as part of an advanced persistent threat and focuses on detecting its network communication behaviour. \n\nThe target environment is a UAV network that communicates using IP-based protocols and relies on DNS for external connectivity. The authors assume that malware running on a UAV periodically communicates with a remote command-and-control server using DNS queries. These DNS requests exhibit regular timing patterns that differ from benign UAV traffic. \n\nThe proposed detection framework analyses DNS traffic collected at the network level. It extracts time intervals between DNS queries and converts them into symbolic sequences. Two detection methods are applied. The first uses string matching to identify periodic patterns in DNS requests. The second applies Fourier transformation to detect frequency-domain characteristics of malware beaconing. The outputs of both methods are combined using a Random Forest classifier. \n\nThe approach is evaluated using simulated UAV network traffic combined with replayed malware DNS traces from an existing malware dataset. The malware samples are not UAV-specific and are not executed on real UAV hardware. Experimental results show that the proposed method can effectively distinguish malware-related DNS communication from benign traffic. \n\nOverall, this paper provides evidence that standard APT-style command-and-control behaviours, such as DNS-based beaconing, are applicable to UAV network environments. However, it does not provide a real-world case study of malware execution or deployment on UAV systems."
+		},
+		{
+			  "ID": "RE0135",
+			  "name": "Multi-Agent Coordinated Close-in Jamming for Disabling a Rogue Drone",
+			  "cite": "P. Valianti, S. Papaioannou, P. Kolios, and G. Ellinas, “Multi-Agent Coordinated Close-in Jamming for Disabling a Rogue Drone,” IEEE Transactions on Mobile Computing, vol. 21, no. 10, pp. 3700–3717, 2022, doi: 10.1109/TMC.2021.3062225.",
+			  "link": "https://doi.org/10.1109/TMC.2021.3062225",
+			  "description": "This paper proposes a defensive counter-UAV framework in which multiple cooperating defender drones track and disable a rogue drone using close-in RF jamming. The system is designed for scenarios where an unauthorised drone enters a protected area and its trajectory is unknown. A team of defender UAVs is deployed to detect, track, and apply coordinated radio interference to the target while dynamically adjusting their positions and transmit power to maximise jamming effectiveness and limit mutual interference among the defenders.\n The system consists of one rogue drone (target) and multiple defender UAVs (agents). The rogue drone is modelled using a stochastic state-space model that includes its position, velocity, and turn rate. The defender UAVs are equipped with sensors that have limited range and probabilistic detection capability. At each time step, a defender may receive at most one true measurement of the target along with multiple false-alarm measurements caused by noise and environmental interference. The measurements are noisy range and bearing observations, and the probability of detection decreases with distance from the target.\n To handle uncertainty, clutter, and missed detections, the authors model the measurement process using Random Finite Set (RFS) theory and apply Bayesian filtering, implemented via particle filtering, to estimate the target’s state over time. This allows the defender UAVs to continuously track the rogue drone despite incomplete and unreliable sensor information. The problem is treated as a tracking task under uncertainty rather than an attack on the drone’s navigation or control software.\n The core contribution of the paper is a joint optimisation framework that combines two objectives: maintaining accurate tracking of the rogue drone and maximising the RF jamming power received at the target. This is formulated as a multi-objective optimisation problem that jointly considers mobility decisions, determining where each defender UAV should move, and power control decisions, determining how much jamming power each UAV should transmit. The optimisation is subject to constraints on maximum transmit power and limits on interference between cooperating defender UAVs. The authors propose centralised, sequential, and distributed control algorithms to solve this problem and evaluate their performance through extensive simulations."
+		},
+		{
+			  "ID": "RE0136",
+			  "name": "Combating the Control Signal Spoofing Attack in UAV Systems",
+			  "cite": "K. W. Huang and H. M. Wang, “Combating the Control Signal Spoofing Attack in UAV Systems,” IEEE Trans. Veh. Technol., vol. 67, no. 8, pp. 7769–7773, 2018, doi: 10.1109/TVT.2018.2830345.",
+			  "link": "https://doi.org/10.1109/TVT.2018.2830345",
+			  "description": "This paper studies how a UAV can defend itself against control signal spoofing attacks at the physical layer. The authors assume that a malicious attacker transmits forged control commands that follow the same format as legitimate commands from the Ground Control Station (GCS). The goal is to determine, at the UAV side, whether a received control packet comes from the legitimate GCS or from an attacker. \n  The system model consists of a multi-antenna UAV, a single-antenna GCS, and a single-antenna attacker. The UAV receives wireless control packets and must authenticate the sender. The paper  considers a worst-case scenario, that sthe UAV has no prior knowledge about the attacker’s location, power, or channel parameters, but it does know the expected channel characteristics of the GCS because the UAV trajectory is controlled and predictable. \n The defence is based on physical-layer authentication. Instead of cryptographic keys, the method uses channel characteristics that are difficult for an attacker to mimic. Specifically, the authors exploit angles of arrival (azimuth and elevation), distance-based path loss and rician fading characteristics. Using these features, the authors formulate a Generalized Log-Likelihood Ratio (GLLR) test. When a control packet is received, the UAV estimates unknown attacker parameters (such as angle of arrival and signal strength) under the assumption that the packet is malicious. It then compares the likelihood of the packet being sent by the legitimate GCS versus being sent by an attacker. The paper derives mathematical expressions to estimate unknown attacker channel parameters, decide a detection threshold using the Neyman–Pearson criterion, approximate the False Alarm Rate (FAR) and Successful Detection Rate (SDR) analytically. Simulation results show that detection performance improves when the attacker’s signal differs from the GCS in direction, power, or channel conditions. Performance degrades when the attacker is physically close to the GCS or closely matches its signal properties."
+		},
+		{
+			"ID": "RE0137",
+			"name": "Don’t steal my drone: Catching attackers with an unmanned aerial vehicle honeypot",
+			"cite": "E. Vasilomanolakis, J. Daubert, D. Boopalan, and M. Mühlhäuser, “Don’t steal my drone: Catching attackers with an unmanned aerial vehicle honeypot,” IEEE/IFIP Netw. Oper. Manag. Symp. Cogn. Manag. a Cyber World, NOMS 2018, pp. 1–2, 2018, doi:10.1109/NOMS.2018.8406119 .",
+			"link": "https://doi.org/10.1109/NOMS.2018.8406119",
+			"description": "This paper proposes a defensive honeypot system for UAVs. The main goal is to detect and study attackers targeting UAV communication and control interfaces. The authors introduce a portable, medium-interaction UAV honeypot that emulates the radio interfaces, protocols, and basic system behaviour of real UAVs. The honeypot is intended to lure attackers away from real drones and collect detailed information about their attack techniques. It can run on low-cost hardware such as a Raspberry Pi and uses commodity wireless adapters. The threat model assumes that attackers target UAVs through wireless communication channels, often relying on signal strength rather than physical proximity or visual contact. Typical attacks include Wi-Fi de-authentication, command hijacking, unauthorised access to onboard services, and protocol-level manipulation. These attacks are assumed based on prior work and demonstrations, not newly discovered in this paper. The honeypot emulates multiple UAV-related communication technologies, including Wi-Fi-based command and control, common application protocols such as Telnet, SSH, and FTP, and UAV-specific protocols such as MAVLink. To increase realism, the system uses drone simulators (e.g., ArduPilot SITL) that expose MAVLink interfaces and simulate UAV state information such as GPS position, movement, and battery level. The honeypot also emulates UAV file systems and radio characteristics, making it difficult for attackers to distinguish it from a real drone. All attacker interactions with the honeypot are logged and stored, enabling offline analysis and replay of attack sessions. The paper presents demonstration scenarios in which known UAV attacks (e.g., Wi-Fi de-authentication followed by command hijacking or file deletion) are first performed against real UAVs and then repeated against the honeypot to show similar attacker behaviour. The paper argues that, if deployed strategically and with stronger signal characteristics than nearby UAVs, the honeypot may also divert or delay attacks against real drones. However, the system primarily functions as a detection and intelligence-gathering mechanism, not as a full prevention or recovery solution."
+		},
+		{
+			"ID": "RE0138",
+			"name": "The Impact of DoS Attacks on the AR.Drone 2.0",
+			"cite": "G. Vasconcelos, G. Carrijo, R. Miani, J. Souza, and V. Guizilini, “The Impact of DoS Attacks on the AR.Drone 2.0,” Proc. - 13th Lat. Am. Robot. Symp. 4th Brazilian Symp. Robot. LARS/SBR 2016, pp. 127–132, 2016, doi: 10.1109/LARS-SBR.2016.28.",
+			"link": "https://doi.org/10.1109/LARS-SBR.2016.28",
+			"description": "This paper experimentally evaluates the impact of resource-based Denial of Service (DoS) attacks on the Parrot AR.Drone 2.0. The authors conduct an experimental study to observe how existing DoS tools affect UAV network availability and application performance, with a particular focus on video streaming. The experimental setup involves three main entities: (1) a pilot, who controls the AR.Drone using a laptop running ROS over a Wi-Fi connection; (2) the UAV (AR.Drone 2.0), which operates as a Wi-Fi access point without encryption or authentication; and (3) an attacker, who connects to the same wireless network using a laptop. The authors assume that the attacker is within wireless range and can freely join the UAV’s open Wi-Fi network. No WPA or WPA2 protection is enabled on the UAV, so the attacker does not need to bypass any authentication mechanisms. These assumptions reflect the default configuration of the AR.Drone 2.0 used in the experiments. The attack model consists of two phases. In the reconnaissance phase, the attacker uses Nmap to scan the UAV and identify open services, including FTP (port 21), Telnet (port 23), and the video streaming service (port 5555), all of which are accessible without credentials. In the attack phase, the attacker launches resource-based DoS attacks using three tools: LOIC to perform TCP SYN flooding, Netwox to conduct SYN flood attacks on specific ports, and Hping3 to generate high-rate packet floods. The attacks are executed while the UAV is operating normally, and their impact is measured in real time. The authors evaluate the effects of the DoS attacks using two main metrics. First, network latency between the pilot and the UAV is measured, showing that DoS attacks significantly increase latency on targeted ports, with Hping3 producing the highest latency increase. Second, video streaming performance is measured using ROS topic frequency, revealing a sharp drop in video frame rate during the attacks. The UAV does not consistently crash during the experiments, but its network-dependent functions, particularly real-time video streaming, experience severe degradation. The paper does not claim guaranteed loss of control and notes that firmware updates may mitigate some of the observed effects."
+
+		},
+		{
+			"ID": "RE0139",
+			"name": "An Effective Countermeasure against UAV Swarm Attack",
+			"cite": "D. He, G. Yang, H. Li, S. Chan, Y. Cheng, and N. Guizani, “An Effective Countermeasure against UAV Swarm Attack,” IEEE Netw., vol. 35, no. 1, pp. 380–385, 2021, doi: 10.1109/MNET.011.2000380.",
+			"link": "https://doi.org/10.1109/MNET.011.2000380",
+			"description": "This paper studies GPS spoofing as a potential defensive approach against UAV swarm attacks. The core idea is to deceive the UAV swarm’s position perception system so that UAVs misjudge their locations and collide with each other, thereby disrupting the swarm. The contribution is simulation-based. The authors build a UAV swarm position perception simulation platform using ROS and Gazebo, implement GNSS deception, and demonstrate that two UAVs can be induced to collide under spoofed navigation signals.\n\nThe paper assumes a GNSS-dependent UAV swarm in which each UAV relies on GPS (or other GNSS) for position estimation, periodically updates its location from satellite signals, and uses this information for navigation and formation control. The UAVs are assumed to trust received GNSS signals and lack strong spoofing detection mechanisms. No software compromise, network intrusion, or remote control takeover is assumed.\n The defender is modeled as an entity capable of estimating the approximate positions of UAVs and broadcasting false but plausible GNSS position signals. The spoofing signals are generated using an adaptive algorithm that gradually shifts the UAVs’ perceived positions to avoid abrupt changes. The goal is not to take control of the UAVs, but to manipulate their perceived positions to induce unsafe relative motion.\n To demonstrate swarm disruption, the paper focuses on two UAVs as the minimal cooperative unit. The collision process consists of three steps: selecting a collision point, equalizing deceptive distances so both UAVs perceive safe trajectories, and applying collision-oriented position spoofing. Two scenarios are evaluated in simulation: parallel flight paths and intersecting flight paths. In both cases, GPS spoofing alone causes the UAVs to deviate from their intended paths and collide at a predefined point. The results show that GNSS deception can disrupt UAV swarm operation by exploiting the swarm’s reliance on cooperative positioning, but the evaluation is limited to simulation and does not include real-world flight tests."
+		},
+		{
+			"ID": "RE0140",
+			"name": "Secure UAV Communication With Cooperative Jamming and Trajectory Control",
+			"cite": "C. Zhong, J. Yao, and J. Xu, “Secure UAV Communication With Cooperative Jamming and Trajectory Control,” IEEE Commun. Lett., vol. 23, no. 2, pp. 286–289, 2019, doi: 10.1109/LCOMM.2018.2889062.",
+			"link": "https://doi.org/10.1109/LCOMM.2018.2889062",
+			"description": "This paper studies how to protect UAV-to-ground wireless communication from passive eavesdropping. The authors propose a cooperative jamming scheme in which one UAV sends confidential data to a legitimate ground node (GN), while a second UAV acts as a friendly jammer and transmits artificial noise to interfere with a ground eavesdropper. The work focuses on communication confidentiality rather than disrupting UAV operation or causing physical damage.\n The system consists of two UAVs, one ground node, and one passive ground eavesdropper. The UAVs fly at fixed, possibly different altitudes and have fully controllable horizontal mobility. The location of the ground node is assumed to be perfectly known, while the eavesdropper’s location is only partially known and modelled as a bounded uncertainty region. Air-to-ground channels are assumed to be dominated by line-of-sight propagation and follow a free-space path loss model.\n Security is achieved at the physical layer. The transmitting UAV sends confidential data to the ground node, while the jamming UAV emits artificial noise to reduce the signal quality at the eavesdropper. The jamming signal is carefully managed so that it limits information leakage without significantly degrading the legitimate communication. Because UAVs are mobile, their positions can be adjusted over time: the transmitting UAV can move closer to the ground node, and the jamming UAV can move closer to the eavesdropper.\n The authors formulate an optimisation problem that aims to maximise the average secrecy rate over a given mission duration. The variables to be optimised are the trajectories of both UAVs and their transmit powers. The problem is difficult to solve directly because the secrecy rate expression is non-convex, the eavesdropper’s location is uncertain, and the trajectory and power variables are tightly coupled.\n To address this, the authors first derive a conservative lower bound on the secrecy rate that accounts for the worst-case eavesdropper location. They then solve the problem using an iterative approach. At each step, they alternately optimise the transmit and jamming power for fixed UAV trajectories, and then optimise the UAV trajectories for fixed power levels. Each subproblem is approximated using successive convex approximation, which allows it to be solved efficiently using standard convex optimisation tools. This alternating process is guaranteed to converge to a locally optimal solution.\n Simulation results show that jointly optimising UAV trajectories and power allocation significantly improves the secrecy rate compared with baseline schemes, such as fixed fly-hover-fly trajectories or constant power transmission. The proposed approach is also shown to be robust to moderate uncertainty in the eavesdropper’s location. Overall, the paper demonstrates improvements in communication-level security, rather than physical disruption or control interference."
+		},
+		{
+			"ID": "RE0141",
+			"name": "Security in networks of unmanned aerial vehicles for surveillance with an agent-based approach inspired by the principles of blockchain",
+			"cite": "I. García-Magariño, R. Lacuesta, M. Rajarajan, and J. Lloret, “Security in networks of unmanned aerial vehicles for surveillance with an agent-based approach inspired by the principles of blockchain,” Ad Hoc Networks, vol. 86, pp. 72–82, 2019, doi: 10.1016/j.adhoc.2018.11.010.",
+			"link": "https://doi.org/10.1016/j.adhoc.2018.11.010",
+			"description": "This paper studies security in UAV networks used for surveillance, focusing on the case where some official UAVs are physically hijacked and begin to behave maliciously. The target scenario is border or perimeter surveillance in areas with low human traffic and no fixed network infrastructure, where UAVs form a mobile ad-hoc UAV-to-UAV (V2V) network.\n The main security problem addressed is false information injection by compromised UAVs, such as reporting non-existent intruders in order to degrade trust in the surveillance system. The system consists of a fleet of officially registered UAVs that patrol a controlled area, detect people using onboard vision, and communicate only through short-range V2V links without relying on ground infrastructure or continuous connectivity.\n The approach is based on several key assumptions. All UAVs are pre-registered and know the public keys of other official UAVs. UAVs may be physically hijacked, but attackers cannot steal private keys from other UAVs. A real intruder is normally observed by more than one UAV, although not always at the same time. Communication between UAVs is intermittent rather than continuous.\n To address this problem, the paper proposes a distributed defence mechanism inspired by blockchain principles and combined with a trust policy. When a UAV observes a person, it creates a signed message using asymmetric cryptography, which includes its UAV ID and the observation. This prevents identity spoofing, since only the UAV holding the private key can generate valid signatures. Observations are then shared in a blockchain-like manner, where information is propagated peer-to-peer and UAVs maintain local copies of the longest valid chain, making later modification difficult.\n\nIn addition, a corroboration-based trust policy is used. Events reported by multiple UAVs are considered trustworthy, while events repeatedly reported by only a single UAV are treated as suspicious and reduce that UAV’s trust score over time. Even though a hijacked UAV can still send correctly signed messages, it can be identified as untrustworthy if its alerts are never corroborated by others.\n The approach is evaluated using a custom agent-based simulator called ABS-SecurityUAV, implemented in NetLogo. The evaluation does not involve real UAVs. Simulations use 100 UAVs moving in a two-dimensional space with non-deterministic movement to avoid predictability. Two main scenarios are tested: one where a real person crosses the area with no compromised UAVs, and one where a single compromised UAV sends false alerts without any real intruder.\n Measured outcomes include the percentage of UAVs that receive alerts, the percentage that trust the alerts, and the number of direct observers per event. Results show that real intrusions are gradually trusted by most UAVs, while false alerts from a compromised UAV may spread but are never trusted due to lack of corroboration. As a result, compromised UAVs can be detected over time without revoking cryptographic keys, purely through trust degradation."
+		}, 
+		{
+			"ID": "RE0142",
+			"name": "Securing of Unmanned Aerial Systems (UAS) against security threats using human immune system",
+			"cite": "R. Fotohi, “Securing of Unmanned Aerial Systems (UAS) against security threats using human immune system,” Reliab. Eng. Syst. Saf., vol. 193, no. August 2019, p. 106675, 2020, doi: 10.1016/j.ress.2019.106675.",
+			"link": "https://doi.org/10.1016/j.ress.2019.106675",
+			"description": "This paper addresses security threats in Unmanned Aerial Systems (UAS), focusing on UAV ad-hoc networks where UAVs cooperate to forward data and maintain communication without fixed infrastructure. The paper assumes that UAVs form a MANET-like network, that some UAVs may become malicious due to compromise or misbehaviour, and that these malicious UAVs aim to disrupt routing or communication rather than fully take control of the system.\nThe paper considers several routing- and communication-level attacks. In a wormhole attack, two colluding malicious UAVs tunnel packets between distant locations, creating the illusion of a short route and attracting traffic through them. In a black hole attack, a malicious UAV advertises a fake optimal route and then drops all forwarded packets. In a grey hole attack, a malicious UAV selectively drops packets, behaving normally at times and maliciously at others, making detection harder. In false information or GPS deception attacks, a UAV injects incorrect location or routing-related information to mislead network decisions and degrade communication reliability.\nTo address these threats, the paper proposes an intrusion detection system inspired by the Human Immune System, called SUAS-HIS. The system treats abnormal network behaviour as antigens and detection patterns as antibodies. It focuses on behavioural detection rather than signature-based detection, monitoring routing and communication behaviour to distinguish normal and malicious activity. The design applies immune-system concepts such as negative selection, affinity, and clonal selection to identify abnormal behaviour patterns.\nThe approach is evaluated through simulation using NS-3, not real UAV hardware. Multiple attack scenarios are simulated, including wormhole, black hole, grey hole, and false information attacks. Performance is measured using detection rate, packet delivery ratio, false positive rate, and false negative rate.\nSimulation results show that SUAS-HIS achieves higher detection rates than the compared methods across multiple attack types, identifies and isolates malicious UAVs before severe communication degradation occurs, and improves packet delivery ratio once malicious nodes are detected. The results are limited to the simulated scenarios and parameters used. The proposed method is compared against a generic cybersecurity system, a behaviour-rule-based IDS (BRUIDS), and SFA-based approaches."
+		},
+		{
+			"ID": "RE0143",
+			"name": "A machine learning based attack in UAV communication networks",
+			"cite": "X. C. Chen and Y. J. Chen, “A machine learning based attack in UAV communication networks,” IEEE Veh. Technol. Conf., vol. 2019-Septe, pp. 1–2, 2019, doi: 10.1109/VTCFall.2019.8891199.",
+			"link": "https://doi.org/10.1109/VTCFall.2019.8891199",
+			"description": "This paper studies a privacy attack on UAV communication, focusing on encrypted UAV location broadcasts sent from the UAV to a ground base station (GBS). The system model assumes that UAVs periodically transmit GPS-based location data over a wireless channel while operating in a fixed geographic area. The attacker is passive and does not inject traffic or compromise UAV hardware, but can eavesdrop on wireless transmissions and visually observe the UAV when it is within line of sight.\n The core attack model is a known-plaintext attack (KPA) assisted by machine learning. The attacker collects ciphertext through wireless monitoring and obtains partial plaintext by observing the UAV’s real location during limited observation periods. These plaintext–ciphertext pairs are used to train a neural network to learn the relationship between encrypted messages and underlying location data. The paper assumes a shared encryption key across UAVs and a simple XOR-based encryption scheme applied to binary-encoded location information.\n The feasibility of the attack is evaluated through simulations. Results show that longer attacker observation time and a higher number of simultaneously operating UAVs reduce the neural network’s bit error rate, allowing more accurate inference of UAV location data. The paper does not demonstrate UAV takeover, command manipulation, or real-world deployment, and focuses strictly on location privacy leakage under the stated assumptions."
+		},
+		{
+			"ID": "RE0144",
+			"name": "On simulation-based adaptive UAS behavior during jamming",
+			"cite": "R. Johansson, P. Hammar, and P. Thoren, “On simulation-based adaptive UAS behavior during jamming,” 2017 Work. Res. Educ. Dev. Unmanned Aer. Syst. RED-UAS 2017, pp. 78–83, 2017, doi: 10.1109/RED-UAS.2017.8101647.",
+			"link": "https://doi.org/10.1109/RED-UAS.2017.8101647",
+			"description": "This paper studies autonomous behaviour of a UAS when its communication link is jammed, focusing on how the aircraft should adapt its flight path after losing remote control. The scenario assumes a remotely piloted aerial system (RPAS) performing a surveillance mission, where an adversary deliberately jams the communication uplink and downlink to disrupt control and sensor data transmission. Once the link is jammed, the aircraft must operate autonomously. The radar sensor is assumed to remain functional, while communication is unavailable. \n The authors highlight a weakness of standard fail-safe behaviour, where a jammed aircraft immediately returns to a pre-defined safe location (e.g., home base). In such cases, an adversary can effectively force mission abortion simply by jamming communications. To address this, the paper considers an alternative objective: the UAS should continue surveilling the jammed area for a limited time to detect threats, but still exit the jammed region early enough to report detected information once communication is restored. \n The problem is formulated as a flight path planning and policy selection problem under uncertainty. Rather than continuous control or reinforcement learning, the authors propose a stochastic approximation approach that selects a complete flight path in a single decision. Candidate paths are represented using quadratic Bézier curves, defined by the aircraft’s current position, a selected direction, and an endpoint constrained to the estimated boundary between jammed and non-jammed areas. The action space consists of a discrete set of direction choices and allowed flight times within the jammed region. \n The policy is learned through extensive simulation, not real-world deployment. The authors use the FLAMES simulator to model a military coastal surveillance scenario in which a jammer disrupts communications while cruise missiles may be launched toward defended targets. For each predefined attack scenario and each possible flight-path option, multiple simulation runs are executed. The performance metric is based on how many cruise missiles are detected before the UAS exits the jammed area and regains communication. \n The results show that different path and timing choices lead to significantly different surveillance outcomes. In some scenarios, adaptive path planning allows the UAS to detect more threats than the default behaviour of immediately returning to base. However, the paper does not prescribe a single optimal policy. Instead, it presents a methodology that allows operators to explore trade-offs between detection performance and reporting delay using simulation-based evaluation."
+		},
+		{
+			"ID": "RE0145",
+			"name": "Packet Insertion Attack Detection in Optical UAV Networks",
+			"cite": "N. Ramdhan, M. Sliti, and N. Boudriga, “Packet Insertion Attack Detection in Optical UAV Networks,” Int. Conf. Transparent Opt. Networks, vol. 2018-July, pp. 1–5, 2018, doi: 10.1109/ICTON.2018.8473952.",
+			"link": "https://doi.org/10.1109/ICTON.2018.8473952",
+			"description": "This paper studies security issues in optical UAV networks where UAVs communicate with each other using Free Space Optical (FSO) links. The system model assumes a three-layer UAV architecture: UAVs collect data from ground sensors, forward it through inter-UAV FSO links organised in a tree structure, and finally deliver the data to base stations. The focus is on protecting inter-UAV communication, not UAV control or navigation. \n The authors consider a specific external packet insertion attack on inter-UAV FSO links. In this attack, an adversary positioned on the optical link injects false or erroneous data packets so that the receiving UAV accepts corrupted information as legitimate. The attacker does not take over UAV control and does not break cryptographic keys; instead, the attack targets the data transmission channel itself. \n To detect packet insertion attacks, the paper proposes an optical codeword–based encoding scheme. Each data bit is encoded using predefined optical codewords and their cyclically shifted replicas. Two base codewords are used to represent binary values, and additional security is introduced by varying the starting index of the codeword shifts for each communication session. At the receiver, packets are decoded using optical decoders configured with the expected codeword patterns. If a packet cannot be correctly decoded, it is treated as evidence of a packet insertion attack. \n Beyond detection, the paper proposes a tolerance mechanism rather than a full recovery or fail-safe system. When a packet insertion attack is detected, the UAV may respond by changing the spatial or temporal characteristics of the FSO link or by physically repositioning itself to alter the optical communication path. \n The authors evaluate the proposed approach using simulation, analysing trade-offs between security and performance. Results show that longer codewords and more codeword shifts improve attack resistance but reduce data rate and optical signal quality. The paper concludes that a balance must be chosen between security strength, latency, and throughput."
+		},
+		{
+			"ID": "RE0146",
+			"name": "A Cognitive Radio System for Improving the Reliability and Security of UAS/UAV Networks",
+			"cite": "H. Reyes, N. Gellerman, and N. Kaabouch, “A Cognitive Radio System for Improving the Reliability and Security of UAS/UAV Networks” 2015 IEEE Aerosp. Conf., pp. 1–9, doi: 10.1109/AERO.2015.7119159.",
+			"link": "https://doi.org/10.1109/AERO.2015.7119159",
+			"description": "This paper proposes a defence-oriented communication system that improves the reliability and availability of wireless links in Unmanned Aerial System (UAS/UAV) networks. The focus is on the communication layer, where UAVs frequently experience lost links due to mobility, long distances, obstacles, interference, and jamming. Rather than assuming stable network conditions, the paper treats link disruption as a normal and expected situation in UAV operations.\nThe paper assumes a UAS architecture in which UAVs communicate wirelessly with ground stations and with other vehicles. Different UAV platforms may operate on different frequency bands, such as UHF, C-band, Ku-band, or L-band, depending on mission range and whether communication is line-of-sight or beyond line-of-sight. The authors note that UAS networks do not follow a single communication standard and often lack guaranteed end-to-end connectivity, which makes them more vulnerable to communication failures.\nThe main contribution is a cognitive radio system implemented using software-defined radio. Software-defined radio allows the UAV to change its radio behaviour using software rather than fixed hardware. On top of this, the cognitive radio continuously observes the radio environment, decides how severe the communication problem is, and adapts its transmission settings to keep the link alive. To understand the environment, the system measures which frequencies are occupied, how strong and reliable the signal is, and how UAV motion affects the signal through Doppler shift.\nBased on these observations, the UAV can dynamically adjust how it transmits data. For example, it can switch to a different frequency if the current one is congested or jammed, reduce the data rate to make communication more robust under noise, increase error correction when packets are being lost, adjust transmission power when the signal becomes weak, or change bandwidth when more or less capacity is needed.\nTo increase reliability, the paper describes two types of defence mechanisms: prevention and recovery. Prevention mechanisms aim to avoid link failure before it happens by detecting interference early and preparing alternative channels, including maintaining backup frequencies. Recovery mechanisms are used after a failure has occurred and focus on restoring communication by switching channels, aggregating bandwidth, or adapting modulation and coding to degraded conditions.\nThe paper also implements a fuzzy logic–based detection system to identify lost links and possible jamming. This system uses simple communication measurements, such as packet loss, signal strength, channel availability, and delivery ratio, to determine whether the link is healthy, degraded, or under jamming. Simulation and field experiments show that the system can accurately detect link loss and distinguish between different causes, including interference, propagation loss, and several types of jamming."
+		},
+		{
+			"ID": "RE0147",
+			"name": "Ad-hoc framework for efficient network security for unmanned aerial vehicles (UAV)",
+			"cite": "M. S. Haque and M. U. Chowdhury, Ad-hoc framework for efficient network security for unmanned aerial vehicles (UAV), vol. 1113 CCIS. Springer International Publishing, 2019. doi: 10.1007/978-3-030-34353-8_2.",
+			"link": "https://doi.org/10.1007/978-3-030-34353-8_2",
+			"description": "This paper addresses network security challenges in WiFi-based UAV ad-hoc networks, with a focus on resource-constrained commercial UAV platforms. The authors observe that many civilian UAVs rely on IEEE 802.11 wireless links for command, control, and data transmission, often with weak or disabled security mechanisms due to performance and energy constraints. As a result, UAV networks are vulnerable to eavesdropping, jamming, denial-of-service, buffer overflow, and hijacking attacks conducted over exposed wireless links. \nThe paper assumes a UAV ad-hoc network architecture composed of UAVs and a ground control station (GCS), where communication occurs over open wireless channels without fixed infrastructure. UAVs are treated as resource-limited nodes, with constraints on battery capacity, computation, storage, and bandwidth. The authors focus primarily on micro UAV platforms commonly used in commercial settings, such as the Parrot AR.Drone and Bebop series, which operate using unencrypted or weakly protected WiFi links and run embedded Linux-based systems. \n The paper proposes a multi-layer, hierarchical security framework for UAV ad-hoc networks that uses Identity-Based Encryption (IBE) to secure communication while reducing key management overhead. Instead of relying on traditional public-key infrastructure and certificate authorities, the framework derives public keys directly from node identities (e.g., device identifiers). This design aims to reduce communication overhead, simplify key distribution, and make cryptographic protection more feasible for UAVs with limited resources. The proposed network architecture organises UAVs into a hierarchical clustering structure consisting of a base station, cluster heads, and ordinary cluster members. Cluster heads are assumed to have relatively higher computational and energy capabilities compared to ordinary UAV nodes. Security-related operations, including key management, authentication, and aggregation of encrypted data, are offloaded to cluster heads to reduce the burden on resource-constrained UAVs. Ordinary cluster members communicate only with their assigned cluster head, which forwards and processes data before sending it to the base station. \n To evaluate feasibility, the paper presents a simulation-based experimental study using OMNeT++ and the INET framework. The authors model a UAV network based on a Parrot Bebop platform and focus on measuring the energy and power consumption associated with IBE operations, particularly during key management and message encryption. The evaluation is intended to assess whether IBE can be practically deployed in UAV networks without significantly reducing flight time. The results focus on energy consumption and feasibility rather than attack resistance or security effectiveness against specific adversaries."
+		},
+		{
+			"ID": "RE0148",
+			"name": "ETD: An Efficient Time Delay Attack Detection Framework for UAV Networks",
+			"cite": "W. Zhai, L. Liu, Y. Ding, S. Sun, and Y. Gu, “ETD: An Efficient Time Delay Attack Detection Framework for UAV Networks,” IEEE Trans. Inf. Forensics Secur., vol. 18, pp. 2913–2928, 2023, doi: 10.1109/TIFS.2023.3272862.",
+			"link": "https://doi.org/10.1109/TIFS.2023.3272862",
+			"description": "This paper studies a specific internal attack in UAV networks called a time delay attack. In this attack, a compromised UAV does not drop or modify packets. Instead, it intentionally delays forwarding packets, which can cause serious damage in time-critical UAV missions such as search-and-rescue or military reconnaissance. Because packets are still delivered correctly but late, this attack is hard to detect and cannot be handled by traditional encryption-based security. \n The authors focus on multi-hop UAV networks that use a store-carry-and-forward communication model. In these networks, UAVs move along pre-planned trajectories, meet other UAVs opportunistically, and forward data hop by hop to a ground station. This mobility and intermittent connectivity make normal delays common, which allows malicious delay behavior to hide among legitimate network behavior. \n The paper proposes ETD (Efficient Time Delay Attack Detection), a lightweight detection framework deployed at the ground station. ETD does not rely on packet content inspection or cryptographic checks. Instead, it detects attacks by analysing forwarding behaviour of UAVs over time. The key idea is to measure the real forwarding delay of each UAV, rather than the end-to-end delivery delay of a packet. To do this, the framework uses pre-planned trajectory information to remove the normal “store and carry” time caused by UAV movement. This allows ETD to estimate how long a UAV actually waits before forwarding a packet, which reveals malicious delay behavior. \n To support detection, each UAV attaches lightweight delay-related logs to packets as they are forwarded. These logs are collected at the ground station and used to extract features from four dimensions: Delay features (real forwarding delay), node features (buffer occupancy, speed, direction, transmission power), message features (packet size, source, destination, TTL), and connection features (distance, link quality). \n Because labeled attack data is difficult to obtain, ETD uses one-class classification, trained only on normal (benign) forwarding behaviour. Each forwarding action is evaluated, and a trust value is calculated for every UAV based on how often it behaves normally or abnormally. Finally, K-Means clustering is applied to separate malicious UAVs from benign ones based on their trust values. The framework is evaluated using extensive simulations in the ONE simulator across multiple routing protocols (Epidemic, Spray-and-Wait, Probabilistic, and MaxProp). Results show that ETD achieves over 80–90% detection accuracy with less than 2.5% communication overhead, demonstrating that the approach is both effective and lightweight."
+		},
+		{
+			"ID": "RE0149",
+			"name": "Detecting signal spoofing and jamming attacks in UAV networks using a lightweight IDS",
+			"cite": "M. P. Arthur, “Detecting signal spoofing and jamming attacks in UAV networks using a lightweight IDS,” CITS 2019 - Proceeding 2019 Int. Conf. Comput. Inf. Telecommun. Syst., pp. 1–5, 2019, doi: 10.1109/CITS.2019.8862148.",
+			"link": "https://doi.org/10.1109/CITS.2019.8862148",
+			"description": "This paper studies signal spoofing and jamming attacks in UAV networks, with a focus on GPS spoofing and communication jamming. It argues that existing UAV autopilot systems are vulnerable because they rely heavily on GPS-based navigation and basic collision avoidance, which cannot reliably handle malicious signal interference. The paper assumes that UAVs operate in a delay-tolerant network (DTN) with intermittent connectivity, use epidemic routing, and may be targeted by external attackers operating from ground stations or nearby vehicles. Attacks are assumed to be random in time, location, duration, and target. The UAV is assumed to switch into autopilot mode when contact with the control station is lost, and this autopilot mode fully relies on GPS information, making it susceptible to spoofing.\n\nThe paper describes a conceptual two-stage attack model in which a jamming attack first disrupts communication with the control station, forcing the UAV into autopilot mode, followed by a GPS spoofing attack that feeds false location data and causes the UAV to land in an attacker-chosen or hostile zone. These attacks are described and simulated but not implemented on real UAV hardware.\n\nThe main contribution of the paper is a defence-oriented, lightweight, distributed intrusion detection system (IDS) deployed across the UAV on-board system, the control station, ground stations, and neighboring UAVs. The IDS consists of three phases. The self-analysis phase continuously logs flight and network data such as GPS locations, flight mode changes, velocity, connectivity status, and routing information, producing around 200 features during simulation. The self-detection phase uses Self-Taught Learning (STL) to extract features from unlabeled data and a multiclass SVM to classify behavior as normal, GPS spoofing, jamming, or combined attacks. The self-routing phase proposes a Q-learning-based recovery mechanism to guide the UAV back to home or a safe zone, but this phase is described as future work and is not fully implemented.\n\nThe system is evaluated using simulation only, based on the ONE DTN simulator with 20 UAVs and simulated spoofing and jamming attacks. Performance is measured using accuracy, sensitivity, and specificity. Results show that the STL-assisted multiclass SVM outperforms a standalone SVM in detecting the simulated attacks. No real-world flight experiments or hardware validation are provided."
+		},
+		{
+			"ID": "RE0150",
+			"name": "Security authentication system using encrypted channel on UAV network",
+			"cite": "K. Yoon, D. Park, Y. Yim, K. Kim, S. K. Yang, and M. Robinson, “Security authentication system using encrypted channel on UAV network,” Proc. - 2017 1st IEEE Int. Conf. Robot. Comput. IRC 2017, pp. 393–398, 2017, doi: 10.1109/IRC.2017.56.",
+			"link": "https://doi.org/10.1109/IRC.2017.56",
+			"description": "This paper addresses UAV hijacking and unauthorised control resulting from insecure wireless communication channels in commercial UAVs. It focuses on scenarios in which attackers exploit weak or unprotected Wi-Fi links to disrupt communication, perform denial-of-service (DoS) attacks, or take control of the UAV. The work is explicitly defence-oriented and aims to maintain or regain control of the UAV after a communication hijack, rather than analysing or proposing new attack techniques.\n\nThe paper assumes that commercial UAVs rely on wireless communication (e.g., Wi-Fi) between the UAV and a ground station (GS), and that external and anonymous attackers can perform network-level attacks such as DoS, ARP spoofing, man-in-the-middle, or channel hijacking. It also assumes that UAVs may be physically accessed after landing and that existing UAV systems lack strong authentication and encrypted communication channels.\n To address these issues, the paper proposes a three-party system model consisting of a ground station (GS), a middleware device (Raspberry Pi) directly connected to the UAV, and the UAV itself. Two communication channels are used: a primary channel for standard UAV communication and a secondary encrypted channel for secure control and authentication. The middleware manages both channels, monitors the primary channel for abnormal behaviour, and can disable or disrupt the compromised channel to prevent data leakage or attacker control.\n The core technical contribution is an encrypted authentication protocol between the UAV (via the Raspberry Pi) and the GS. Before take-off, the GS and UAV synchronise time-based random values using an NTP server. These values are stored in a shared key table and used with AES encryption. During flight, the UAV and GS periodically perform a challenge–response authentication using encrypted index values. If authentication fails, the communication channel is terminated. The protocol is designed to mitigate reflection attacks by ensuring that authentication values are not directly exposed or reused in plaintext.\n When a network intrusion or hijacking attempt is detected, the GS can instruct the middleware to disable the primary communication channel, while maintaining control through the encrypted secondary channel when possible. In extreme cases, the GS can issue a destruction signal that triggers a MOSFET-based hardware circuit to disable UAV components or short the battery, aiming to protect sensitive data if the UAV is physically compromised.\n The system is implemented using a Raspberry Pi 3 as middleware, AES-based encryption, WPA2 Wi-Fi communication, and commercial UAV platforms. Evaluation focuses on communication delay (approximately 10 seconds of added latency), CPU overhead on the Raspberry Pi (over 80% usage), and the ability to regain control via the encrypted channel after a DoS attack on the primary channel."
+		},
+		{
+			"ID": "RE0151",
+			"name": "An Uncrewed Aerial Vehicle Attack Scenario and Trustworthy Repair Architecture",
+			"cite": "K. Highnam, K. Angstadt, K. Leach, W. Weimer, A. Paulos, and P. Hurley, “An Uncrewed Aerial Vehicle Attack Scenario and Trustworthy Repair Architecture,” Proc. - 46th Annu. IEEE/IFIP Int. Conf. Dependable Syst. Networks, DSN-W 2016, pp. 222–225, 2016, doi: 10.1109/DSN-W.2016.63.",
+			"link": "https://doi.org/10.1109/DSN-W.2016.63",
+			"description": "This paper studies a realistic attack scenario against commodity unmanned aerial vehicles (UAVs) and proposes a defence architecture focused on resilience and trust recovery, rather than prevention alone. The authors consider UAVs that use open-source autopilot software and communicate with ground stations using the MAVLink protocol, which is unencrypted and unauthenticated. The UAV platform assumed in the paper is a commodity quadcopter running open-source autopilot software on a Unix-like operating system with a real-time kernel. The UAV communicates with a ground control station using MAVLink over radio telemetry. MAVLink messages include flight commands and telemetry data such as position, heading, speed, and sensor readings. Communication relies only on a system ID and does not use cryptographic protection. This architecture is representative of widely used platforms such as 3DR IRIS+, Erle-Copter, and Raspberry Pi–based UAVs. \n The paper assumes an attacker equipped with a commodity computer, open-source ground station software, and a directional antenna. The attacker does not need physical access to the UAV and does not compromise the onboard software directly. Instead, the attacker exploits the lack of authentication in MAVLink by spoofing MAVLink packets after capturing the UAV’s system ID. The attacker’s goal is subtle mission degradation, not a crash or overt takeover. In the described scenario, the UAV is performing a waypoint-based surveillance mission. When the UAV enters the attacker’s radio “cone of influence,” the attacker injects malicious MAVLink messages (such as position or heading commands) that slightly alter the flight path. This causes the UAV to miss or incorrectly execute one or more waypoints, resulting in mission failure while avoiding obvious detection. \n Rather than relying on cryptographic protection, the authors propose runtime attack detection based on telemetry consistency. The ground station continuously monitors UAV telemetry and compares it against expected mission profiles derived from simulation and prior flights. Multiple telemetry sources are cross-checked to detect inconsistencies. For example, magnetometer readings are compared against expected heading clusters for a known flight path. Even if GPS data is spoofed, inconsistencies between GPS and magnetometer data may reveal abnormal behaviour. Once an attack is detected, the system does not attempt to remove the attacker. Instead, it automatically synthesises a repaired flight plan that avoids the attacker’s cone of influence while still achieving the mission goals. This is done using automated program repair techniques, such as GenProg. The flight plan can be represented either as a sequence of MAVLink packets or as a higher-level program that issues MAVLink commands. Candidate repaired flight plans are evaluated in simulation using an objective function that measures mission success (e.g., number of waypoints completed) and penalises risky behaviour (e.g., proximity to the attack region). The best candidate is then deployed mid-flight. After deployment, telemetry is monitored again to evaluate whether trust in the UAV’s behaviour can be re-established."
+		}
+
+
+
+    ]
+}
