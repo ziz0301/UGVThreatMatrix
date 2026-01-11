@@ -12,22 +12,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-	const selector = document.getElementById("data-version");
-    // Load initial version
-    fetchData("data_v2.json");
+    if (document.getElementById("matrix-container")) {
+        initMatrixPage();
+    }
+    if (document.getElementById("tactics-table")) {
+        initTacticsPage();
+    }
+    if (document.getElementById("techniques-table")) {
+        initTechniquesPage();
+    }
+    if (document.getElementById("mitigations-table")) {
+        initMitigationsPage();
+    }
+	if (document.getElementById("references-table")) {
+        initReferencesPage();
+    }
+});
 
-    // Listen for changes
-	if (selector) {
+	function initMatrixPage() {
+		const selector = document.getElementById("data-version");
+		if (!selector) return;
+		selector.value = "data_ugv.json";
+		clearMatrix();
+		fetchData("data_ugv.json");
 		selector.addEventListener("change", function () {
-			const selectedFile = selector.value;
-			console.log("choosefile"+selectedFile);
-			fetchData(selectedFile);
+			clearMatrix();
+			fetchData(selector.value);
+		});
+	}
+	
+	function initTacticsPage() {
+		const selector = document.getElementById("data-version");
+		if (!selector) return;
+		selector.value = "data_ugv.json";
+		fetchTacticsData("data_ugv.json");
+		selector.addEventListener("change", function () {
+			fetchTacticsData(selector.value);
+		});
+	}
+	
+	function initTechniquesPage() {
+		const selector = document.getElementById("data-version");
+		if (!selector) return;
+		selector.value = "data_ugv.json";
+		fetchTechniquesData("data_ugv.json");
+		selector.addEventListener("change", function () {
+			fetchTechniquesData(selector.value);
 		});
 	}
 
+	function initMitigationsPage() {
+		const selector = document.getElementById("data-version");
+		if (!selector) return;
+		selector.value = "data_ugv.json";
+		fetchMitigationsData("data_ugv.json");
+		selector.addEventListener("change", function () {
+			fetchMitigationsData(selector.value);
+		});
+	}
+	
+	function initReferencesPage() {
+		const selector = document.getElementById("data-version");
+		if (!selector) return;
+		selector.value = "data_ugv.json";
+		fetchReferencesData("data_ugv.json");
+		selector.addEventListener("change", function () {
+			fetchReferencesData(selector.value);
+		});
+	}
 
-  // fetchData();
-});
 
 	
 	function fetchData(dt) {
@@ -35,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			.then(response => response.json())
 			.then(data => {
 				globalData = data;
+				updateTabVisibility(dt);
 				loadTacticsAndTechniques(data);
 				loadReferences(data);
 				loadTactics(data);
@@ -44,6 +98,104 @@ document.addEventListener("DOMContentLoaded", function () {
 			})
 			.catch(error => console.error("Error loading data.json:", error));
 	}
+	
+	function fetchTacticsData(filename) {
+		fetch(filename)
+			.then(response => response.json())
+			.then(data => {
+				globalData = data;
+				loadTactics(data);
+				const stats = document.getElementById("tactics-stats");
+				if (stats && data.tactics) {
+					stats.textContent = `Number of tactics: ${data.tactics.length}`;
+				}
+			})
+			.catch(err => console.error("Failed to load tactics data:", err));
+	}
+	
+	function fetchTechniquesData(filename) {
+		fetch(filename)
+			.then(response => response.json())
+			.then(data => {
+				globalData = data;
+				loadTechniques(data);
+				const stats = document.getElementById("techniques-stats");
+				if (stats && data.tactics) {
+					stats.textContent = `Number of techniques: ${data.techniques.length}`;
+				}
+			})
+			.catch(err => console.error("Failed to load techniques data:", err));
+	}
+	
+	function fetchMitigationsData(filename) {
+		fetch(filename)
+			.then(response => response.json())
+			.then(data => {
+				globalData = data;
+				loadMitigation(data);
+				const stats = document.getElementById("mitigations-stats");
+				if (stats && data.tactics) {
+					stats.textContent = `Number of mitigations: ${data.mitigations.length}`;
+				}
+			})
+			.catch(err => console.error("Failed to load mitigations data:", err));
+	}
+
+	function fetchReferencesData(filename) {
+		fetch(filename)
+			.then(response => response.json())
+			.then(data => {
+				globalData = data;
+				loadReferences(data);
+				const stats = document.getElementById("references-stats");
+				if (stats && data.tactics) {
+					stats.textContent = `Number of references: ${data.references.length}`;
+				}
+			})
+			.catch(err => console.error("Failed to load references data:", err));
+	}
+
+	
+	function clearMatrix() {
+		const ids = [
+			"matrix-container",
+			"resilience-matrix-container",
+			"effects-matrix-container",
+			"assets-matrix-container",
+			"controls-matrix-container"
+		];
+		ids.forEach(id => {
+			const el = document.getElementById(id);
+			if (el) el.innerHTML = "";
+		});
+	}
+	
+	
+	function updateTabVisibility(filename) {
+		const threatTab = document.getElementById("threat-matrix-tab");
+		const resilienceTab = document.getElementById("resilience-matrix-tab");
+		if (!threatTab || !resilienceTab) return;
+		const file = filename.toLowerCase();
+		let label = "UGV";
+		let isUGV = true;
+		if (file.includes("uav")) {
+			label = "UAV";
+			isUGV = false;
+		} else if (file.includes("usv")) {
+			label = "USV";
+			isUGV = false;
+		}
+		threatTab.textContent = `${label} Threat Matrix`;
+		if (isUGV) {
+			threatTab.style.display = "inline";
+			resilienceTab.style.display = "inline";
+		} else {
+			threatTab.style.display = "inline";
+			resilienceTab.style.display = "none";
+		}
+	}
+
+
 	
 	function showMatrix(type) {
 		currentMatrix = type;
@@ -59,17 +211,20 @@ document.addEventListener("DOMContentLoaded", function () {
 		const controlsContainer = document.getElementById("controls-matrix-container");		
 		const assetsHeading = document.getElementById("assets-heading");	
 		const assetsContainer = document.getElementById("assets-matrix-container");
+		const dbSelector = document.getElementById("database-selector");
+
 
 		if (type === "threat") {
-			if (matrixContainer) matrixContainer.removeAttribute("style");
+			if (matrixContainer) matrixContainer.removeAttribute("style");			
 			if (resilienceContainer) resilienceContainer.style.display = "none";
 			if (assetsHeading) assetsHeading.style.display = "none";
 			if (assetsContainer) assetsContainer.style.display = "none";
 			if (effectsContainer) effectsContainer.style.display = "none";
 			if (effectsHeading) effectsHeading.style.display = "none";
 			if (controlsHeading) controlsHeading.style.display = "none";
-			if (controlsContainer) controlsContainer.style.display = "none";			
-			loadTacticsAndTechniques(globalData);
+			if (controlsContainer) controlsContainer.style.display = "none";	
+			if (dbSelector) dbSelector.style.display = "block";
+			//loadTacticsAndTechniques(globalData);
 		} 
 		else if (type === "resilience") {
 			if (resilienceContainer) resilienceContainer.removeAttribute("style");
@@ -80,6 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (matrixContainer) matrixContainer.style.display = "none";
 			if (controlsHeading) controlsHeading.style.display = "block";
 			if (controlsContainer) controlsContainer.removeAttribute("style");
+			if (dbSelector) dbSelector.style.display = "none";
 			loadNISTMatrix(globalData);
 		}
 	}
@@ -137,6 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		resilienceContainer.innerHTML = "";
 		effectsContainer.innerHTML = "";
 		controlsContainer.innerHTML = "";
+		assetsContainer.innerHTML = "";
 
 		const nistTechniques = data.NIST_CRS.techniques || [];
 		const nistApproaches = data.NIST_CRS.approaches || [];
@@ -270,6 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+	
 
 	
 	function loadTactics(data){
