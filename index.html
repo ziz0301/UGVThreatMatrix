@@ -24,6 +24,15 @@
     
    <div class="container">
     <section id="matrix">
+		<div id="database-selector" class="data-selector">
+			<label for="data-version"><b>Select Database:</b></label>
+			<select id="data-version">
+				<option value="data_ugv.json" selected = "true" >UGV</option>
+				<option value="data_uav.json">UAV</option>
+				<option value="data_usv.json">USV</option>
+			</select>
+
+		</div>
         <h2>
             <span class="matrix-toggle selected" id="threat-matrix-tab" onclick="showMatrix('threat')">Threat Matrix</span> |
             <span class="matrix-toggle" id="resilience-matrix-tab" onclick="showMatrix('resilience')">Cyber Resilience Matrix</span>
@@ -33,7 +42,6 @@
             <p id="stats-threat" class="matrix-stats-block"></p>
             <p id="stats-nist" class="matrix-stats-block" style="display: none;"></p>
         </div>
-
 		<!-- For Threat Matrix -->
         <div id="matrix-container"></div>
 		
